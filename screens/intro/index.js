@@ -20,7 +20,7 @@ const slides = [
   },
 ];
 
-function Intro() {
+function Intro({ navigation }) {
   let [showRealApp, setShowRealApp] = useState(false);
   const renderItem = ({ item }) => {
     return (
@@ -50,52 +50,48 @@ function Intro() {
     );
   };
   const onDone = () => {
-    this.setState({ showRealApp: true });
+    navigation.navigate("LoginScreen");
   };
 
   const NextButton = () => {
     return (
-      <TouchableOpacity style={[styles.nextBtn]} activeOpacity={0.7}>
+      <View style={[styles.nextBtn]} activeOpacity={0.7}>
         <Text style={[styles.nextBtnTxt]}>다음</Text>
-      </TouchableOpacity>
+      </View>
     );
   };
 
   const DoneButton = () => {
     return (
-      <TouchableOpacity style={[styles.doneBtn]} activeOpacity={0.7}>
+      <View style={[styles.doneBtn]} activeOpacity={0.7}>
         <Text style={[styles.doneBtnTxt]}>시작하기</Text>
-      </TouchableOpacity>
+      </View>
     );
   };
-  if (showRealApp) {
-    return <App />;
-  } else {
-    return (
-      <AppIntroSlider
-        activeDotStyle={{
-          width: 58,
-          height: 6,
-          borderRadius: 0,
-          backgroundColor: careTheme.COLORS.PRIMARY,
-          marginLeft: -5,
-        }}
-        dotStyle={{
-          width: 58,
-          height: 6,
-          backgroundColor: "#E8E8E8",
-          borderRadius: 0,
-          marginLeft: -5,
-        }}
-        renderItem={renderItem}
-        data={slides}
-        renderNextButton={NextButton}
-        renderDoneButton={DoneButton}
-        //   onDone={this._onDone}
-        bottomButton={true}
-      />
-    );
-  }
+  return (
+    <AppIntroSlider
+      activeDotStyle={{
+        width: 58,
+        height: 6,
+        borderRadius: 0,
+        backgroundColor: careTheme.COLORS.PRIMARY,
+        marginLeft: -5,
+      }}
+      dotStyle={{
+        width: 58,
+        height: 6,
+        backgroundColor: "#E8E8E8",
+        borderRadius: 0,
+        marginLeft: -5,
+      }}
+      renderItem={renderItem}
+      data={slides}
+      renderNextButton={NextButton}
+      renderDoneButton={DoneButton}
+      onDone={onDone}
+      bottomButton={true}
+    />
+  );
 }
 
 export default Intro;

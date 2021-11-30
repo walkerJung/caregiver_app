@@ -13,7 +13,7 @@ import {
 
 import LoginBtn from "../../components/login/LoginBtn";
 
-export default function Login() {
+export default function Login({ navigation }) {
   const {
     register,
     handleSubmit,
@@ -97,10 +97,20 @@ export default function Login() {
       />
 
       <FindBox>
-        <FindBtn activeOpacity={1} onPress={() => {}}>
+        <FindBtn
+          activeOpacity={1}
+          onPress={() => {
+            navigation.navigate("IdFind");
+          }}
+        >
           <FindBtnTxt>아이디 찾기</FindBtnTxt>
         </FindBtn>
-        <FindBtn activeOpacity={1} onPress={() => {}}>
+        <FindBtn
+          activeOpacity={1}
+          onPress={() => {
+            navigation.navigate("PasswordFind");
+          }}
+        >
           <FindBtnTxt>비밀번호 찾기</FindBtnTxt>
         </FindBtn>
       </FindBox>

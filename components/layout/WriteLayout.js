@@ -23,18 +23,18 @@ export default function WriteLayout({ children }) {
             contentContainerStyle={{ flexGrow: 1 }}
             scrollIndicatorInsets={{ right: 1 }}
           >
-            <TouchableWithoutFeedback onPress={Keyboard.dismiss()}>
-              <View
-                style={{
-                  flex: 1,
-                  paddingHorizontal: "5%",
-                  paddingVertical: 20,
-                  backgroundColor: "#fff",
-                }}
-              >
-                {children}
-              </View>
-            </TouchableWithoutFeedback>
+            {/* <TouchableWithoutFeedback onPress={Keyboard.dismiss()}> */}
+            <View
+              style={{
+                flex: 1,
+                paddingHorizontal: "5%",
+                paddingVertical: 20,
+                backgroundColor: "#fff",
+              }}
+            >
+              {children}
+            </View>
+            {/* </TouchableWithoutFeedback> */}
           </ScrollView>
         </KeyboardAvoidingView>
       </SafeAreaView>
