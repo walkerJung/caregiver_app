@@ -71,7 +71,7 @@ export default function PasswordFind() {
         onPress={() => {
           !loading && data
             ? Alert.alert(
-                "회원님의 비밀번호를 password 로 초기화 하였습니다. 로그인 후 비밀번호를 변경해주세요."
+                "회원님의 비밀번호를 'password' 로 초기화 하였습니다. 로그인 후 비밀번호를 변경해주세요."
               )
             : Alert.alert(
                 "입력하신 정보와 일치하는 회원정보가 없습니다. 다시 확인해주세요."
