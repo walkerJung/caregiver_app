@@ -1,16 +1,15 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import Login from "../screens/login/login";
-import IdFind from "../screens/auth/idFind";
-import PasswordFind from "../screens/auth/passwordFind";
-import AuthJoinStack from "./authJoinStack";
+import MemberType from "../screens/join/MemberChoose";
+import CaregiverJoin from "../screens/join/caregiver/Register";
+import PatientJoin from "../screens/join/user/Register";
 
 const Stack = createStackNavigator();
 
-export default function AuthStack() {
+export default function AuthJoinStack() {
   return (
     <Stack.Navigator
-      initialRouteName="Login"
+      initialRouteName="MemberType"
       screenOptions={{
         headerShown: true,
         gestureEnabled: false,
@@ -29,33 +28,26 @@ export default function AuthStack() {
       cardStyle={{ backgroundColor: "transparent" }}
     >
       <Stack.Screen
-        name="Login"
-        component={Login}
-        options={{
-          headerShown: false,
-        }}
-      />
-      <Stack.Screen
-        name="IdFind"
-        component={IdFind}
+        name="회원유형 선택"
+        component={MemberType}
         options={{
           headerShown: true,
-          title: "아이디 찾기",
         }}
       />
       <Stack.Screen
-        name="PasswordFind"
-        component={PasswordFind}
+        name="CaregiverJoin"
+        component={CaregiverJoin}
         options={{
           headerShown: true,
-          title: "비밀번호 찾기",
+          title: "간병인회원 정보입력",
         }}
       />
       <Stack.Screen
-        name="MemberType"
-        component={AuthJoinStack}
+        name="PatientJoin"
+        component={PatientJoin}
         options={{
-          headerShown: false,
+          headerShown: true,
+          title: "환자회원 정보입력",
         }}
       />
     </Stack.Navigator>

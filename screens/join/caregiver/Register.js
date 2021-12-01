@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import { Alert, TouchableOpacity, Text, Image } from "react-native";
+import React, { useState, useEffect, useRef } from "react";
+import { Alert, TouchableOpacity, Text, Image, Modal } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
-import DefulatLayout from "../../../components/layout/DefaultLayout";
+import WriteLayout from "../../../components/layout/WriteLayout";
 import SectionLayout from "../../../components/layout/SectionLayout";
 import {
   StepTxtBox,
@@ -13,6 +13,7 @@ import {
   FormInput,
   PhotoBox,
   Textarea,
+  ErrorsText,
 } from "../../../components/join/JoinStyle";
 import JoinRadio from "../../../components/join/JoinRadio";
 import {
@@ -23,112 +24,183 @@ import {
   RightBtnBox,
   SearchBtn,
   SearchInput,
-  ErrorsText,
   SubmitBtn,
 } from "../../../components/form/CareFormStyle";
 import { careTheme } from "../../../contents";
-
-import DateTimePickerModal from "react-native-modal-datetime-picker";
 import RNPickerSelect from "react-native-picker-select";
 import { FlexBoth } from "../../../components/form/ListStyle";
+import { useForm } from "react-hook-form";
+import { useMutation } from "@apollo/client";
+import { CREATE_ACCOUNT_MUTATION } from "../../query";
+import Postcode from "@actbase/react-daum-postcode";
+import * as ImagePicker from "expo-image-picker";
 
-// datepicker 시작
-Date.prototype.format = function (f) {
-  if (!this.valueOf()) return " ";
-
-  var weekName = [
-    "일요일",
-    "월요일",
-    "화요일",
-    "수요일",
-    "목요일",
-    "금요일",
-    "토요일",
-  ];
-  var d = this;
-
-  return f.replace(/(yyyy|yy|MM|dd|E|hh|mm|ss|a\/p)/gi, function ($1) {
-    switch ($1) {
-      case "yyyy":
-        return d.getFullYear();
-      case "yy":
-        return (d.getFullYear() % 1000).zf(2);
-      case "MM":
-        return (d.getMonth() + 1).zf(2);
-      case "dd":
-        return d.getDate().zf(2);
-      case "E":
-        return weekName[d.getDay()];
-      case "HH":
-        return d.getHours().zf(2);
-      case "hh":
-        return ((h = d.getHours() % 12) ? h : 12).zf(2);
-      case "mm":
-        return d.getMinutes().zf(2);
-      case "ss":
-        return d.getSeconds().zf(2);
-      case "a/p":
-        return d.getHours() < 12 ? "오전" : "오후";
-      default:
-        return $1;
-    }
-  });
-};
-String.prototype.string = function (len) {
-  var s = "",
-    i = 0;
-  while (i++ < len) {
-    s += this;
-  }
-  return s;
-};
-String.prototype.zf = function (len) {
-  return "0".string(len - this.length) + this;
-};
-Number.prototype.zf = function (len) {
-  return this.toString().zf(len);
-};
-// datepicker 끝
-
-export default function CaregiverRegister() {
-  // datepicker 동작 시작
-  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-  const [isTimePickerVisible, setTimePickerVisibility] = useState(false);
-  const [DateText, onChangeDate] = useState("");
-  const [TimeText, onChangeTime] = useState("");
-
-  const showDatePicker = () => {
-    setDatePickerVisibility(true);
-  };
-  const showTimePicker = () => {
-    setTimePickerVisibility(true);
-  };
-
-  const hideDatePicker = () => {
-    setDatePickerVisibility(false);
-  };
-  const hideTimePicker = () => {
-    setTimePickerVisibility(false);
-  };
-
-  const handleConfirm = (date) => {
-    hideDatePicker();
-    onChangeDate(date.format("yyyy/MM/dd"));
-  };
-  const handleTimeConfirm = (date) => {
-    hideTimePicker();
-    onChangeTime(date.format("HH:mm"));
-  };
-  // datepicker 동작 끝
-
-  // 셀렉트 박스 시작
-  const [SelectText, setSelectText] = useState("");
+export default function CaregiverRegister({ navigation }) {
+  const [idCard, setIdCard] = useState(null);
+  const [bankInfo, setBankInfo] = useState(null);
+  const [isModal, setModal] = useState("none");
+  const [selectMealText, setSelectMealText] = useState("");
+  const [selectUrineText, setSelectUrineText] = useState("");
+  const [selectSuctionText, setSelectSuctionText] = useState("");
+  const [selectMoveText, setSelectMoveText] = useState("");
+  const [selectBedText, setSelectBedText] = useState("");
   const onChangeSelectText = (value) => {
     setSelectText(value);
   };
 
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    getValues,
+    formState: { errors },
+    watch,
+  } = useForm();
+
+  const onCompleted = (data) => {
+    const {
+      createAccount: { ok },
+    } = data;
+    if (ok) {
+      Alert.alert("회원가입이 완료되었습니다. 감사합니다.");
+      navigation.navigate("Login");
+    }
+  };
+
+  const [createAccountMutation, { loading }] = useMutation(
+    CREATE_ACCOUNT_MUTATION,
+    {
+      onCompleted,
+    }
+  );
+
+  const onValid = async (data) => {
+    if (!loading) {
+      if (!idCard) {
+        Alert.alert("신분증 사진을 첨부해주세요.");
+      }
+      if (!bankInfo) {
+        Alert.alert("통장사본 사진을 첨부해주세요.");
+      }
+      try {
+        await createAccountMutation({
+          variables: {
+            userId: data.userId,
+            userType: "간병인",
+            userName: data.userName,
+            password: data.password,
+            sex: data.sex,
+            phone: data.phone,
+          },
+        });
+      } catch (e) {
+        console.log(e);
+        var error = e.toString();
+        error = error.replace("Error: ", "");
+        Alert.alert(`${error}`);
+      }
+    }
+  };
+
+  const handleAddress = (data) => {
+    setValue("address", data.address), setModal("none");
+  };
+
+  const pickImage = async (set) => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    if (!result.cancelled) {
+      set(result.uri);
+    }
+  };
+
+  const passwordRef = useRef();
+  const passwordConfirmRef = useRef();
+  const usernameRef = useRef();
+  const phoneRef = useRef();
+
+  const onNext = (nextOne) => {
+    nextOne?.current?.focus();
+  };
+
+  useEffect(() => {
+    register("userId", {
+      required: "* 아이디를 입력해주세요.",
+    });
+    register("password", {
+      required: "* 비밀번호를 입력해주세요.",
+    });
+    register("passwordConfirm", {
+      required: "* 비밀번호를 한번 더 입력해주세요.",
+      validate: (value) => {
+        return value !== watch("password")
+          ? "* 비밀번호가 일치하지 않습니다. 다시 입력해주세요."
+          : undefined;
+      },
+    });
+    register("userName", {
+      required: "* 이름을 입력해주세요.",
+    });
+    register("phone", {
+      required: "* 연락처를 입력해주세요.",
+    });
+    register("sex", {
+      required: "* 성별을 선택해주세요.",
+    });
+    register("address", {
+      required: "* 주소를 선택해주세요.",
+    });
+    register("addressDetail", {
+      required: "* 상세주소를 입력해주세요.",
+    });
+    register("resident_1", {
+      required: "* 주민등록번호 앞자리를 입력해주세요.",
+    });
+    register("resident_2", {
+      required: "* 주민등록번호 뒷자리를 입력해주세요.",
+    });
+    register("mealCare", {
+      required: "* 가능한 식사케어를 선택해주세요.",
+    });
+    register("urineCare", {
+      required: "* 가능한 대소변케어를 선택해주세요.",
+    });
+    register("suctionCare", {
+      required: "* 가능한 석션케어를 선택해주세요.",
+    });
+    register("moveCare", {
+      required: "* 가능한 이동케어를 선택해주세요.",
+    });
+    register("bedCare", {
+      required: "* 가능한 침대케어를 선택해주세요.",
+    });
+    register("smoke", {
+      required: "* 가능한 흡연 여부를 선택해주세요.",
+    });
+    register("drink", {
+      required: "* 가능한 음주 여부를 선택해주세요.",
+    });
+  }, [register]);
+
+  useEffect(() => {
+    (async () => {
+      if (Platform.OS !== "web") {
+        const { status } =
+          await ImagePicker.requestMediaLibraryPermissionsAsync();
+        if (status !== "granted") {
+          alert("Sorry, we need camera roll permissions to make this work!");
+        }
+      }
+    })();
+  }, []);
+
   return (
-    <DefulatLayout>
+    <WriteLayout>
       <SectionLayout>
         <StepTxtBox>
           <StepNum>Step1</StepNum>
@@ -137,15 +209,18 @@ export default function CaregiverRegister() {
 
         <FormBox>
           <FormLabelBox>
-            <FormLabel>아이디(이메일)</FormLabel>
+            <FormLabel>아이디</FormLabel>
           </FormLabelBox>
 
           <FormInput
-            placeholder="아이디) example@naver.com"
+            placeholder="아이디를 입력해주세요."
             placeholderTextColor={"#979797"}
             autoCapitalize="none"
             returnKeyType="next"
+            onSubmitEditing={() => onNext(passwordRef)}
+            onChangeText={(text) => setValue("userId", text)}
           />
+          {errors.userId && <ErrorsText>{errors.userId.message}</ErrorsText>}
         </FormBox>
 
         <FormBox>
@@ -153,11 +228,17 @@ export default function CaregiverRegister() {
             <FormLabel>비밀번호</FormLabel>
           </FormLabelBox>
           <FormInput
-            placeholder="비밀번호"
+            ref={passwordRef}
+            placeholder="비밀번호를 입력해주세요."
             placeholderTextColor={"#979797"}
             secureTextEntry
             returnKeyType="next"
+            onSubmitEditing={() => onNext(passwordConfirmRef)}
+            onChangeText={(text) => setValue("password", text)}
           />
+          {errors.password && (
+            <ErrorsText>{errors.password.message}</ErrorsText>
+          )}
         </FormBox>
 
         <FormBox>
@@ -165,11 +246,17 @@ export default function CaregiverRegister() {
             <FormLabel>비밀번호 확인</FormLabel>
           </FormLabelBox>
           <FormInput
+            ref={passwordConfirmRef}
             placeholder="비밀번호 확인"
             placeholderTextColor={"#979797"}
             secureTextEntry
             returnKeyType="next"
+            onSubmitEditing={() => onNext(usernameRef)}
+            onChangeText={(text) => setValue("passwordConfirm", text)}
           />
+          {errors.passwordConfirm && (
+            <ErrorsText>{errors.passwordConfirm.message}</ErrorsText>
+          )}
         </FormBox>
 
         <FormBox>
@@ -177,11 +264,16 @@ export default function CaregiverRegister() {
             <FormLabel>이름</FormLabel>
           </FormLabelBox>
           <FormInput
-            placeholder="이름"
+            ref={usernameRef}
+            placeholder="이름을 입력해주세요."
             placeholderTextColor={"#979797"}
             autoCapitalize="none"
-            returnKeyType="next"
+            onSubmitEditing={() => onNext(phoneRef)}
+            onChangeText={(text) => setValue("userName", text)}
           />
+          {errors.userName && (
+            <ErrorsText>{errors.userName.message}</ErrorsText>
+          )}
         </FormBox>
 
         <FormBox>
@@ -189,12 +281,15 @@ export default function CaregiverRegister() {
             <FormLabel>연락처</FormLabel>
           </FormLabelBox>
           <FormInput
-            placeholder="연락처"
+            ref={phoneRef}
+            placeholder="- 빼고 입력해주세요."
             placeholderTextColor={"#979797"}
             keyboardType="numeric"
             autoCapitalize="none"
             returnKeyType="next"
+            onChangeText={(text) => setValue("phone", text)}
           />
+          {errors.phone && <ErrorsText>{errors.phone.message}</ErrorsText>}
         </FormBox>
 
         <FormBox last>
@@ -204,10 +299,13 @@ export default function CaregiverRegister() {
           <JoinRadio
             lineover={true}
             options={[
-              { key: 1, text: "남성" },
-              { key: 2, text: "여성" },
+              { key: "남성", text: "남성" },
+              { key: "여성", text: "여성" },
             ]}
+            setValue={setValue}
+            fieldName="sex"
           />
+          {errors.sex && <ErrorsText>{errors.sex.message}</ErrorsText>}
         </FormBox>
       </SectionLayout>
 
@@ -225,25 +323,22 @@ export default function CaregiverRegister() {
             <LeftBtnBox>
               <TouchableOpacity
                 activeOpacity={0.8}
-                onPress={() =>
-                  Alert.alert("여길 누르면 주소 창 검색이 뜹니다!")
-                }
+                onPress={() => setModal("block")}
               >
                 <SearchInput
                   placeholder="주소를 입력해주세요."
                   placeholderTextColor={"#676767"}
                   keyboardType="default"
+                  value={getValues("address")}
                   editable={false}
                 />
+                {errors.address && (
+                  <ErrorsText>{errors.address.message}</ErrorsText>
+                )}
               </TouchableOpacity>
             </LeftBtnBox>
             <RightBtnBox>
-              <SearchBtn
-                activeOpacity={0.8}
-                onPress={() =>
-                  Alert.alert("여기도 누르면 주소 창 검색이 뜹니다!")
-                }
-              >
+              <SearchBtn activeOpacity={0.8} onPress={() => setModal("block")}>
                 <Text
                   style={{
                     fontSize: 14,
@@ -256,18 +351,26 @@ export default function CaregiverRegister() {
               </SearchBtn>
             </RightBtnBox>
           </FlexRow>
-
+          <Postcode
+            style={{ width: 320, height: 320, display: isModal }}
+            jsOptions={{ animation: true }}
+            onSelected={(data) => handleAddress(data)}
+          />
           {/* 상세주소 입력하는 input */}
           <FormInput
             placeholder="상세주소"
             placeholderTextColor={"#979797"}
             keyboardType="default"
+            onChangeText={(text) => setValue("addressDetail", text)}
           />
+          {errors.addressDetail && (
+            <ErrorsText>{errors.addressDetail.message}</ErrorsText>
+          )}
         </FormBox>
 
         <FormBox>
           <FormLabelBox>
-            <FormLabel>주민등록번호 or (외국인등록번호)</FormLabel>
+            <FormLabel>주민등록번호</FormLabel>
           </FormLabelBox>
           <FlexBoth style={{ alignItems: "center" }}>
             <FormInput
@@ -277,6 +380,7 @@ export default function CaregiverRegister() {
               returnKeyType="next"
               maxLength={6}
               style={{ flex: 1, marginRight: 5 }}
+              onChangeText={(text) => setValue("resident_1", text)}
             />
             <Text>-</Text>
             <FormInput
@@ -287,17 +391,35 @@ export default function CaregiverRegister() {
               secureTextEntry
               maxLength={7}
               style={{ flex: 1, marginLeft: 5 }}
+              onChangeText={(text) => setValue("resident_2", text)}
             />
           </FlexBoth>
+          {errors.resident_1 && (
+            <ErrorsText>{errors.resident_1.message}</ErrorsText>
+          )}
+          {errors.resident_2 && (
+            <ErrorsText>{errors.resident_2.message}</ErrorsText>
+          )}
         </FormBox>
 
         <FormBox>
           <FormLabelBox>
-            <FormLabel>신분증 사진 or (외국인등록증)</FormLabel>
+            <FormLabel>신분증 사진</FormLabel>
           </FormLabelBox>
-          <PhotoBox onPress={() => Alert.alert("갤러리 보관함이 열립니다.")}>
-            {/* 여기는 등록전 입니다. */}
-            <Icon name="add-outline" size={23} style={{ color: "#979797" }} />
+          <PhotoBox
+            onPress={() => {
+              pickImage(setIdCard);
+            }}
+          >
+            {idCard ? (
+              <Image
+                style={{ width: "100%", height: "100%" }}
+                source={{ uri: idCard }}
+                resizeMode={"contain"}
+              />
+            ) : (
+              <Icon name="add-outline" size={23} style={{ color: "#979797" }} />
+            )}
           </PhotoBox>
         </FormBox>
 
@@ -305,13 +427,20 @@ export default function CaregiverRegister() {
           <FormLabelBox>
             <FormLabel>통장사본 사진</FormLabel>
           </FormLabelBox>
-          <PhotoBox>
-            {/* 여기는 등록 후 입니다. */}
-            <Image
-              style={{ width: "100%", height: "100%" }}
-              source={require("../../../assets/img/test_img.jpg")}
-              resizeMode={"contain"}
-            />
+          <PhotoBox
+            onPress={() => {
+              pickImage(setBankInfo);
+            }}
+          >
+            {bankInfo ? (
+              <Image
+                style={{ width: "100%", height: "100%" }}
+                source={{ uri: bankInfo }}
+                resizeMode={"contain"}
+              />
+            ) : (
+              <Icon name="add-outline" size={23} style={{ color: "#979797" }} />
+            )}
           </PhotoBox>
         </FormBox>
       </SectionLayout>
@@ -333,8 +462,8 @@ export default function CaregiverRegister() {
               label: "선택",
               color: "#979797",
             }}
-            value={SelectText}
-            onValueChange={(value) => onChangeSelectText(value)}
+            value={selectMealText}
+            onValueChange={(value) => setSelectMealText(value)}
             items={[
               { label: "콧줄 식사케어 ", value: "콧줄 식사케어 " },
               { label: "뱃줄 식사케어", value: "뱃줄 식사케어" },
@@ -364,8 +493,8 @@ export default function CaregiverRegister() {
               label: "선택",
               color: "#979797",
             }}
-            value={SelectText}
-            onValueChange={(value) => onChangeSelectText(value)}
+            value={selectUrineText}
+            onValueChange={(value) => setSelectUrineText(value)}
             items={[
               { label: "소변주머니 케어", value: "소변주머니 케어" },
               { label: "장루 케어", value: "장루 케어" },
@@ -398,8 +527,8 @@ export default function CaregiverRegister() {
               label: "선택",
               color: "#979797",
             }}
-            value={SelectText}
-            onValueChange={(value) => onChangeSelectText(value)}
+            value={selectSuctionText}
+            onValueChange={(value) => setSelectSuctionText(value)}
             items={[
               { label: "목 석션", value: "목 석션" },
               { label: "코 석션", value: "코 석션" },
@@ -429,8 +558,8 @@ export default function CaregiverRegister() {
               label: "선택",
               color: "#979797",
             }}
-            value={SelectText}
-            onValueChange={(value) => onChangeSelectText(value)}
+            value={selectMoveText}
+            onValueChange={(value) => setSelectMoveText(value)}
             items={[
               { label: "휠체어 이동케어", value: "휠체어 이동케어" },
               { label: "지팡이 보행 이동케어", value: "지팡이 보행 이동케어" },
@@ -460,8 +589,8 @@ export default function CaregiverRegister() {
               label: "선택",
               color: "#979797",
             }}
-            value={SelectText}
-            onValueChange={(value) => onChangeSelectText(value)}
+            value={selectBedText}
+            onValueChange={(value) => setSelectBedText(value)}
             items={[
               {
                 label: "침대에서 휠체어 이동케어",
@@ -485,45 +614,41 @@ export default function CaregiverRegister() {
 
         <FormBox>
           <FormLabelBox>
-            <FormLabel>담배</FormLabel>
+            <FormLabel>흡연 여부</FormLabel>
           </FormLabelBox>
 
           <JoinRadio
             lineover={true}
             options={[
-              { key: 1, text: "피운다" },
-              { key: 2, text: "안 피운다" },
+              { key: "흡연", text: "흡연" },
+              { key: "비흡연", text: "비흡연" },
             ]}
+            setValue={setValue}
+            fieldName="smoke"
           />
+          {errors.smoke && <ErrorsText>{errors.smoke.message}</ErrorsText>}
         </FormBox>
 
         <FormBox>
           <FormLabelBox>
-            <FormLabel>술</FormLabel>
+            <FormLabel>음주 여부</FormLabel>
           </FormLabelBox>
 
           <JoinRadio
             lineover={true}
             options={[
-              { key: 1, text: "마신다" },
-              { key: 2, text: "안 마신다" },
+              { key: "음주", text: "음주" },
+              { key: "비음주", text: "비음주" },
             ]}
+            setValue={setValue}
+            fieldName="drink"
           />
+          {errors.drink && <ErrorsText>{errors.drink.message}</ErrorsText>}
         </FormBox>
 
-        <FormBox>
-          <FormLabelBox>
-            <FormLabel>자기소개</FormLabel>
-          </FormLabelBox>
-          <Textarea
-            placeholder="자기소개글을 입력해주세요."
-            numberOfLines={10}
-          />
-        </FormBox>
-
-        <SubmitBtn text="회원가입" onPress={() => Alert.alert("회원가입")} />
+        <SubmitBtn text="회원가입" onPress={handleSubmit(onValid)} />
       </SectionLayout>
-    </DefulatLayout>
+    </WriteLayout>
   );
 }
 

@@ -170,3 +170,11 @@ export const Textarea = ({ placeholder, numberOfLines }) => {
     </TextAreaContainer>
   );
 };
+
+export const ErrorsText = styled.Text`
+  color: #5182e5;
+  margin-top: 7px;
+  margin-left: 5px;
+  font-size: 13px;
+  letter-spacing: -0.5px;
+`;

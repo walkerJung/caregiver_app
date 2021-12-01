@@ -19,3 +19,26 @@ export const FIND_PASSWORD_QUERY = gql`
     }
   }
 `;
+
+export const CREATE_ACCOUNT_MUTATION = gql`
+  mutation createAccount(
+    $userId: String!
+    $userType: String!
+    $userName: String!
+    $password: String!
+    $sex: String!
+    $phone: String!
+  ) {
+    createAccount(
+      userId: $userId
+      userType: $userType
+      userName: $userName
+      password: $password
+      sex: $sex
+      phone: $phone
+    ) {
+      ok
+      error
+    }
+  }
+`;

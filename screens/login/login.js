@@ -92,7 +92,7 @@ export default function Login({ navigation }) {
         title="회원가입"
         line={true}
         onPress={() => {
-          Alert.alert("회원가입!");
+          navigation.navigate("MemberType");
         }}
       />
 
