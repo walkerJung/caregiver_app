@@ -2,10 +2,10 @@ import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
-
-// import IntroStack from "./introStack";
-// import LoginStack from "./loginStack";
 import AuthStack from "./authStack";
+import PatientMainStack from "./patientMainStack";
+import CaregiverMainStack from "./caregiverMainStack";
+import AppLoading from "expo-app-loading";
 
 // 인트로
 import Intro from "../screens/intro";
@@ -78,7 +78,8 @@ const TabStack = () => {
   );
 };
 
-export default function MainNavigation() {
+export default function MainNavigation({ isLoggedIn, userInfo }) {
+  console.log(isLoggedIn, userInfo);
   return (
     <NavigationContainer>
       <Stack.Navigator
@@ -97,8 +98,26 @@ export default function MainNavigation() {
         }}
         cardStyle={{ backgroundColor: "transparent" }}
       >
-        <Stack.Screen name="IntroScreen" component={Intro} />
-        <Stack.Screen name="LoginScreen" component={AuthStack} />
+        {isLoggedIn && userInfo ? (
+          <>
+            {JSON.parse(userInfo).userType === "환자" ? (
+              <Stack.Screen
+                name="PatientMainStack"
+                component={PatientMainStack}
+              />
+            ) : (
+              <Stack.Screen
+                name="CaregiverMainStack"
+                component={CaregiverMainStack}
+              />
+            )}
+          </>
+        ) : (
+          <>
+            <Stack.Screen name="IntroScreen" component={Intro} />
+            <Stack.Screen name="LoginScreen" component={AuthStack} />
+          </>
+        )}
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -33,7 +33,8 @@ import { useForm } from "react-hook-form";
 import { useMutation } from "@apollo/client";
 import { CREATE_ACCOUNT_MUTATION } from "../../query";
 import Postcode from "@actbase/react-daum-postcode";
-import * as ImagePicker from "expo-image-picker";
+// import * as ImagePicker from "expo-image-picker";
+// import { ReactNativeFile } from "apollo-upload-client";
 
 export default function CaregiverRegister({ navigation }) {
   const [idCard, setIdCard] = useState(null);
@@ -62,7 +63,7 @@ export default function CaregiverRegister({ navigation }) {
       createAccount: { ok },
     } = data;
     if (ok) {
-      Alert.alert("회원가입이 완료되었습니다. 감사합니다.");
+      Alert.alert("회원가입이 완료되었습니다.");
       navigation.navigate("Login");
     }
   };
@@ -76,12 +77,18 @@ export default function CaregiverRegister({ navigation }) {
 
   const onValid = async (data) => {
     if (!loading) {
-      if (!idCard) {
-        Alert.alert("신분증 사진을 첨부해주세요.");
-      }
-      if (!bankInfo) {
-        Alert.alert("통장사본 사진을 첨부해주세요.");
-      }
+      // const idCard = new ReactNativeFile({
+      //   uri: data.idCard,
+      //   name: data.userId + "_idCard",
+      //   type: "image/jpeg",
+      // });
+
+      // const bankInfo = new ReactNativeFile({
+      //   uri: data.bankInfo,
+      //   name: data.userId + "_bankInfo",
+      //   type: "image/jpeg",
+      // });
+
       try {
         await createAccountMutation({
           variables: {
@@ -91,6 +98,18 @@ export default function CaregiverRegister({ navigation }) {
             password: data.password,
             sex: data.sex,
             phone: data.phone,
+            residentNumber: data.resident_1 + data.resident_2,
+            // idCard,
+            // bankInfo,
+            smoke: data.smoke,
+            drink: data.drink,
+            mealCare: data.mealCare,
+            urineCare: data.urineCare,
+            suctionCare: data.suctionCare,
+            moveCare: data.moveCare,
+            bedCare: data.bedCare,
+            address: data.address,
+            addressDetail: data.addressDetail,
           },
         });
       } catch (e) {
@@ -106,7 +125,11 @@ export default function CaregiverRegister({ navigation }) {
     setValue("address", data.address), setModal("none");
   };
 
-  const pickImage = async (set) => {
+  const handleSelectBox = (set, value, setState) => {
+    setValue(set, value), setState(value);
+  };
+
+  const pickImage = async (set, value) => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
@@ -115,7 +138,7 @@ export default function CaregiverRegister({ navigation }) {
     });
 
     if (!result.cancelled) {
-      set(result.uri);
+      set(result.uri), setValue(value, result.uri);
     }
   };
 
@@ -164,6 +187,12 @@ export default function CaregiverRegister({ navigation }) {
     register("resident_2", {
       required: "* 주민등록번호 뒷자리를 입력해주세요.",
     });
+    // register("idCard", {
+    //   required: "* 신분증 사진을 입력해주세요.",
+    // });
+    // register("bankInfo", {
+    //   required: "* 통장사본 사진을 입력해주세요.",
+    // });
     register("mealCare", {
       required: "* 가능한 식사케어를 선택해주세요.",
     });
@@ -187,17 +216,17 @@ export default function CaregiverRegister({ navigation }) {
     });
   }, [register]);
 
-  useEffect(() => {
-    (async () => {
-      if (Platform.OS !== "web") {
-        const { status } =
-          await ImagePicker.requestMediaLibraryPermissionsAsync();
-        if (status !== "granted") {
-          alert("Sorry, we need camera roll permissions to make this work!");
-        }
-      }
-    })();
-  }, []);
+  // useEffect(() => {
+  //   (async () => {
+  //     if (Platform.OS !== "web") {
+  //       const { status } =
+  //         await ImagePicker.requestMediaLibraryPermissionsAsync();
+  //       if (status !== "granted") {
+  //         alert("Sorry, we need camera roll permissions to make this work!");
+  //       }
+  //     }
+  //   })();
+  // }, []);
 
   return (
     <WriteLayout>
@@ -402,13 +431,13 @@ export default function CaregiverRegister({ navigation }) {
           )}
         </FormBox>
 
-        <FormBox>
+        {/* <FormBox>
           <FormLabelBox>
             <FormLabel>신분증 사진</FormLabel>
           </FormLabelBox>
           <PhotoBox
             onPress={() => {
-              pickImage(setIdCard);
+              pickImage(setIdCard, "idCard");
             }}
           >
             {idCard ? (
@@ -421,15 +450,16 @@ export default function CaregiverRegister({ navigation }) {
               <Icon name="add-outline" size={23} style={{ color: "#979797" }} />
             )}
           </PhotoBox>
-        </FormBox>
+          {errors.idCard && <ErrorsText>{errors.idCard.message}</ErrorsText>}
+        </FormBox> */}
 
-        <FormBox>
+        {/* <FormBox>
           <FormLabelBox>
             <FormLabel>통장사본 사진</FormLabel>
           </FormLabelBox>
           <PhotoBox
             onPress={() => {
-              pickImage(setBankInfo);
+              pickImage(setBankInfo, "bankInfo");
             }}
           >
             {bankInfo ? (
@@ -442,7 +472,10 @@ export default function CaregiverRegister({ navigation }) {
               <Icon name="add-outline" size={23} style={{ color: "#979797" }} />
             )}
           </PhotoBox>
-        </FormBox>
+          {errors.bankInfo && (
+            <ErrorsText>{errors.bankInfo.message}</ErrorsText>
+          )}
+        </FormBox> */}
       </SectionLayout>
 
       <SectionLayout last>
@@ -463,7 +496,9 @@ export default function CaregiverRegister({ navigation }) {
               color: "#979797",
             }}
             value={selectMealText}
-            onValueChange={(value) => setSelectMealText(value)}
+            onValueChange={(value) =>
+              handleSelectBox("mealCare", value, setSelectMealText)
+            }
             items={[
               { label: "콧줄 식사케어 ", value: "콧줄 식사케어 " },
               { label: "뱃줄 식사케어", value: "뱃줄 식사케어" },
@@ -480,6 +515,9 @@ export default function CaregiverRegister({ navigation }) {
               iconContainer: { top: 20, right: 10 },
             }}
           />
+          {errors.mealCare && (
+            <ErrorsText>{errors.mealCare.message}</ErrorsText>
+          )}
         </FormBox>
 
         <FormBox>
@@ -494,7 +532,9 @@ export default function CaregiverRegister({ navigation }) {
               color: "#979797",
             }}
             value={selectUrineText}
-            onValueChange={(value) => setSelectUrineText(value)}
+            onValueChange={(value) =>
+              handleSelectBox("urineCare", value, setSelectUrineText)
+            }
             items={[
               { label: "소변주머니 케어", value: "소변주머니 케어" },
               { label: "장루 케어", value: "장루 케어" },
@@ -514,6 +554,9 @@ export default function CaregiverRegister({ navigation }) {
               iconContainer: { top: 20, right: 10 },
             }}
           />
+          {errors.urineCare && (
+            <ErrorsText>{errors.urineCare.message}</ErrorsText>
+          )}
         </FormBox>
 
         <FormBox>
@@ -528,7 +571,9 @@ export default function CaregiverRegister({ navigation }) {
               color: "#979797",
             }}
             value={selectSuctionText}
-            onValueChange={(value) => setSelectSuctionText(value)}
+            onValueChange={(value) =>
+              handleSelectBox("suctionCare", value, setSelectSuctionText)
+            }
             items={[
               { label: "목 석션", value: "목 석션" },
               { label: "코 석션", value: "코 석션" },
@@ -545,6 +590,9 @@ export default function CaregiverRegister({ navigation }) {
               iconContainer: { top: 20, right: 10 },
             }}
           />
+          {errors.suctionCare && (
+            <ErrorsText>{errors.suctionCare.message}</ErrorsText>
+          )}
         </FormBox>
 
         <FormBox>
@@ -559,7 +607,9 @@ export default function CaregiverRegister({ navigation }) {
               color: "#979797",
             }}
             value={selectMoveText}
-            onValueChange={(value) => setSelectMoveText(value)}
+            onValueChange={(value) =>
+              handleSelectBox("moveCare", value, setSelectMoveText)
+            }
             items={[
               { label: "휠체어 이동케어", value: "휠체어 이동케어" },
               { label: "지팡이 보행 이동케어", value: "지팡이 보행 이동케어" },
@@ -576,6 +626,9 @@ export default function CaregiverRegister({ navigation }) {
               iconContainer: { top: 20, right: 10 },
             }}
           />
+          {errors.moveCare && (
+            <ErrorsText>{errors.moveCare.message}</ErrorsText>
+          )}
         </FormBox>
 
         <FormBox>
@@ -590,7 +643,9 @@ export default function CaregiverRegister({ navigation }) {
               color: "#979797",
             }}
             value={selectBedText}
-            onValueChange={(value) => setSelectBedText(value)}
+            onValueChange={(value) =>
+              handleSelectBox("bedCare", value, setSelectBedText)
+            }
             items={[
               {
                 label: "침대에서 휠체어 이동케어",
@@ -610,6 +665,7 @@ export default function CaregiverRegister({ navigation }) {
               iconContainer: { top: 20, right: 10 },
             }}
           />
+          {errors.bedCare && <ErrorsText>{errors.bedCare.message}</ErrorsText>}
         </FormBox>
 
         <FormBox>

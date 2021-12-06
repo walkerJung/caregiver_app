@@ -1,25 +1,19 @@
 import AppLoading from "expo-app-loading";
 import React, { useState, useEffect } from "react";
-import { StatusBar } from "expo-status-bar";
-import styled from "styled-components/native";
 import { ApolloProvider, useReactiveVar } from "@apollo/client";
 import client, {
   isLoggedInVar,
   tokenVar,
   memberVar,
   checkFirstLaunch,
+  logUserOut,
 } from "./apollo";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import NavController from "./navigation/navController";
 
-const Container = styled.SafeAreaView`
-  flex: 1;
-  background-color: #f5f5f5;
-`;
-
 export default function App() {
   const isLoggedIn = useReactiveVar(isLoggedInVar);
-  const isMember = useReactiveVar(memberVar);
+  const userInfo = useReactiveVar(memberVar);
   const [loaded, setLoaded] = useState(false);
 
   const [ModalVisible, setModalVisible] = useState(false);
@@ -50,13 +44,12 @@ export default function App() {
 
   useEffect(() => {
     preLoad();
+    logUserOut();
   }, []);
 
   return loaded ? (
     <ApolloProvider client={client}>
-      {/* <Container> */}
-      <NavController />
-      {/* </Container> */}
+      <NavController isLoggedIn={isLoggedIn} userInfo={userInfo} />
     </ApolloProvider>
   ) : (
     <AppLoading />

@@ -19,8 +19,9 @@ import MainButton from "../../components/main/MainButton";
 import MainNotice from "./MainNotice";
 import MainSwiper from "./MainSwiper";
 import logo from "../../assets/img/main_logo.png";
+import { SafeAreaView } from "react-native-safe-area-context";
 
-export default function MainUser() {
+export default function PatientMain() {
   return (
     <DefaultLayout nestedScrollEnabled={true}>
       <MainHedaer>
@@ -65,13 +66,11 @@ export default function MainUser() {
 
       <NotiBox>
         <MainTitle>공지사항</MainTitle>
-        {/* 공지사항입니다. */}
         <MainNotice />
       </NotiBox>
 
       <SectionLayout last={true}>
         <MainTitle>케어코리아 홍보영상</MainTitle>
-        {/* 영상 슬라이드 배너입니다. */}
         <MainSwiper />
       </SectionLayout>
     </DefaultLayout>

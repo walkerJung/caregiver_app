@@ -1,6 +1,9 @@
 import React, { useRef, useEffect } from "react";
 import { Text, TouchableOpacity, Alert, Image, View } from "react-native";
 import { useForm } from "react-hook-form";
+import { LOGIN_MUTATION } from "../query";
+import { useMutation } from "@apollo/client";
+import { logUserIn } from "../../apollo";
 import {
   KeyboardAvoidingView,
   LoginTitle,
@@ -18,6 +21,7 @@ export default function Login({ navigation }) {
     register,
     handleSubmit,
     watch,
+    setValue,
     formState: { errors },
   } = useForm();
 
@@ -27,21 +31,43 @@ export default function Login({ navigation }) {
     nextOne?.current?.focus();
   };
 
+  const onCompleted = async (data) => {
+    const {
+      login: { ok, token, user },
+    } = data;
+
+    if (ok) {
+      await logUserIn(token, user);
+      if (user.userType == "환자") {
+        navigation.navigate("PatientMainStack");
+      } else {
+        navigation.navigate("CaregiverMainStack");
+      }
+    } else {
+      Alert.alert("로그인 할수 없습니다.\n아이디와 비밀번호를 확인해주세요.");
+    }
+  };
+
+  const [login, { loading }] = useMutation(LOGIN_MUTATION, {
+    onCompleted,
+  });
+
   const onValid = (data) => {
     if (!loading) {
       login({
         variables: {
-          ...data,
+          userId: data.userId,
+          password: data.password,
         },
       });
     }
   };
 
   useEffect(() => {
-    register("memberID", {
+    register("userId", {
       required: "* 아이디를 입력해주세요.",
     });
-    register("memberPassword", {
+    register("password", {
       required: "* 비밀번호를 입력해주세요.",
     });
   }, [register]);
@@ -56,37 +82,29 @@ export default function Login({ navigation }) {
       />
 
       <TextInput
-        value={watch("memberID")}
+        value={watch("userId")}
         placeholder="아이디"
         placeholderTextColor={"#979797"}
         returnKeyType="next"
         autoCapitalize="none"
         onSubmitEditing={() => onNext(passwordRef)}
-        // onChangeText={(text) => setValue("memberID", text)}
+        onChangeText={(text) => setValue("userId", text)}
       />
-      {errors.memberID && <ErrorsText>{errors.memberID.message}</ErrorsText>}
+      {errors.userId && <ErrorsText>{errors.userId.message}</ErrorsText>}
 
       <TextInput
-        value={watch("memberPassword")}
+        value={watch("password")}
         placeholder="비밀번호"
         ref={passwordRef}
         placeholderTextColor={"#979797"}
         returnKeyType="done"
         secureTextEntry
         onSubmitEditing={handleSubmit(onValid)}
-        // onChangeText={(text) => setValue("memberPassword", text)}
+        onChangeText={(text) => setValue("password", text)}
       />
-      {errors.memberPassword && (
-        <ErrorsText>{errors.memberPassword.message}</ErrorsText>
-      )}
+      {errors.password && <ErrorsText>{errors.password.message}</ErrorsText>}
 
-      <LoginBtn
-        title="로그인"
-        line={false}
-        onPress={() => {
-          Alert.alert("로그인!");
-        }}
-      />
+      <LoginBtn title="로그인" line={false} onPress={handleSubmit(onValid)} />
 
       <LoginBtn
         title="회원가입"
