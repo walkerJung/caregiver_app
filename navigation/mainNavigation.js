@@ -72,14 +72,13 @@ const Tab = createBottomTabNavigator();
 const TabStack = () => {
   return (
     <Tab.Navigator>
-      <Tab.Screen name="Home" component={HomeScreen} />
-      <Tab.Screen name="Settings" component={SettingsScreen} />
+      <Tab.Screen name="Home" />
+      <Tab.Screen name="Settings" />
     </Tab.Navigator>
   );
 };
 
 export default function MainNavigation({ isLoggedIn, userInfo }) {
-  console.log(isLoggedIn, userInfo);
   return (
     <NavigationContainer>
       <Stack.Navigator
@@ -101,15 +100,21 @@ export default function MainNavigation({ isLoggedIn, userInfo }) {
         {isLoggedIn && userInfo ? (
           <>
             {JSON.parse(userInfo).userType === "환자" ? (
-              <Stack.Screen
-                name="PatientMainStack"
-                component={PatientMainStack}
-              />
+              <>
+                <Stack.Screen name="TabStack" component={TabStack} />
+                <Stack.Screen
+                  name="PatientMainStack"
+                  component={PatientMainStack}
+                />
+              </>
             ) : (
-              <Stack.Screen
-                name="CaregiverMainStack"
-                component={CaregiverMainStack}
-              />
+              <>
+                <Stack.Screen name="TabStack" component={TabStack} />
+                <Stack.Screen
+                  name="CaregiverMainStack"
+                  component={CaregiverMainStack}
+                />
+              </>
             )}
           </>
         ) : (

@@ -6,13 +6,11 @@ import CareApplyForm from "../screens/CareApply/CareApplyForm";
 import Main from "../screens/Main";
 import CareList from "../screens/CareList";
 import MyPageIndex from "../screens/MyPageIndex";
-import { careTheme } from "../constants";
 import Icon from "react-native-vector-icons/Ionicon";
 
 const MainNav = createStackNavigator();
 const MainStack = createStackNavigator();
 const CareApplyStack = createStackNavigator();
-const CareBBB = createStackNavigator();
 const CareListStack = createStackNavigator();
 const MypageStack = createStackNavigator();
 
