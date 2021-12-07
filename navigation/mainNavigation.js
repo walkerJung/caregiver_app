@@ -101,7 +101,6 @@ export default function MainNavigation({ isLoggedIn, userInfo }) {
           <>
             {JSON.parse(userInfo).userType === "환자" ? (
               <>
-                <Stack.Screen name="TabStack" component={TabStack} />
                 <Stack.Screen
                   name="PatientMainStack"
                   component={PatientMainStack}
@@ -109,7 +108,6 @@ export default function MainNavigation({ isLoggedIn, userInfo }) {
               </>
             ) : (
               <>
-                <Stack.Screen name="TabStack" component={TabStack} />
                 <Stack.Screen
                   name="CaregiverMainStack"
                   component={CaregiverMainStack}
