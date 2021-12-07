@@ -35,14 +35,8 @@ export default function Login({ navigation }) {
     const {
       login: { ok, token, user },
     } = data;
-
     if (ok) {
       await logUserIn(token, user);
-      if (user.userType == "환자") {
-        navigation.navigate("PatientMainStack");
-      } else {
-        navigation.navigate("CaregiverMainStack");
-      }
     } else {
       Alert.alert("로그인 할수 없습니다.\n아이디와 비밀번호를 확인해주세요.");
     }

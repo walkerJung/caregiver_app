@@ -1,11 +1,11 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import AuthStack from "./authStack";
-import PatientMainStack from "./patientMainStack";
-import CaregiverMainStack from "./caregiverMainStack";
-import AppLoading from "expo-app-loading";
+import PatientMypageStack from "./patientMypageStack";
+// import PatientMainStack from "./patientMainStack";
+// import CaregiverMainStack from "./caregiverMainStack";
 
 // 인트로
 import Intro from "../screens/intro";
@@ -35,7 +35,8 @@ import ApplyListCaregiver from "../screens/apply/caregiver/ApplyList";
 import ApplyViewCaregiver from "../screens/apply/caregiver/ApplyView";
 
 // 유저 - 간병 내역
-import HistoryStackUser from "../navigation/HistoryStackUser"; // 간병내역 흐름
+import ProgressHistoryUser from "../screens/history/user/ProgressHistory";
+import CompleteHistoryUser from "../screens/history/user/CompleteHistory";
 import ApplicantList from "../screens/applicant/List"; //(간병인 선택 리스트입니다. 간병인이 희망간병비를 입력하면 유저에게 보여집니다.  )
 import ApplicantComplete from "../screens/applicant/Complete"; // 입금확인 화면
 
@@ -69,59 +70,68 @@ import NoneLayout from "../components/layout/NoneLayout";
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
-const TabStack = () => {
-  return (
-    <Tab.Navigator>
-      <Tab.Screen name="Home" />
-      <Tab.Screen name="Settings" />
-    </Tab.Navigator>
-  );
-};
-
 export default function MainNavigation({ isLoggedIn, userInfo }) {
   return (
     <NavigationContainer>
-      <Stack.Navigator
-        initialRouteName="IntroScreen"
-        screenOptions={{
-          headerShown: false,
-          gestureEnabled: false,
-          headerTintColor: "white",
-          headerBackTitleVisible: false,
-          headerStyle: {
-            borderBottomWidth: 1,
-            borderBottomColor: "#F0F0F0",
-            elevation: 0, //for android
-            shadowOpacity: 0, // for ios
-          },
-        }}
-        cardStyle={{ backgroundColor: "transparent" }}
-      >
-        {isLoggedIn && userInfo ? (
-          <>
-            {JSON.parse(userInfo).userType === "환자" ? (
-              <>
-                <Stack.Screen
-                  name="PatientMainStack"
-                  component={PatientMainStack}
-                />
-              </>
-            ) : (
-              <>
-                <Stack.Screen
-                  name="CaregiverMainStack"
-                  component={CaregiverMainStack}
-                />
-              </>
-            )}
-          </>
-        ) : (
-          <>
+      {isLoggedIn && userInfo ? (
+        <Tab.Navigator>
+          {JSON.parse(userInfo).userType === "환자" ? (
+            <>
+              <Tab.Screen
+                name="메인"
+                component={MainUser}
+                options={{ headerShown: false }}
+              />
+              <Tab.Screen
+                name="간병 신청"
+                component={ApplyForm}
+                options={{ headerShown: false }}
+              />
+              <Tab.Screen
+                name="간병 내역"
+                component={ProgressHistoryUser}
+                options={{ headerShown: false }}
+              />
+              <Tab.Screen
+                name="마이페이지"
+                component={PatientMypageStack}
+                options={{ headerShown: false }}
+              />
+            </>
+          ) : (
+            <>
+              <Tab.Screen
+                name="메인"
+                component={MainCaregiver}
+                options={{ headerShown: false }}
+              />
+              <Tab.Screen name="마이페이지" component={MypageCaregiver} />
+            </>
+          )}
+        </Tab.Navigator>
+      ) : (
+        <>
+          <Stack.Navigator
+            initialRouteName="IntroScreen"
+            screenOptions={{
+              headerShown: false,
+              gestureEnabled: false,
+              headerTintColor: "white",
+              headerBackTitleVisible: false,
+              headerStyle: {
+                borderBottomWidth: 1,
+                borderBottomColor: "#F0F0F0",
+                elevation: 0, //for android
+                shadowOpacity: 0, // for ios
+              },
+            }}
+            cardStyle={{ backgroundColor: "transparent" }}
+          >
             <Stack.Screen name="IntroScreen" component={Intro} />
             <Stack.Screen name="LoginScreen" component={AuthStack} />
-          </>
-        )}
-      </Stack.Navigator>
+          </Stack.Navigator>
+        </>
+      )}
     </NavigationContainer>
   );
 }
