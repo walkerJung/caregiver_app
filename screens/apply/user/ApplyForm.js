@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
   View,
   Text,
@@ -87,7 +87,7 @@ Number.prototype.zf = function (len) {
 };
 // datepicker 끝
 
-export default function ApplyForm() {
+export default function ApplyForm({ navigation }) {
   // datepicker 동작 시작
 
   // datepicker 시작일
@@ -124,6 +124,22 @@ export default function ApplyForm() {
     setSelectText(value);
   };
   // 셀렉트 박스 끝
+
+  const [title, setTitle] = useState();
+  const [startDate, setStartDate] = useState();
+  const [endDate, setEndDate] = useState();
+  const [address, setAddress] = useState();
+  const [addressDetail, setAddressDetail] = useState();
+  const [protectorName, setProtectorName] = useState();
+  const [protectorPhone, setProtectorPhone] = useState();
+  const [patientName, setPatientName] = useState();
+  const [patientAge, setPatientAge] = useState();
+  const [patientWeight, setPatientWeight] = useState();
+  const [disease, setDisease] = useState();
+  const [infectiousDisease, setInfectiousDisease] = useState();
+  const [isolation, setIsolation] = useState();
+  const [nursingGrade, setNursingGrade] = useState();
+
   return (
     <FormLayout>
       <SectionLayout>
@@ -132,7 +148,9 @@ export default function ApplyForm() {
           <FormInput
             placeholder="제목을 입력해주세요."
             returnKeyType="next"
-            // error={1 ? "에러메세지!" : null}
+            onChangeText={(text) => {
+              setTitle(text);
+            }}
           />
         </FormBox>
         <FormBox>

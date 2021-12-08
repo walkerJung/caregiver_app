@@ -12,7 +12,7 @@ import {
 } from "@fortawesome/pro-regular-svg-icons";
 import AuthStack from "./authStack";
 import PatientMypageStack from "./patientMypageStack";
-// import PatientMainStack from "./patientMainStack";
+import PatientMainStack from "./patientMainStack";
 // import CaregiverMainStack from "./caregiverMainStack";
 
 // 인트로
@@ -92,14 +92,14 @@ export default function MainNavigation({ isLoggedIn, userInfo }) {
             <>
               <Tab.Screen
                 name="메인"
-                component={MainUser}
+                component={PatientMainStack}
                 options={{ headerShown: false }}
               />
-              <Tab.Screen
+              {/* <Tab.Screen
                 name="간병 신청"
                 component={ApplyForm}
                 options={{ headerShown: false }}
-              />
+              /> */}
               <Tab.Screen
                 name="간병 내역"
                 component={ProgressHistoryUser}

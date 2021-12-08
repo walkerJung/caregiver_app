@@ -11,32 +11,44 @@ import {
 import { useReactiveVar } from "@apollo/client";
 import { memberVar } from "../../../apollo";
 import { logUserOut } from "../../../apollo";
+import { useQuery } from "@apollo/client";
+import { USER_DETAIL_QUERY } from "../../query";
 
 export default function MypageUser({ navigation }) {
   const userInfo = JSON.parse(useReactiveVar(memberVar));
+  const { data, loading } = useQuery(USER_DETAIL_QUERY, {
+    fetchPolicy: "network-only",
+    variables: {
+      code: userInfo.code,
+    },
+  });
   return (
-    <DefulatLayout>
-      <Container>
-        <MypageHeader>
-          <MypageHeaderTit>
-            {userInfo.userName}님,{"\n"}반갑습니다!
-          </MypageHeaderTit>
-        </MypageHeader>
+    <>
+      {!loading && (
+        <DefulatLayout>
+          <Container>
+            <MypageHeader>
+              <MypageHeaderTit>
+                {data.viewProfile.userName}님,{"\n"}반갑습니다!
+              </MypageHeaderTit>
+            </MypageHeader>
 
-        <>
-          <MypageList
-            title="내 정보 수정"
-            onPress={() => navigation.navigate("PatientMypageProfileStack")}
-          />
-          <MypageList
-            title="공지사항"
-            onPress={() => navigation.navigate("PatientMypageNoticeStack")}
-          />
-          <MypageList title="로그아웃" onPress={() => logUserOut()} />
-        </>
+            <>
+              <MypageList
+                title="내 정보 수정"
+                onPress={() => navigation.navigate("PatientMypageProfileStack")}
+              />
+              <MypageList
+                title="공지사항"
+                onPress={() => navigation.navigate("PatientMypageNoticeStack")}
+              />
+              <MypageList title="로그아웃" onPress={() => logUserOut()} />
+            </>
 
-        <Tell title="고객센터" number="1588-0000" />
-      </Container>
-    </DefulatLayout>
+            <Tell title="고객센터" number="1588-0000" />
+          </Container>
+        </DefulatLayout>
+      )}
+    </>
   );
 }
