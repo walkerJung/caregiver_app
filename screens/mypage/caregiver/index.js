@@ -20,7 +20,9 @@ export default function MypageCaregiver() {
         <>
           <MypageList
             title="내 정보 수정"
-            onPress={() => Alert.alert("내 정보 수정으로 이동")}
+            onPress={() => {
+              navigation.navigate("EditCaregiver");
+            }}
           />
           <MypageList
             title="공지사항"

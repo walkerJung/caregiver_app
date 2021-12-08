@@ -21,7 +21,7 @@ import MainNotice from "./MainNotice";
 import MainSwiper from "./MainSwiper";
 import logo from "../../assets/img/main_logo.png";
 
-export default function MainCaregiver() {
+export default function MainCaregiver({ navigation }) {
   return (
     <DefaultLayout nestedScrollEnabled={true}>
       <MainHedaer>
@@ -41,7 +41,10 @@ export default function MainCaregiver() {
         <BannerBtnBox style={styles.shadow}>
           <MainButton
             text="간병 서비스 지원"
-            onPress={() => Alert.alert("간병서비스 지원 탭으로 넘어갑니다.")}
+            onPress={() => {
+              navigation.navigate("CaregiverStack");
+            }}
+            // onPress={() => Alert.alert("간병서비스 지원 탭으로 넘어갑니다.")}
           />
         </BannerBtnBox>
         <MainBannerHd />

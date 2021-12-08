@@ -26,7 +26,9 @@ export default function EditCaregiver() {
           title="비밀번호"
           placeholder="비밀번호 변경"
           value="abcdefgpassword"
-          onPress={() => Alert.alert("비밀번호 변경 스크린으로 넘어갑니다.")}
+          onPress={() => {
+            navigation.navigate("EditPasswordCaregiver");
+          }}
           icon
           secureTextEntry
           password
@@ -40,7 +42,9 @@ export default function EditCaregiver() {
         <ListGo
           title="성별"
           value="남성"
-          onPress={() => Alert.alert("성별 변경 스크린으로 넘어갑니다.")}
+          onPress={() => {
+            navigation.navigate("EditGenderCaregiver");
+          }}
           icon
           last
         />
@@ -53,7 +57,9 @@ export default function EditCaregiver() {
         <ListGo
           title="실거주주소"
           value="부산광역시 강서구 녹산산단382로14번가길 10~29번지"
-          onPress={() => Alert.alert("주소 변경 스크린으로 넘어갑니다.")}
+          onPress={() => {
+            navigation.navigate("EditAddressCaregiver");
+          }}
           icon
           multiline
         />
@@ -64,6 +70,8 @@ export default function EditCaregiver() {
           disabled
           error="주민등록번호는 수정이 필요한 경우, 케어코리아에 문의주세요."
         />
+        <ListGo title="주민등록증 첨부" icon value="파일첨부" />
+        <ListGo title="통장사본 첨부" icon value="파일첨부" />
         <ListGo
           title="사전질문 변경"
           value="사전질문 변경하기"

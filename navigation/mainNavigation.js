@@ -78,7 +78,7 @@ const TabStack = () => {
   );
 };
 
-export default function MainNavigation({ isLoggedIn, userInfo }) {
+export default ({ isLoggedIn, userInfo }) => {
   return (
     <NavigationContainer>
       <Stack.Navigator
@@ -124,4 +124,4 @@ export default function MainNavigation({ isLoggedIn, userInfo }) {
       </Stack.Navigator>
     </NavigationContainer>
   );
-}
+};

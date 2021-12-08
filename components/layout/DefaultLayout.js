@@ -9,16 +9,14 @@ export default function DefulatLayout({
   return (
     <>
       <SafeAreaView edges={["left", "right"]} style={{ flex: 1 }}>
-        <View style={{ flex: 1 }}>
-          <ScrollView
-            nestedScrollEnabled={nestedScrollEnabled}
-            contentContainerStyle={{ flexGrow: 1 }}
-            scrollIndicatorInsets={{ right: 1 }}
-            refreshControl={refreshControl}
-          >
-            {children}
-          </ScrollView>
-        </View>
+        <ScrollView
+          nestedScrollEnabled={nestedScrollEnabled}
+          contentContainerStyle={{ flexGrow: 1 }}
+          scrollIndicatorInsets={{ right: 1 }}
+          refreshControl={refreshControl}
+        >
+          {children}
+        </ScrollView>
       </SafeAreaView>
     </>
   );
