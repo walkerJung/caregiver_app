@@ -82,3 +82,29 @@ export const LOGIN_MUTATION = gql`
     }
   }
 `;
+
+// 공지사항
+export const NOTICE_LIST_QUERY = gql`
+  query listNotice {
+    listNotice {
+      notices {
+        code
+        title
+        content
+        createdAt
+      }
+      count
+    }
+  }
+`;
+
+export const NOTICE_DETAIL_QUERY = gql`
+  query viewNotice($code: Int!) {
+    viewNotice(code: $code) {
+      code
+      title
+      content
+      createdAt
+    }
+  }
+`;

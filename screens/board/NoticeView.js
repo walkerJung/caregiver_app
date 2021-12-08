@@ -8,24 +8,38 @@ import {
   NotiViewBody,
 } from "../../components/form/ListStyle";
 import NotiLayout from "../../components/layout/NotiLayout";
+import { useQuery } from "@apollo/client";
+import { NOTICE_DETAIL_QUERY } from "../query";
+import moment from "moment";
 
-export default function NoticeView() {
+export default function NoticeView({ route }) {
+  const { code } = route.params;
+  const { data, loading } = useQuery(NOTICE_DETAIL_QUERY, {
+    variables: {
+      code,
+    },
+    fetchPolicy: "network-only",
+  });
+
   return (
-    <NotiLayout>
-      <NotiContainer>
-        <NotiViewHeader>
-          <NotiViewHeaderTit>공지사항이 들어갑니다.</NotiViewHeaderTit>
-          <NotiViewHeaderDate>2021.11.19</NotiViewHeaderDate>
-        </NotiViewHeader>
-        <NotiViewBody>
-          <Text>
-            안녕하세요! 여기는 공지사항입니다.{"\n"}내용이 여기에 들어갑니다!!
-            {"\n"}
-            이게 마지막 작업입니다......
-            {"\n"}
-          </Text>
-        </NotiViewBody>
-      </NotiContainer>
-    </NotiLayout>
+    <>
+      {!loading && (
+        <NotiLayout>
+          <NotiContainer>
+            <NotiViewHeader>
+              <NotiViewHeaderTit>{data?.viewNotice?.title}</NotiViewHeaderTit>
+              <NotiViewHeaderDate>
+                {moment(parseInt(data?.viewNotice?.createdAt)).format(
+                  "YYYY-MM-DD"
+                )}
+              </NotiViewHeaderDate>
+            </NotiViewHeader>
+            <NotiViewBody>
+              <Text>{data?.viewNotice?.content}</Text>
+            </NotiViewBody>
+          </NotiContainer>
+        </NotiLayout>
+      )}
+    </>
   );
 }
