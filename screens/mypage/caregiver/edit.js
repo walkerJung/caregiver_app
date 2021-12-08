@@ -1,15 +1,48 @@
-import React from "react";
-import { Alert, Text } from "react-native";
+import React, { useState } from "react";
 import SectionLayout from "../../../components/layout/SectionLayout";
-import { ListGo } from "../../../components/form/ListStyle";
+import Modal from "react-native-modal";
 import FormLayout from "../../../components/form/FormLayout";
 import DefaultLayout from "../../../components/layout/DefaultLayout";
+
+import { View, Alert, Text, TouchableOpacity, Dimensions } from "react-native";
+import { ListGo } from "../../../components/form/ListStyle";
+import { ListUpload } from "../../../components/form/UploadStyle";
+
 import {
   StepNum,
   StepTxt,
   StepTxtBox,
 } from "../../../components/join/JoinStyle";
-export default function EditCaregiver() {
+import { SafeAreaView } from "react-native-safe-area-context";
+import styled from "styled-components/native";
+
+const { width, height } = Dimensions.get("screen");
+
+export const GoModal = styled(Modal)`
+  display: flex;
+  flex: 1 0 auto;
+  justify-content: flex-end;
+  margin: 0;
+`;
+export const ModalPanel = styled.View`
+  display: flex;
+  background-color: #fff;
+`;
+export const ModalHeader = styled.View`
+  display: flex;
+  height: 50px;
+  justify-content: center;
+  background-color: #fff;
+`;
+export const ModalBody = styled.View`
+  display: flex;
+  background-color: #fff;
+`;
+export default function EditCaregiver({ navigation }) {
+  const [isModalVisible, setModalVisible] = useState(false);
+  const toggleModal = () => {
+    setModalVisible(!isModalVisible);
+  };
   return (
     <DefaultLayout>
       <SectionLayout>
@@ -70,11 +103,11 @@ export default function EditCaregiver() {
           disabled
           error="주민등록번호는 수정이 필요한 경우, 케어코리아에 문의주세요."
         />
-        <ListGo title="주민등록증 첨부" icon value="파일첨부" />
-        <ListGo title="통장사본 첨부" icon value="파일첨부" />
+        <ListUpload title="주민등록증" icon text="파일첨부" />
+        <ListUpload title="통장사본 첨부" icon text="파일첨부" />
         <ListGo
-          title="사전질문 변경"
-          value="사전질문 변경하기"
+          title="통장사본"
+          value="사진 업로드"
           onPress={() => Alert.alert("사전질문 변경 스크린으로 넘어갑니다.")}
           icon
           last

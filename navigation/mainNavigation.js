@@ -1,7 +1,15 @@
 import React from "react";
+import { View, Text } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import {
+  faBallot,
+  faCoffee,
+  faHome,
+  faUser,
+} from "@fortawesome/pro-regular-svg-icons";
 import AuthStack from "./authStack";
 import PatientMypageStack from "./patientMypageStack";
 // import PatientMainStack from "./patientMainStack";
@@ -55,6 +63,7 @@ import EditGenderUser from "../screens/mypage/user/genderEdit";
 import RecruitHome from "../screens/recruit"; //공고 자세히보기
 
 // 간병인 - 마이페이지
+import careglverMypageStack from "../navigation/careglverMypageStack"; // 마이페이지 stack
 import MypageCaregiver from "../screens/mypage/caregiver"; // 마이페이지 index
 import EditCaregiver from "../screens/mypage/caregiver/edit"; //수정 페이지
 import EditPasswordCaregiver from "../screens/mypage/caregiver/passwordEdit"; //비밀번호 변경
@@ -74,7 +83,11 @@ export default function MainNavigation({ isLoggedIn, userInfo }) {
   return (
     <NavigationContainer>
       {isLoggedIn && userInfo ? (
-        <Tab.Navigator>
+        <Tab.Navigator
+          options={{
+            tabBarShowLabel: false,
+          }}
+        >
           {JSON.parse(userInfo).userType === "환자" ? (
             <>
               <Tab.Screen
@@ -103,9 +116,51 @@ export default function MainNavigation({ isLoggedIn, userInfo }) {
               <Tab.Screen
                 name="메인"
                 component={MainCaregiver}
-                options={{ headerShown: false }}
+                options={{
+                  headerShown: false,
+                  tabBarIcon: ({ color, size }) => (
+                    <View>
+                      <FontAwesomeIcon icon={faHome} />
+                    </View>
+                  ),
+                }}
               />
-              <Tab.Screen name="마이페이지" component={MypageCaregiver} />
+              <Tab.Screen
+                name="간병인 전용"
+                component={ApplyForm}
+                options={{
+                  headerShown: false,
+                  tabBarIcon: ({ color, size }) => (
+                    <View>
+                      <FontAwesomeIcon icon={faHome} />
+                    </View>
+                  ),
+                }}
+              />
+              <Tab.Screen
+                name="간병 내역"
+                component={HistoryStackCaregiver}
+                options={{
+                  headerShown: false,
+                  tabBarIcon: ({ color, size }) => (
+                    <View>
+                      <FontAwesomeIcon icon={faBallot} />
+                    </View>
+                  ),
+                }}
+              />
+              <Tab.Screen
+                name="마이페이지"
+                component={careglverMypageStack}
+                options={{
+                  headerShown: false,
+                  tabBarIcon: ({ color, size }) => (
+                    <View>
+                      <FontAwesomeIcon icon={faUser} />
+                    </View>
+                  ),
+                }}
+              />
             </>
           )}
         </Tab.Navigator>
@@ -134,4 +189,4 @@ export default function MainNavigation({ isLoggedIn, userInfo }) {
       )}
     </NavigationContainer>
   );
-};
+}

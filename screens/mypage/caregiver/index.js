@@ -9,7 +9,7 @@ import {
   Tell,
 } from "../../../components/mypage/mypageStyle";
 
-export default function MypageCaregiver() {
+export default function MypageCaregiver({ navigation }) {
   return (
     <DefulatLayout>
       <Container>
