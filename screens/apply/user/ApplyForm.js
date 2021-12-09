@@ -7,6 +7,7 @@ import {
   StyleSheet,
   Alert,
 } from "react-native";
+import WriteLayout from "../../../components/layout/WriteLayout";
 import FormLayout from "../../../components/form/FormLayout";
 import SectionLayout from "../../../components/layout/SectionLayout";
 import {
@@ -28,8 +29,9 @@ import DateTimePickerModal from "react-native-modal-datetime-picker";
 import RNPickerSelect from "react-native-picker-select";
 import Icon from "react-native-vector-icons/Ionicons";
 import { careTheme } from "../../../contents";
+import { useForm } from "react-hook-form";
+import Postcode from "@actbase/react-daum-postcode";
 
-// datepicker 시작
 Date.prototype.format = function (f) {
   if (!this.valueOf()) return " ";
 
@@ -85,49 +87,127 @@ String.prototype.zf = function (len) {
 Number.prototype.zf = function (len) {
   return this.toString().zf(len);
 };
-// datepicker 끝
 
 export default function ApplyForm({ navigation }) {
-  // datepicker 동작 시작
-
-  // datepicker 시작일
-  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-  const [isTimePickerVisible, setTimePickerVisibility] = useState(false);
-  const [DateText, onChangeDate] = useState("");
-  const [TimeText, onChangeTime] = useState("");
-  const showDatePicker = () => {
-    setDatePickerVisibility(true);
+  const [isStartDatePickerVisible, setStartDatePickerVisibility] =
+    useState(false);
+  const [isEndDatePickerVisible, setEndDatePickerVisibility] = useState(false);
+  const [isStartTimePickerVisible, setStartTimePickerVisibility] =
+    useState(false);
+  const [isEndTimePickerVisible, setEndTimePickerVisibility] = useState(false);
+  const showDatePicker = (set) => {
+    set(true);
   };
-  const showTimePicker = () => {
-    setTimePickerVisibility(true);
+  const showTimePicker = (set) => {
+    set(true);
   };
   const hideDatePicker = () => {
-    setDatePickerVisibility(false);
+    setStartDatePickerVisibility(false);
+    setEndDatePickerVisibility(false);
   };
   const hideTimePicker = () => {
-    setTimePickerVisibility(false);
+    setStartTimePickerVisibility(false);
+    setEndTimePickerVisibility(false);
   };
 
-  const handleConfirm = (date) => {
+  const handleStartDate = (date) => {
     hideDatePicker();
-    onChangeDate(date.format("yyyy/MM/dd"));
+    setStartDate(date.format("yyyy/MM/dd"));
   };
-  const handleTimeConfirm = (date) => {
+  const handleEndDate = (date) => {
+    hideDatePicker();
+    setEndDate(date.format("yyyy/MM/dd"));
+  };
+  const handleStartTime = (date) => {
     hideTimePicker();
-    onChangeTime(date.format("HH:mm"));
+    setStartTime(date.format("HH:mm"));
   };
-  // datepicker 동작 끝
-
-  // 셀렉트 박스 시작
-  const [SelectText, setSelectText] = useState("");
-  const onChangeSelectText = (value) => {
-    setSelectText(value);
+  const handleEndTime = (date) => {
+    hideTimePicker();
+    setEndTime(date.format("HH:mm"));
   };
-  // 셀렉트 박스 끝
+  const handleSelectBox = (value, set) => {
+    set(value);
+  };
+  const handleAddress = (data) => {
+    setAddress(data.address), setModal("none");
+  };
 
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    getValues,
+    formState: { errors },
+    watch,
+  } = useForm();
+
+  const onValid = async (data) => {
+    console.log(data);
+    // try {
+
+    // } catch (e) {
+    //   console.log(e);
+    // }
+  };
+
+  useEffect(() => {
+    register("title", {
+      required: "* 제목을 입력해주세요.",
+    });
+    register("startDate", {
+      required: "* 간병 시작일을 선택해주세요.",
+    });
+    register("startTime", {
+      required: "* 시작 시간을 선택해주세요.",
+    });
+    register("endDate", {
+      required: "* 간병 종료일을 선택해주세요.",
+    });
+    register("endTime", {
+      required: "* 종료 시간을 선택해주세요.",
+    });
+    register("address", {
+      required: "* 주소를 입력해주세요.",
+    });
+    register("addressDetail", {
+      required: "* 상세주소를 입력해주세요.",
+    });
+    register("protectorName", {
+      required: "* 보호자 성함을 입력해주세요.",
+    });
+    register("protectorPhone", {
+      required: "* 보호자 연락처를 입력해주세요.",
+    });
+    register("patientName", {
+      required: "* 환자 성함을 입력해주세요.",
+    });
+    register("patientAge", {
+      required: "* 환자 나이를 입력해주세요.",
+    });
+    register("patientWeight", {
+      required: "* 환자 몸무게를 입력해주세요.",
+    });
+    register("disease", {
+      required: "* 진단상병을 입력해주세요.",
+    });
+    register("infectiousDisease", {
+      required: "* 전염성 질환 여부를 선택해주세요.",
+    });
+    register("isolation", {
+      required: "* 격리병동 여부를 선택해주세요.",
+    });
+    register("nursingGrade", {
+      required: "* 장기요양 등급을 선택해주세요.",
+    });
+  }, [register]);
+
+  const [isModal, setModal] = useState("none");
   const [title, setTitle] = useState();
   const [startDate, setStartDate] = useState();
   const [endDate, setEndDate] = useState();
+  const [startTime, setStartTime] = useState();
+  const [endTime, setEndTime] = useState();
   const [address, setAddress] = useState();
   const [addressDetail, setAddressDetail] = useState();
   const [protectorName, setProtectorName] = useState();
@@ -149,9 +229,11 @@ export default function ApplyForm({ navigation }) {
             placeholder="제목을 입력해주세요."
             returnKeyType="next"
             onChangeText={(text) => {
-              setTitle(text);
+              setValue("title", text);
             }}
+            value={getValues("title")}
           />
+          {errors.title && <ErrorsText>{errors.title.message}</ErrorsText>}
         </FormBox>
         <FormBox>
           <FormLabel>간병 기간을 선택해주세요.</FormLabel>
@@ -161,15 +243,17 @@ export default function ApplyForm({ navigation }) {
             <LeftBtnBox>
               <TouchableOpacity
                 activeOpacity={1}
-                onPress={showDatePicker}
+                onPress={() => {
+                  showDatePicker(setStartDatePickerVisibility);
+                }}
                 style={{ position: "relative" }}
               >
                 <FormInput
                   pointerEvents="none"
-                  placeholder="간병 시작일"
                   underlineColorAndroid="transparent"
                   editable={false}
-                  value={DateText}
+                  placeholder="간병 시작일 선택"
+                  value={startDate}
                 />
                 <Icon
                   name="today"
@@ -182,25 +266,30 @@ export default function ApplyForm({ navigation }) {
                   headerTextIOS="간병 시작일"
                   confirmTextIOS="확인"
                   cancelTextIOS="취소"
-                  isVisible={isDatePickerVisible}
+                  isVisible={isStartDatePickerVisible}
                   mode="date"
-                  onConfirm={handleConfirm}
+                  onConfirm={handleStartDate}
                   onCancel={hideDatePicker}
                 />
               </TouchableOpacity>
+              {errors.startDate && (
+                <ErrorsText>{errors.startDate.message}</ErrorsText>
+              )}
             </LeftBtnBox>
             <RightBtnBox>
               <TouchableOpacity
                 activeOpacity={1}
-                onPress={showTimePicker}
+                onPress={() => {
+                  showTimePicker(setStartTimePickerVisibility);
+                }}
                 style={{ position: "relative" }}
               >
                 <FormInput
                   pointerEvents="none"
-                  placeholder="00:00"
+                  placeholder="시간"
                   underlineColorAndroid="transparent"
                   editable={false}
-                  value={TimeText}
+                  value={startTime}
                 />
                 <Icon
                   name="time"
@@ -213,12 +302,15 @@ export default function ApplyForm({ navigation }) {
                   headerTextIOS="간병 시작일"
                   confirmTextIOS="확인"
                   cancelTextIOS="취소"
-                  isVisible={isTimePickerVisible}
+                  isVisible={isStartTimePickerVisible}
                   mode="time"
-                  onConfirm={handleTimeConfirm}
+                  onConfirm={handleStartTime}
                   onCancel={hideTimePicker}
                 />
               </TouchableOpacity>
+              {errors.startTime && (
+                <ErrorsText>{errors.startTime.message}</ErrorsText>
+              )}
             </RightBtnBox>
           </FlexRow>
           {/* 간병시작일 끝 */}
@@ -228,15 +320,17 @@ export default function ApplyForm({ navigation }) {
             <LeftBtnBox>
               <TouchableOpacity
                 activeOpacity={1}
-                onPress={showDatePicker}
+                onPress={() => {
+                  showDatePicker(setEndDatePickerVisibility);
+                }}
                 style={{ position: "relative" }}
               >
                 <FormInput
                   pointerEvents="none"
-                  placeholder="간병 종료일"
+                  value={endDate}
+                  placeholder="간병 종료일 선택"
                   underlineColorAndroid="transparent"
                   editable={false}
-                  value={DateText}
                 />
                 <Icon
                   name="today"
@@ -249,25 +343,30 @@ export default function ApplyForm({ navigation }) {
                   headerTextIOS="간병 종료일"
                   confirmTextIOS="확인"
                   cancelTextIOS="취소"
-                  isVisible={isDatePickerVisible}
+                  isVisible={isEndDatePickerVisible}
                   mode="date"
-                  onConfirm={handleConfirm}
+                  onConfirm={handleEndDate}
                   onCancel={hideDatePicker}
                 />
               </TouchableOpacity>
+              {errors.endDate && (
+                <ErrorsText>{errors.endDate.message}</ErrorsText>
+              )}
             </LeftBtnBox>
             <RightBtnBox>
               <TouchableOpacity
                 activeOpacity={1}
-                onPress={showTimePicker}
+                onPress={() => {
+                  showTimePicker(setEndTimePickerVisibility);
+                }}
                 style={{ position: "relative" }}
               >
                 <FormInput
                   pointerEvents="none"
-                  placeholder="00:00"
+                  placeholder="시간"
                   underlineColorAndroid="transparent"
                   editable={false}
-                  value={TimeText}
+                  value={endTime}
                 />
                 <Icon
                   name="time"
@@ -277,15 +376,18 @@ export default function ApplyForm({ navigation }) {
                 />
                 <DateTimePickerModal
                   locale="Ko"
-                  headerTextIOS="간병 시작일"
+                  headerTextIOS="간병 종료일"
                   confirmTextIOS="확인"
                   cancelTextIOS="취소"
-                  isVisible={isTimePickerVisible}
+                  isVisible={isEndTimePickerVisible}
                   mode="time"
-                  onConfirm={handleTimeConfirm}
+                  onConfirm={handleEndTime}
                   onCancel={hideTimePicker}
                 />
               </TouchableOpacity>
+              {errors.endTime && (
+                <ErrorsText>{errors.endTime.message}</ErrorsText>
+              )}
             </RightBtnBox>
           </FlexRow>
         </FormBox>
@@ -296,25 +398,22 @@ export default function ApplyForm({ navigation }) {
             <LeftBtnBox>
               <TouchableOpacity
                 activeOpacity={0.8}
-                onPress={() =>
-                  Alert.alert("여길 누르면 주소 창 검색이 뜹니다!")
-                }
+                onPress={() => setModal("block")}
               >
                 <SearchInput
                   placeholder="주소를 입력해주세요."
                   placeholderTextColor={"#676767"}
                   keyboardType="default"
+                  value={address}
                   editable={false}
                 />
               </TouchableOpacity>
+              {errors.address && (
+                <ErrorsText>{errors.address.message}</ErrorsText>
+              )}
             </LeftBtnBox>
             <RightBtnBox>
-              <SearchBtn
-                activeOpacity={0.8}
-                onPress={() =>
-                  Alert.alert("여기도 누르면 주소 창 검색이 뜹니다!")
-                }
-              >
+              <SearchBtn activeOpacity={0.8} onPress={() => setModal("block")}>
                 <Text
                   style={{
                     fontSize: 14,
@@ -327,13 +426,23 @@ export default function ApplyForm({ navigation }) {
               </SearchBtn>
             </RightBtnBox>
           </FlexRow>
-
-          {/* 상세주소 입력하는 input */}
+          <Postcode
+            style={{ width: 320, height: 320, display: isModal }}
+            jsOptions={{ animation: true }}
+            onSelected={(data) => handleAddress(data)}
+          />
           <FormInput
             placeholder="상세주소"
             placeholderTextColor={"#979797"}
             keyboardType="default"
+            onChangeText={(text) => {
+              setValue("addressDetail", text);
+            }}
+            value={getValues("addressDetail")}
           />
+          {errors.addressDetail && (
+            <ErrorsText>{errors.addressDetail.message}</ErrorsText>
+          )}
         </FormBox>
       </SectionLayout>
 
@@ -345,7 +454,13 @@ export default function ApplyForm({ navigation }) {
             placeholder="성함"
             placeholderTextColor={"#979797"}
             returnKeyType="next"
+            onChangeText={(text) => {
+              setProtectorName(text);
+            }}
           />
+          {errors.protectorName && (
+            <ErrorsText>{errors.protectorName.message}</ErrorsText>
+          )}
         </FormBox>
 
         <FormBox last={true}>
@@ -355,7 +470,13 @@ export default function ApplyForm({ navigation }) {
             placeholderTextColor={"#979797"}
             returnKeyType="next"
             keyboardType="numbers-and-punctuation"
+            onChangeText={(text) => {
+              setProtectorPhone(text);
+            }}
           />
+          {errors.protectorPhone && (
+            <ErrorsText>{errors.protectorPhone.message}</ErrorsText>
+          )}
         </FormBox>
       </SectionLayout>
 
@@ -367,7 +488,13 @@ export default function ApplyForm({ navigation }) {
             placeholder="성함"
             placeholderTextColor={"#979797"}
             returnKeyType="next"
+            onChangeText={(text) => {
+              setPatientName(text);
+            }}
           />
+          {errors.patientName && (
+            <ErrorsText>{errors.patientName.message}</ErrorsText>
+          )}
         </FormBox>
 
         <FormBox>
@@ -379,7 +506,13 @@ export default function ApplyForm({ navigation }) {
             keyboardType="numbers-and-punctuation"
             maxLength={3}
             text="세"
+            onChangeText={(text) => {
+              setPatientAge(text);
+            }}
           />
+          {errors.patientAge && (
+            <ErrorsText>{errors.patientAge.message}</ErrorsText>
+          )}
         </FormBox>
 
         <FormBox>
@@ -391,7 +524,13 @@ export default function ApplyForm({ navigation }) {
             keyboardType="numbers-and-punctuation"
             maxLength={3}
             text="kg"
+            onChangeText={(text) => {
+              setPatientWeight(text);
+            }}
           />
+          {errors.patientWeight && (
+            <ErrorsText>{errors.patientWeight.message}</ErrorsText>
+          )}
         </FormBox>
 
         <FormBox>
@@ -400,7 +539,11 @@ export default function ApplyForm({ navigation }) {
             placeholder="진단상명을 입력해주세요."
             placeholderTextColor={"#979797"}
             returnKeyType="next"
+            onChangeText={(text) => {
+              setDisease(text);
+            }}
           />
+          {errors.disease && <ErrorsText>{errors.disease.message}</ErrorsText>}
         </FormBox>
 
         <FormBox>
@@ -409,11 +552,13 @@ export default function ApplyForm({ navigation }) {
             useNativeAndroidPickerStyle={false}
             fixAndroidTouchableBug={true}
             placeholder={{
-              label: "카테고리를 선택해주세요.",
+              label: "전염성 질환 여부를 선택해주세요.",
               color: "#979797",
             }}
-            value={SelectText}
-            onValueChange={(value) => onChangeSelectText(value)}
+            value={infectiousDisease}
+            onValueChange={(value) =>
+              handleSelectBox(value, setInfectiousDisease)
+            }
             items={[
               { label: "예", value: "예" },
               { label: "아니오", value: "아니오" },
@@ -429,6 +574,9 @@ export default function ApplyForm({ navigation }) {
               iconContainer: { top: 20, right: 10 },
             }}
           />
+          {errors.infectiousDisease && (
+            <ErrorsText>{errors.infectiousDisease.message}</ErrorsText>
+          )}
         </FormBox>
 
         <FormBox>
@@ -437,11 +585,11 @@ export default function ApplyForm({ navigation }) {
             useNativeAndroidPickerStyle={false}
             fixAndroidTouchableBug={true}
             placeholder={{
-              label: "카테고리를 선택해주세요.",
+              label: "격리병동 혹은 폐쇄병동 여부를 선택해주세요.",
               color: "#979797",
             }}
-            value={SelectText}
-            onValueChange={(value) => onChangeSelectText(value)}
+            value={isolation}
+            onValueChange={(value) => handleSelectBox(value, setIsolation)}
             items={[
               { label: "예", value: "예" },
               { label: "아니오", value: "아니오" },
@@ -457,6 +605,9 @@ export default function ApplyForm({ navigation }) {
               iconContainer: { top: 20, right: 10 },
             }}
           />
+          {errors.isolation && (
+            <ErrorsText>{errors.isolation.message}</ErrorsText>
+          )}
         </FormBox>
 
         <FormBox>
@@ -465,11 +616,11 @@ export default function ApplyForm({ navigation }) {
             useNativeAndroidPickerStyle={false}
             fixAndroidTouchableBug={true}
             placeholder={{
-              label: "카테고리를 선택해주세요.",
+              label: "장기요양등급을 선택해주세요.",
               color: "#979797",
             }}
-            value={SelectText}
-            onValueChange={(value) => onChangeSelectText(value)}
+            value={nursingGrade}
+            onValueChange={(value) => handleSelectBox(value, setNursingGrade)}
             items={[
               { label: "1등급", value: "1등급" },
               { label: "2등급", value: "2등급" },
@@ -488,9 +639,12 @@ export default function ApplyForm({ navigation }) {
               iconContainer: { top: 20, right: 10 },
             }}
           />
+          {errors.nursingGrade && (
+            <ErrorsText>{errors.nursingGrade.message}</ErrorsText>
+          )}
         </FormBox>
 
-        <SubmitBtn text="다음" disabled={false} />
+        <SubmitBtn text="다음" onPress={handleSubmit(onValid)} />
       </SectionLayout>
     </FormLayout>
   );

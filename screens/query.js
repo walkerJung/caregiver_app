@@ -100,6 +100,8 @@ export const WRITE_ANNOUNCEMENT_MUTATION = gql`
     $title: String!
     $startDate: String!
     $endDate: String!
+    $startTime: String!
+    $endTime: String!
     $protectorName: String!
     $protectorPhone: String!
     $patientName: String!
@@ -124,6 +126,8 @@ export const WRITE_ANNOUNCEMENT_MUTATION = gql`
       title: $title
       startDate: $startDate
       endDate: $endDate
+      startTime: $startTime
+      endTime: $endTime
       protectorName: $protectorName
       protectorPhone: $protectorPhone
       patientName: $patientName

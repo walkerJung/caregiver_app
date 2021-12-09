@@ -23,9 +23,9 @@ export default function FormLayout({ children }) {
             contentContainerStyle={{ flexGrow: 1 }}
             scrollIndicatorInsets={{ right: 1 }}
           >
-            {/* <TouchableWithoutFeedback onPress={Keyboard.dismiss()}> */}
-            <View style={{ flex: 1 }}>{children}</View>
-            {/* </TouchableWithoutFeedback> */}
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss()}>
+              <View style={{ flex: 1 }}>{children}</View>
+            </TouchableWithoutFeedback>
           </ScrollView>
         </KeyboardAvoidingView>
       </SafeAreaView>

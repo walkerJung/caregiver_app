@@ -94,6 +94,7 @@ export const FormInput = ({
   text,
   error,
   editable,
+  value,
 }) => {
   const InputBox = styled.View`
     flex: 1;
@@ -129,7 +130,6 @@ export const FormInput = ({
     color: ${careTheme.COLORS.ERROR};
     margin-bottom: 10px;
   `;
-
   return (
     <>
       <FlexRow>
@@ -140,8 +140,8 @@ export const FormInput = ({
             returnKeyType={returnKeyType}
             keyboardType={keyboardType}
             maxLength={maxLength}
-            onSubmitEditing={onSubmitEditing}
             onChangeText={onChangeText}
+            onSubmitEditing={onSubmitEditing}
             error={error}
             editable={editable}
           />
