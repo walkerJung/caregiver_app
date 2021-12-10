@@ -7,7 +7,6 @@ import {
   StyleSheet,
   Alert,
 } from "react-native";
-import WriteLayout from "../../../components/layout/WriteLayout";
 import FormLayout from "../../../components/form/FormLayout";
 import SectionLayout from "../../../components/layout/SectionLayout";
 import {
@@ -112,25 +111,25 @@ export default function ApplyForm({ navigation }) {
 
   const handleStartDate = (date) => {
     hideDatePicker();
-    setStartDate(date.format("yyyy/MM/dd"));
+    setValue("startDate", date.format("yyyy/MM/dd"));
   };
   const handleEndDate = (date) => {
     hideDatePicker();
-    setEndDate(date.format("yyyy/MM/dd"));
+    setValue("endDate", date.format("yyyy/MM/dd"));
   };
   const handleStartTime = (date) => {
     hideTimePicker();
-    setStartTime(date.format("HH:mm"));
+    setValue("startTime", date.format("HH:mm"));
   };
   const handleEndTime = (date) => {
     hideTimePicker();
-    setEndTime(date.format("HH:mm"));
+    setValue("endTime", date.format("HH:mm"));
   };
-  const handleSelectBox = (value, set) => {
-    set(value);
+  const handleSelectBox = (set, value) => {
+    setValue(set, value);
   };
   const handleAddress = (data) => {
-    setAddress(data.address), setModal("none");
+    setValue("address", data.address), setModal("none");
   };
 
   const {
@@ -143,12 +142,7 @@ export default function ApplyForm({ navigation }) {
   } = useForm();
 
   const onValid = async (data) => {
-    console.log(data);
-    // try {
-
-    // } catch (e) {
-    //   console.log(e);
-    // }
+    navigation.navigate("ApplyFormDetail", { data });
   };
 
   useEffect(() => {
@@ -203,22 +197,6 @@ export default function ApplyForm({ navigation }) {
   }, [register]);
 
   const [isModal, setModal] = useState("none");
-  const [title, setTitle] = useState();
-  const [startDate, setStartDate] = useState();
-  const [endDate, setEndDate] = useState();
-  const [startTime, setStartTime] = useState();
-  const [endTime, setEndTime] = useState();
-  const [address, setAddress] = useState();
-  const [addressDetail, setAddressDetail] = useState();
-  const [protectorName, setProtectorName] = useState();
-  const [protectorPhone, setProtectorPhone] = useState();
-  const [patientName, setPatientName] = useState();
-  const [patientAge, setPatientAge] = useState();
-  const [patientWeight, setPatientWeight] = useState();
-  const [disease, setDisease] = useState();
-  const [infectiousDisease, setInfectiousDisease] = useState();
-  const [isolation, setIsolation] = useState();
-  const [nursingGrade, setNursingGrade] = useState();
 
   return (
     <FormLayout>
@@ -253,7 +231,7 @@ export default function ApplyForm({ navigation }) {
                   underlineColorAndroid="transparent"
                   editable={false}
                   placeholder="간병 시작일 선택"
-                  value={startDate}
+                  value={getValues("startDate")}
                 />
                 <Icon
                   name="today"
@@ -289,7 +267,7 @@ export default function ApplyForm({ navigation }) {
                   placeholder="시간"
                   underlineColorAndroid="transparent"
                   editable={false}
-                  value={startTime}
+                  value={getValues("startTime")}
                 />
                 <Icon
                   name="time"
@@ -327,7 +305,7 @@ export default function ApplyForm({ navigation }) {
               >
                 <FormInput
                   pointerEvents="none"
-                  value={endDate}
+                  value={getValues("endDate")}
                   placeholder="간병 종료일 선택"
                   underlineColorAndroid="transparent"
                   editable={false}
@@ -366,7 +344,7 @@ export default function ApplyForm({ navigation }) {
                   placeholder="시간"
                   underlineColorAndroid="transparent"
                   editable={false}
-                  value={endTime}
+                  value={getValues("endTime")}
                 />
                 <Icon
                   name="time"
@@ -404,7 +382,7 @@ export default function ApplyForm({ navigation }) {
                   placeholder="주소를 입력해주세요."
                   placeholderTextColor={"#676767"}
                   keyboardType="default"
-                  value={address}
+                  value={getValues("address")}
                   editable={false}
                 />
               </TouchableOpacity>
@@ -455,8 +433,9 @@ export default function ApplyForm({ navigation }) {
             placeholderTextColor={"#979797"}
             returnKeyType="next"
             onChangeText={(text) => {
-              setProtectorName(text);
+              setValue("protectorName", text);
             }}
+            value={getValues("protectorName")}
           />
           {errors.protectorName && (
             <ErrorsText>{errors.protectorName.message}</ErrorsText>
@@ -471,8 +450,9 @@ export default function ApplyForm({ navigation }) {
             returnKeyType="next"
             keyboardType="numbers-and-punctuation"
             onChangeText={(text) => {
-              setProtectorPhone(text);
+              setValue("protectorPhone", text);
             }}
+            value={getValues("protectorPhone")}
           />
           {errors.protectorPhone && (
             <ErrorsText>{errors.protectorPhone.message}</ErrorsText>
@@ -489,8 +469,9 @@ export default function ApplyForm({ navigation }) {
             placeholderTextColor={"#979797"}
             returnKeyType="next"
             onChangeText={(text) => {
-              setPatientName(text);
+              setValue("patientName", text);
             }}
+            value={getValues("patientName")}
           />
           {errors.patientName && (
             <ErrorsText>{errors.patientName.message}</ErrorsText>
@@ -507,8 +488,9 @@ export default function ApplyForm({ navigation }) {
             maxLength={3}
             text="세"
             onChangeText={(text) => {
-              setPatientAge(text);
+              setValue("patientAge", text);
             }}
+            value={getValues("patientAge")}
           />
           {errors.patientAge && (
             <ErrorsText>{errors.patientAge.message}</ErrorsText>
@@ -525,8 +507,9 @@ export default function ApplyForm({ navigation }) {
             maxLength={3}
             text="kg"
             onChangeText={(text) => {
-              setPatientWeight(text);
+              setValue("patientWeight", text);
             }}
+            value={getValues("patientWeight")}
           />
           {errors.patientWeight && (
             <ErrorsText>{errors.patientWeight.message}</ErrorsText>
@@ -540,8 +523,9 @@ export default function ApplyForm({ navigation }) {
             placeholderTextColor={"#979797"}
             returnKeyType="next"
             onChangeText={(text) => {
-              setDisease(text);
+              setValue("disease", text);
             }}
+            value={getValues("disease")}
           />
           {errors.disease && <ErrorsText>{errors.disease.message}</ErrorsText>}
         </FormBox>
@@ -555,9 +539,9 @@ export default function ApplyForm({ navigation }) {
               label: "전염성 질환 여부를 선택해주세요.",
               color: "#979797",
             }}
-            value={infectiousDisease}
+            value={getValues("infectiousDisease")}
             onValueChange={(value) =>
-              handleSelectBox(value, setInfectiousDisease)
+              handleSelectBox("infectiousDisease", value)
             }
             items={[
               { label: "예", value: "예" },
@@ -588,8 +572,8 @@ export default function ApplyForm({ navigation }) {
               label: "격리병동 혹은 폐쇄병동 여부를 선택해주세요.",
               color: "#979797",
             }}
-            value={isolation}
-            onValueChange={(value) => handleSelectBox(value, setIsolation)}
+            value={getValues("isolation")}
+            onValueChange={(value) => handleSelectBox("isolation", value)}
             items={[
               { label: "예", value: "예" },
               { label: "아니오", value: "아니오" },
@@ -619,8 +603,8 @@ export default function ApplyForm({ navigation }) {
               label: "장기요양등급을 선택해주세요.",
               color: "#979797",
             }}
-            value={nursingGrade}
-            onValueChange={(value) => handleSelectBox(value, setNursingGrade)}
+            value={getValues("nursingGrade")}
+            onValueChange={(value) => handleSelectBox("nursingGrade", value)}
             items={[
               { label: "1등급", value: "1등급" },
               { label: "2등급", value: "2등급" },

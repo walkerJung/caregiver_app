@@ -13,6 +13,7 @@ import {
 import AuthStack from "./authStack";
 import PatientMypageStack from "./patientMypageStack";
 import PatientMainStack from "./patientMainStack";
+import PatientCaregiveServiceStack from "./patientCaregiveServiceStack";
 // import CaregiverMainStack from "./caregiverMainStack";
 
 // 인트로
@@ -101,8 +102,8 @@ export default function MainNavigation({ isLoggedIn, userInfo }) {
                 options={{ headerShown: false }}
               /> */}
               <Tab.Screen
-                name="간병 내역"
-                component={ProgressHistoryUser}
+                name="간병 서비스"
+                component={PatientCaregiveServiceStack}
                 options={{ headerShown: false }}
               />
               <Tab.Screen

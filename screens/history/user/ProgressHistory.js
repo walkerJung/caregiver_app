@@ -14,14 +14,21 @@ import {
 import Item from "../../../components/history/user/ProgressHistoryItem";
 import Toast from "react-native-easy-toast";
 import NoneLayout from "../../../components/layout/NoneLayout";
+import { useReactiveVar } from "@apollo/client";
+import { memberVar } from "../../../apollo";
+import { useQuery } from "@apollo/client";
+import { ANNOUNCEMENT_LIST_QUERY } from "../../query";
+import moment from "moment";
+import { NavigationContainer } from "@react-navigation/native";
 
-//timeout의 시간만큼 함수를 지연하고 처리하는 함수 생성
-const wait = (timeout) => {
-  return new Promise((resolve) => {
-    setTimeout(resolve, timeout);
-  });
-};
-export default function ProgressHistoryUser() {
+export default function ProgressHistoryUser({ navigation }) {
+  //timeout의 시간만큼 함수를 지연하고 처리하는 함수 생성
+  const wait = (timeout) => {
+    return new Promise((resolve) => {
+      setTimeout(resolve, timeout);
+    });
+  };
+
   // Toast 메세지 출력
   const toastRef = useRef();
   const showCopyToast = useCallback(() => {
@@ -43,12 +50,14 @@ export default function ProgressHistoryUser() {
     wait(1000).then(() => setRefreshing(false));
   }, []);
 
-  const data = [
-    { key: 0, status: 0 },
-    { key: 1, status: 1 },
-    { key: 2, status: 2 },
-    { key: 3, status: 3 },
-  ];
+  const userInfo = JSON.parse(useReactiveVar(memberVar));
+  const { data, loading } = useQuery(ANNOUNCEMENT_LIST_QUERY, {
+    fetchPolicy: "network-only",
+    variables: {
+      userCode: userInfo.code,
+    },
+  });
+
   return (
     <>
       <ScrollView
@@ -57,17 +66,24 @@ export default function ProgressHistoryUser() {
         }
       >
         <Container>
-          {data.map((item) => (
-            <Item
-              key="item.key"
-              item={item}
-              onPress={() => Alert.alert("각 공고로 이동합니다.")}
-              copyToClipboard={copyToClipboard}
-            />
-          ))}
-
-          {/* 등록된 내역이 없으면 nonelayout이 나옵니다. */}
-          {/* <NoneLayout /> */}
+          {!loading && data?.listAnnouncement?.announcements ? (
+            data?.listAnnouncement?.announcements?.map((item, index) => {
+              return (
+                <Item
+                  key={index}
+                  item={item}
+                  onPress={() =>
+                    navigation.navigate("RecruitHome", {
+                      code: item.code,
+                    })
+                  }
+                  copyToClipboard={copyToClipboard}
+                />
+              );
+            })
+          ) : (
+            <NoneLayout />
+          )}
         </Container>
       </ScrollView>
       <Toast

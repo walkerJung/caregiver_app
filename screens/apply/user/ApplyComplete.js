@@ -9,7 +9,7 @@ import {
 import { Alert, Image } from "react-native";
 import logo from "../../../assets/img/main_logo.png";
 
-export default function ApplyCompleteUser() {
+export default function ApplyCompleteUser({ navigation }) {
   return (
     <Complete>
       <Image
@@ -25,7 +25,7 @@ export default function ApplyCompleteUser() {
 
       <SubmitBtn
         text="확인"
-        onPress={() => Alert.alert("메인페이지로 이동합니다!")}
+        onPress={() => navigation.navigate("PatientMainScreen")}
       />
     </Complete>
   );

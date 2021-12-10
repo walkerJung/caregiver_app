@@ -37,7 +37,11 @@ import { SubmitBtn } from "../../components/form/CareFormStyle";
 import ProfileModal from "../../components/modal/ProfileModal";
 import AlertModal from "../../components/modal/AlertModal";
 import DefulatLayout from "../../components/layout/DefaultLayout";
-export default function RecruitHome() {
+import { useQuery } from "@apollo/client";
+import {} from "../query";
+
+export default function RecruitHome({ route, navigation }) {
+  console.log(route.params.code);
   // 모달
   const [showModal, setShowModal] = useState(false);
   const openModal = () => {

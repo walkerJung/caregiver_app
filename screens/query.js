@@ -111,7 +111,7 @@ export const WRITE_ANNOUNCEMENT_MUTATION = gql`
     $addressDetail: String!
     $nursingGrade: String!
     $disease: String!
-    $isolation: Boolean!
+    $isolation: String!
   ) {
     writeAnnouncement(
       userCode: $userCode
@@ -141,6 +141,79 @@ export const WRITE_ANNOUNCEMENT_MUTATION = gql`
     ) {
       ok
       error
+    }
+  }
+`;
+
+// 환자 간병 서비스
+export const ANNOUNCEMENT_LIST_QUERY = gql`
+  query listAnnouncement($userCode: Int!) {
+    listAnnouncement(userCode: $userCode) {
+      result
+      announcements {
+        code
+        title
+        status
+        patientName
+        startDate
+        endDate
+        address
+        addressDetail
+      }
+      announcementApplication {
+        code
+      }
+    }
+  }
+`;
+
+export const ANNOUNCEMENT_DETAIL_QUERY = gql`
+  query viewAnnouncement($code: Int!) {
+    viewAnnouncement(code: $code) {
+      code
+      status
+      userCode
+      needMealCare
+      needUrineCare
+      needSuctionCare
+      needMoveCare
+      needBedCare
+      needHygieneCare
+      caregiverMeal
+      infectiousDisease
+      title
+      startDate
+      endDate
+      expectedCost
+      hopeCost
+      protectorName
+      protectorPhone
+      patientName
+      patientAge
+      patientWeight
+      address
+      addressDetail
+      nursingGrade
+      disease
+      isolation
+      createdAt
+      user {
+        userId
+        userName
+        sex
+        phone
+      }
+      announcementApplication {
+        userCode
+        caregiverCost
+        confirm
+        user {
+          userId
+          userName
+          sex
+          phone
+        }
+      }
     }
   }
 `;

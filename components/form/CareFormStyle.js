@@ -144,6 +144,7 @@ export const FormInput = ({
             onSubmitEditing={onSubmitEditing}
             error={error}
             editable={editable}
+            value={value}
           />
         </InputBox>
         {text && (

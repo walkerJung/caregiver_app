@@ -39,23 +39,28 @@ export default function Item({ onPress, item, copyToClipboard }) {
 
   const caregiver = 2;
   const ChoiceItemStyle = {
-    0: {
+    1: {
       statusColor: { color: "#FFB400" },
       statusText: "예상 간병비 산출중",
     },
-    1: {
+    2: {
       statusColor: { color: "#0077FF" },
       statusText: "예상간병비 200,000원",
       modalBtn: true,
     },
-    2: {
+    3: {
       statusColor: { color: "#20CF05" },
       statusText: `간병인 모집중 (${caregiver}명)`,
       careChoice: true,
     },
-    3: {
+    4: {
       statusColor: { color: "#FF5E5E" },
       statusText: "입금 대기중",
+      deposit: true,
+    },
+    5: {
+      statusColor: { color: "#5e66ff" },
+      statusText: "입금 및 매칭 완료",
       deposit: true,
     },
   };
@@ -128,9 +133,11 @@ export default function Item({ onPress, item, copyToClipboard }) {
               <Icon name="calendar-outline" size={14} color="#979797" /> 간병
               기간
             </ListTit>
-            <Days>(2박 3일)</Days>
+            {/* <Days>(2박 3일)</Days> */}
           </ListTitBox>
-          <ListTxt>21.07.23 ~ 21.07.25</ListTxt>
+          <ListTxt>
+            {item.startDate} ~ {item.endDate}
+          </ListTxt>
         </List>
 
         <List>
@@ -139,7 +146,7 @@ export default function Item({ onPress, item, copyToClipboard }) {
               <Icon name="person-outline" size={14} color="#979797" /> 환자 성함
             </ListTit>
           </ListTitBox>
-          <ListTxt>김환자</ListTxt>
+          <ListTxt>{item.patientName}</ListTxt>
         </List>
 
         <List last={true}>
@@ -150,7 +157,7 @@ export default function Item({ onPress, item, copyToClipboard }) {
             </ListTit>
           </ListTitBox>
           <ListTxt>
-            대전광역시 중구 목중로 29 (대전광역시 중구 목동10-7) 대전선병원
+            {item.address} {item.addressDetail}
           </ListTxt>
         </List>
 
