@@ -154,24 +154,38 @@ export const ANNOUNCEMENT_LIST_QUERY = gql`
         code
         title
         status
+        confirmCaregiverCode
         patientName
         startDate
         endDate
         address
         addressDetail
-      }
-      announcementApplication {
-        code
+        expectedCost
+        announcementApplication {
+          code
+          userCode
+          caregiverCost
+          confirm
+          announcementCode
+          user {
+            userId
+            userName
+            sex
+            phone
+          }
+        }
       }
     }
   }
 `;
 
+// 간병서비스 상세보기
 export const ANNOUNCEMENT_DETAIL_QUERY = gql`
   query viewAnnouncement($code: Int!) {
     viewAnnouncement(code: $code) {
       code
       status
+      confirmCaregiverCode
       userCode
       needMealCare
       needUrineCare
@@ -207,6 +221,7 @@ export const ANNOUNCEMENT_DETAIL_QUERY = gql`
         userCode
         caregiverCost
         confirm
+        announcementCode
         user {
           userId
           userName
@@ -214,6 +229,26 @@ export const ANNOUNCEMENT_DETAIL_QUERY = gql`
           phone
         }
       }
+    }
+  }
+`;
+
+// 희망간병비 입력
+export const WRITE_HOPECOST_MUTATION = gql`
+  mutation writeHopeCost($code: Int!, $hopeCost: Int!) {
+    writeHopeCost(code: $code, hopeCost: $hopeCost) {
+      ok
+      error
+    }
+  }
+`;
+
+// 간병인 선택
+export const CHOICE_CAREGIVER_MUTATION = gql`
+  mutation choiceCaregiver($code: Int!, $announcementCode: Int!) {
+    choiceCaregiver(code: $code, announcementCode: $announcementCode) {
+      ok
+      error
     }
   }
 `;

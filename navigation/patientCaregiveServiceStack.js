@@ -3,6 +3,8 @@ import { createStackNavigator } from "@react-navigation/stack";
 import ProgressHistoryUser from "../screens/history/user/ProgressHistory";
 import CompleteHistoryUser from "../screens/history/user/CompleteHistory";
 import RecruitHome from "../screens/recruit";
+import ApplicantList from "../screens/applicant/List";
+import ApplicantComplete from "../screens/applicant/Complete";
 
 const Stack = createStackNavigator();
 
@@ -35,7 +37,6 @@ export default function PatientCaregiveServiceStack() {
           title: "간병 서비스",
         }}
       />
-
       <Stack.Screen
         name="CompleteHistoryUser"
         component={CompleteHistoryUser}
@@ -44,13 +45,28 @@ export default function PatientCaregiveServiceStack() {
           title: "간병 서비스 완료 목록",
         }}
       />
-
       <Stack.Screen
         name="RecruitHome"
         component={RecruitHome}
         options={{
           headerShown: true,
           title: "공고 확인",
+        }}
+      />
+      <Stack.Screen
+        name="ApplicantList"
+        component={ApplicantList}
+        options={{
+          headerShown: true,
+          title: "간병인 선택",
+        }}
+      />
+      <Stack.Screen
+        name="ApplicantComplete"
+        component={ApplicantComplete}
+        options={{
+          headerShown: true,
+          title: "입금 완료",
         }}
       />
     </Stack.Navigator>

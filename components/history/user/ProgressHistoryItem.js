@@ -1,4 +1,4 @@
-import React, { useRef, useCallback, useState } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import {
   View,
   StyleSheet,
@@ -28,16 +28,24 @@ import {
   InfoTxt,
   Bold,
 } from "../HistoryStyle";
+import { ErrorsText } from "../../../components/join/JoinStyle";
+import NumberFormat from "react-number-format";
 import { FormInput, SubmitBtn } from "../../form/CareFormStyle";
+import { useForm } from "react-hook-form";
+import { useQuery, useMutation } from "@apollo/client";
+import {
+  USER_DETAIL_QUERY,
+  WRITE_HOPECOST_MUTATION,
+} from "../../../screens/query";
 
-export default function Item({ onPress, item, copyToClipboard }) {
-  // 모달
+export default function Item({ onPress, item, copyToClipboard, navigation }) {
   const [showModal, setShowModal] = useState(false);
   const openModal = () => {
     setShowModal((prev) => !prev);
   };
-
-  const caregiver = 2;
+  const applicationCaregiverCount = item.announcementApplication
+    ? item.announcementApplication.length
+    : 0;
   const ChoiceItemStyle = {
     1: {
       statusColor: { color: "#FFB400" },
@@ -45,12 +53,12 @@ export default function Item({ onPress, item, copyToClipboard }) {
     },
     2: {
       statusColor: { color: "#0077FF" },
-      statusText: "예상간병비 200,000원",
+      statusText: "예상간병비",
       modalBtn: true,
     },
     3: {
       statusColor: { color: "#20CF05" },
-      statusText: `간병인 모집중 (${caregiver}명)`,
+      statusText: `간병인 모집중 (${applicationCaregiverCount}명)`,
       careChoice: true,
     },
     4: {
@@ -65,6 +73,57 @@ export default function Item({ onPress, item, copyToClipboard }) {
     },
   };
 
+  const { data, loading } = useQuery(USER_DETAIL_QUERY, {
+    variables: {
+      code: item.confirmCaregiverCode,
+    },
+  });
+
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    getValues,
+    formState: { errors },
+    watch,
+  } = useForm();
+
+  const onCompleted = (data) => {
+    const {
+      writeHopeCost: { ok },
+    } = data;
+    if (ok) {
+      Alert.alert("희망간병비 입력이 완료되었습니다.");
+      navigation.replace("ProgressHistoryUser");
+    }
+  };
+
+  const [writeHopeCostMutation] = useMutation(WRITE_HOPECOST_MUTATION, {
+    onCompleted,
+  });
+
+  const onValid = async (data) => {
+    try {
+      await writeHopeCostMutation({
+        variables: {
+          code: data.code,
+          hopeCost: parseInt(data.hopeCost),
+        },
+      });
+    } catch (e) {
+      console.log(e);
+      var error = e.toString();
+      error = error.replace("Error: ", "");
+      Alert.alert(`${error}`);
+    }
+  };
+
+  useEffect(() => {
+    register("hopeCost", {
+      required: "* 희망 간병비를 입력해주세요",
+    });
+  }, [register]);
+
   return (
     <>
       <Card
@@ -76,23 +135,46 @@ export default function Item({ onPress, item, copyToClipboard }) {
       >
         <CardHead>
           <CardHeadTit style={ChoiceItemStyle[item.status].statusColor}>
-            {ChoiceItemStyle[item.status].statusText}
+            {ChoiceItemStyle[item.status].statusText}{" "}
+            {item.status == 2 && (
+              <NumberFormat
+                value={item.expectedCost}
+                displayType={"text"}
+                thousandSeparator={true}
+                suffix={"원"}
+                renderText={(formattedValue) => (
+                  <Text>{"(" + formattedValue + ")"}</Text>
+                )}
+              />
+            )}
           </CardHeadTit>
           <GoViewBtn text="공고보기" onPress={onPress} />
         </CardHead>
 
-        {/* 입금 대기중일 때 나오는 코드*/}
         {ChoiceItemStyle[item.status].deposit && (
           <>
-            <List>
-              <ListTitBox>
-                <ListTit>
-                  <Icon name="person-outline" size={14} color="#979797" /> 담당
-                  간병인
-                </ListTit>
-              </ListTitBox>
-              <ListTxtColor>박간병</ListTxtColor>
-            </List>
+            {!loading && (
+              <>
+                <List>
+                  <ListTitBox>
+                    <ListTit>
+                      <Icon name="person-outline" size={14} color="#979797" />{" "}
+                      담당 간병인
+                    </ListTit>
+                  </ListTitBox>
+                  <ListTxtColor>{data?.viewProfile?.userName}</ListTxtColor>
+                </List>
+                <List>
+                  <ListTitBox>
+                    <ListTit>
+                      <Icon name="person-outline" size={14} color="#979797" />{" "}
+                      담당 간병인 연락처
+                    </ListTit>
+                  </ListTitBox>
+                  <ListTxtColor>{data?.viewProfile?.phone}</ListTxtColor>
+                </List>
+              </>
+            )}
 
             <List>
               <ListTitBox>
@@ -161,10 +243,9 @@ export default function Item({ onPress, item, copyToClipboard }) {
           </ListTxt>
         </List>
 
-        {/* 희망 간병비 입력 팝업*/}
         {ChoiceItemStyle[item.status].modalBtn && (
           <View style={{ marginTop: 10 }}>
-            <SubmitBtn small text="간병 희망비 입력" onPress={openModal} />
+            <SubmitBtn small text="희망간병비 입력" onPress={openModal} />
             <DefaultModal
               title="희망 간병비 입력"
               showModal={showModal}
@@ -172,14 +253,27 @@ export default function Item({ onPress, item, copyToClipboard }) {
             >
               <FlexBoth style={{ marginBottom: 10 }}>
                 <Text style={{ fontSize: 16, color: "#333" }}>예상 간병비</Text>
-                <Price>200,000원</Price>
+                <NumberFormat
+                  value={item.expectedCost}
+                  displayType={"text"}
+                  thousandSeparator={true}
+                  suffix={"원"}
+                  renderText={(formattedValue) => (
+                    <Price>{formattedValue}</Price>
+                  )}
+                />
               </FlexBoth>
               <FormInput
-                placeholder="희망 간병비를 입력해 주세요."
+                placeholder="희망간병비를 입력해 주세요."
                 placeholderTextColor={"#979797"}
                 returnKeyType="done"
                 keyboardType="numbers-and-punctuation"
+                onChangeText={(text) => setValue("hopeCost", text)}
               />
+              {setValue("code", item.code)}
+              {errors.hopeCost && (
+                <ErrorsText>{errors.hopeCost.message}</ErrorsText>
+              )}
               <InfoBox style={{ marginBottom: 10 }}>
                 <InfoTxt style={{ marginBottom: 10 }}>
                   <Bold>예상 간병비</Bold>는 작성하신 공고에 의해 책정된
@@ -189,23 +283,19 @@ export default function Item({ onPress, item, copyToClipboard }) {
                   <Bold>희망 간병비</Bold>를 기준으로 간병인과 매칭이 됩니다.
                 </InfoTxt>
               </InfoBox>
-              <SubmitBtn
-                text="확인"
-                onPress={() =>
-                  Alert.alert("여기 누르면 간병금액이 들어갑니다.")
-                }
-              />
+              <SubmitBtn text="확인" onPress={handleSubmit(onValid)} />
             </DefaultModal>
           </View>
         )}
-
         {ChoiceItemStyle[item.status].careChoice && (
           <View style={{ marginTop: 10 }}>
             <SubmitBtn
               small={true}
               text="간병인 선택"
               onPress={() =>
-                Alert.alert("여기 누르면 간병인 선택으로 이동합니다.")
+                navigation.navigate("ApplicantList", {
+                  dataArray: item.announcementApplication,
+                })
               }
             />
           </View>

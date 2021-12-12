@@ -13,14 +13,15 @@ import {
 } from "../../components/form/ListStyle";
 import { SubmitBtn } from "../../components/form/CareFormStyle";
 import Icon from "react-native-vector-icons/Ionicons";
-
 import ProfileModal from "../../components/modal/ProfileModal";
+import NumberFormat from "react-number-format";
 
-export default function ApplicantList() {
-  // 모달
+export default function ApplicantList({ route, navigation }) {
   const [showModal, setShowModal] = useState(false);
-  const openModal = () => {
+  const [dataArray, setDataArray] = useState([]);
+  const openModal = (dataArray) => {
     setShowModal((prev) => !prev);
+    setDataArray(dataArray);
   };
   return (
     <ScrollView>
@@ -33,41 +34,57 @@ export default function ApplicantList() {
             fontWeight: "bold",
           }}
         >
-          지원한 간병인 (2명)
+          지원한 간병인 ({route.params.dataArray.length}명)
         </Text>
-        <Item style={styles.shadow}>
-          <FlexBoth style={{ marginBottom: 13 }}>
-            <View>
-              <Profile>
-                {/* 아래 코드는 프로필 사진 등록하면 들어가는 코드입니다. 주석 처리 해놓았습니다. */}
-                {/* <ProfileImg><Image source={require("")} /></ProfileImg> */}
-
-                {/* 아래 코드는 프로필 사진 등록 하지 않았을 경우 들어가는 코드입니다. */}
-                <ProfileImg>
-                  <Icon name="person-sharp" color="#bbb" size={21} />
-                </ProfileImg>
+        {route.params.dataArray.map((item, index) => {
+          return (
+            <Item style={styles.shadow} key={index}>
+              <FlexBoth style={{ marginBottom: 13 }}>
                 <View>
-                  {/* 간병인 이름 */}
-                  <ProfileName>박간병</ProfileName>
-                  {/* 지원 신청한 날짜 */}
-                  <ProfileDate>2021.07.21</ProfileDate>
+                  <Profile>
+                    {/* <ProfileImg><Image source={require("")} /></ProfileImg> */}
+                    <ProfileImg>
+                      <Icon name="person-sharp" color="#bbb" size={21} />
+                    </ProfileImg>
+                    <View>
+                      <ProfileName>{item.user.userName}</ProfileName>
+                      <ProfileDate>{item.user.sex}</ProfileDate>
+                    </View>
+                  </Profile>
                 </View>
-              </Profile>
-            </View>
-            <View>
-              {/* 간병비 가격 넣어주세요. */}
-              <PriceTxt>간병비 100,000원</PriceTxt>
-            </View>
-          </FlexBoth>
-          <SubmitBtn
-            small={true}
-            text="간병인 선택"
-            style={{ height: 48 }}
-            onPress={openModal}
-          />
-        </Item>
+                <View>
+                  <PriceTxt>
+                    간병비
+                    <NumberFormat
+                      value={item.caregiverCost}
+                      displayType={"text"}
+                      thousandSeparator={true}
+                      suffix={"원"}
+                      renderText={(formattedValue) => (
+                        <Text>{"(" + formattedValue + ")"}</Text>
+                      )}
+                    />
+                  </PriceTxt>
+                </View>
+              </FlexBoth>
+              <SubmitBtn
+                small={true}
+                text="간병인 정보 확인"
+                style={{ height: 48 }}
+                onPress={() => {
+                  openModal(item);
+                }}
+              />
+              <ProfileModal
+                showModal={showModal}
+                setShowModal={setShowModal}
+                dataArray={dataArray}
+                navigation={navigation}
+              />
+            </Item>
+          );
+        })}
       </Container>
-      <ProfileModal showModal={showModal} setShowModal={setShowModal} />
     </ScrollView>
   );
 }

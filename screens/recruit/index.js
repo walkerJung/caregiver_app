@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   View,
@@ -20,6 +20,10 @@ import {
   EditBtn,
   EditTxt,
   GoViewBtn,
+  InfoBox,
+  InfoTxt,
+  Bold,
+  Price,
 } from "../../components/history/HistoryStyle";
 import {
   Item,
@@ -32,253 +36,397 @@ import {
   ProfileDate,
   CancelBtn,
 } from "../../components/form/ListStyle";
+import DefaultModal from "../../components/modal/DefaultModal";
+import NumberFormat from "react-number-format";
+import { FormInput, SubmitBtn } from "../../components/form/CareFormStyle";
 import Icon from "react-native-vector-icons/Ionicons";
-import { SubmitBtn } from "../../components/form/CareFormStyle";
 import ProfileModal from "../../components/modal/ProfileModal";
 import AlertModal from "../../components/modal/AlertModal";
 import DefulatLayout from "../../components/layout/DefaultLayout";
-import { useQuery } from "@apollo/client";
-import {} from "../query";
+import { useForm } from "react-hook-form";
+import { useQuery, useMutation } from "@apollo/client";
+import { ANNOUNCEMENT_DETAIL_QUERY, WRITE_HOPECOST_MUTATION } from "../query";
 
 export default function RecruitHome({ route, navigation }) {
-  console.log(route.params.code);
-  // 모달
+  const { code } = route.params;
   const [showModal, setShowModal] = useState(false);
   const openModal = () => {
     setShowModal((prev) => !prev);
   };
-
   const [showModal2, setShowModal2] = useState(false);
   const openModal2 = () => {
     setShowModal2((prev) => !prev);
   };
+  const { data, loading } = useQuery(ANNOUNCEMENT_DETAIL_QUERY, {
+    variables: {
+      code,
+    },
+    fetchPolicy: "network-only",
+  });
+  const applicationCaregiverCount = data?.viewAnnouncement
+    ?.announcementApplication
+    ? data?.viewAnnouncement?.announcementApplication?.length
+    : 0;
+
+  const ChoiceItemStyle = {
+    1: {
+      statusColor: { color: "#FFB400" },
+      statusText: "예상 간병비 산출중",
+    },
+    2: {
+      statusColor: { color: "#0077FF" },
+      statusText: "예상간병비",
+    },
+    3: {
+      statusColor: { color: "#20CF05" },
+      statusText: `간병인 모집중 (${applicationCaregiverCount}명)`,
+    },
+    4: {
+      statusColor: { color: "#FF5E5E" },
+      statusText: "입금 대기중",
+    },
+    5: {
+      statusColor: { color: "#0077FF" },
+      statusText: "매칭 완료",
+    },
+    6: {
+      statusColor: { color: "#20CF05" },
+      statusText: "환불 완료",
+    },
+  };
+
+  const caregiverInfo = data?.viewAnnouncement?.announcementApplication?.find(
+    (element) => {
+      return element.confirm == true;
+    }
+  );
+
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    getValues,
+    formState: { errors },
+    watch,
+  } = useForm();
+
+  const onCompleted = (data) => {
+    const {
+      writeHopeCost: { ok },
+    } = data;
+    if (ok) {
+      Alert.alert("희망간병비 입력이 완료되었습니다.");
+      navigation.replace("ProgressHistoryUser");
+    }
+  };
+
+  const [writeHopeCostMutation] = useMutation(WRITE_HOPECOST_MUTATION, {
+    onCompleted,
+  });
+
+  const onValid = async (data) => {
+    try {
+      await writeHopeCostMutation({
+        variables: {
+          code: data.code,
+          hopeCost: parseInt(data.hopeCost),
+        },
+      });
+    } catch (e) {
+      console.log(e);
+      var error = e.toString();
+      error = error.replace("Error: ", "");
+      Alert.alert(`${error}`);
+    }
+  };
+
+  useEffect(() => {
+    register("hopeCost", {
+      required: "* 희망 간병비를 입력해주세요",
+    });
+  }, [register]);
+
   return (
-    <DefulatLayout>
-      <Container>
-        <PageHeader>
-          {/* 
-            아래 상태값에 따라 문구와 색이 바뀝니다 총 상태는 6개입니다.
-            그리고 4번 5번 상태는 완료 된 내역이라 신청취소는 사라지게 됩니다...
-             const ChoiceItemStyle = {
-                0: {
-                statusColor: { color: "#FFB400" },
-                statusText: "예상 간병비 산출중",
-                },
-                1: {
-                statusColor: { color: "#0077FF" },
-                statusText: "예상간병비 (200,000원)",
-                },
-                2: {
-                statusColor: { color: "#20CF05" },
-                statusText: `간병인 모집중 (2명)`,
-                },
-                3: {
-                statusColor: { color: "#FF5E5E" },
-                statusText: "입금 대기중",
-                },
-                4: {
-                statusColor: { color: "#0077FF" },
-                statusText: "매칭 완료",
-                },
-                5: {
-                statusColor: { color: "#20CF05" },
-                statusText: "환불 완료 (200,000원)",
-                },
-            };
-            
-            */}
-          <StatusTxt style={{ color: "#0077FF" }}>
-            예상간병비 (200,000원)
-          </StatusTxt>
-          <CancelBtn text="신청 취소" onPress={openModal2} />
-          <AlertModal
-            title="알림"
-            text="정말 취소하시겠습니까?"
-            showModal={showModal2}
-            setShowModal={setShowModal2}
-            onPress={() => Alert.alert("누르면 신청이 취소됩니다.")}
-          />
-        </PageHeader>
-
-        {/* 시작 --- 하단 card는 매칭이 완료되었을 때 해당 간병인이 나오는 코드입니다! */}
-        <Card style={styles.shadow}>
-          <FlexBoth>
-            <View>
-              <Profile>
-                {/* 아래 코드는 프로필 사진 등록하면 들어가는 코드입니다. 주석 처리 해놓았습니다. */}
-                {/* <ProfileImg><Image source={require("")} /></ProfileImg> */}
-
-                {/* 아래 코드는 프로필 사진 등록 하지 않았을 경우 들어가는 코드입니다. */}
-                <ProfileImg>
-                  <Icon name="person-sharp" color="#bbb" size={21} />
-                </ProfileImg>
-                <View>
-                  <ProfileDate style={{ marginTop: 0, marginBottom: 2 }}>
-                    담당 간병인
-                  </ProfileDate>
-                  {/* 간병인 이름 */}
-                  <ProfileName>박간병</ProfileName>
-                </View>
-              </Profile>
-            </View>
-            <View>
-              <GoViewBtn onPress={openModal} text="간병인 자세히" />
-            </View>
-          </FlexBoth>
-
-          <ProfileModal showModal={showModal} setShowModal={setShowModal} />
-        </Card>
-        {/* 끝 --- 윗 card는 매칭이 완료되었을 때 해당 간병인이 나오는 코드입니다!   */}
-
-        <Card2 style={{ ...styles.shadow, paddingTop: 12, paddingBottom: 12 }}>
-          {/* 하단 텍스트는  간병인 신청에서 '제목을 입력해주세요.' 가 들어갑니다. 위치는 screens > apply > ApplyForm의 최상단 제목입니다.*/}
-          <Text style={{ fontSize: 18, fontWeight: "bold" }}>
-            마음씨 좋은 간병인 구합니다.
-          </Text>
-        </Card2>
-
-        {/* 간병기간, 주소 */}
-        <Card2 style={styles.shadow}>
-          <List last={true}>
-            <ListTitBox style={{ marginBottom: 0 }}>
-              <ListTit>
-                <Icon name="calendar-outline" size={14} color="#979797" /> 간병
-                기간
-              </ListTit>
-              {/* applyform 수정 페이지로 이동합니다. */}
-              <EditBtn
-                activeOpacity={0.8}
-                onPress={() =>
-                  Alert.alert("ApplyForm 수정 페이지로 이동합니다.")
-                }
+    <>
+      {!loading && (
+        <DefulatLayout>
+          <Container>
+            <PageHeader>
+              <StatusTxt
+                style={{
+                  color:
+                    ChoiceItemStyle[data?.viewAnnouncement?.status].statusColor
+                      .color,
+                }}
               >
-                <Icon name="pencil-outline" size={13} color="#979797" />
-                <EditTxt>수정하기</EditTxt>
-              </EditBtn>
-            </ListTitBox>
-          </List>
-          <List>
-            <ListTitBox>
-              <ListTxt>21.07.23 ~ 21.07.25</ListTxt>
-              <Days>(2박 3일)</Days>
-            </ListTitBox>
-          </List>
-          <List last={true}>
-            <ListTitBox>
-              <ListTit>
-                <Icon name="location-outline" size={14} color="#979797" /> 간병
-                주소
-              </ListTit>
-            </ListTitBox>
-            <ListTxt>
-              대전광역시 중구 목중로 29 (대전광역시 중구 목동10-7) 대전선병원
-            </ListTxt>
-          </List>
-        </Card2>
+                {ChoiceItemStyle[data?.viewAnnouncement?.status].statusText}{" "}
+                {data?.viewAnnouncement?.status == 2 && (
+                  <NumberFormat
+                    value={data?.viewAnnouncement?.expectedCost}
+                    displayType={"text"}
+                    thousandSeparator={true}
+                    suffix={"원"}
+                    renderText={(formattedValue) => (
+                      <Text>{"(" + formattedValue + ")"}</Text>
+                    )}
+                  />
+                )}
+              </StatusTxt>
+              {data?.viewAnnouncement?.status != 5 && (
+                <>
+                  <CancelBtn text="신청 취소" onPress={openModal2} />
+                  <AlertModal
+                    title="알림"
+                    text="정말 취소하시겠습니까?"
+                    showModal={showModal2}
+                    setShowModal={setShowModal2}
+                    onPress={() => Alert.alert("누르면 신청이 취소됩니다.")}
+                  />
+                </>
+              )}
+            </PageHeader>
 
-        {/* 보호자 (성명) */}
-        <Card2 style={styles.shadow}>
-          <List last={true}>
-            <ListTitBox>
-              <ListTit>
-                <Icon name="person-outline" size={14} color="#979797" /> 보호자
-              </ListTit>
-            </ListTitBox>
-            <ListTxt>김보호</ListTxt>
-          </List>
-        </Card2>
+            {!loading && data?.viewAnnouncement?.confirmCaregiverCode && (
+              <Card style={styles.shadow}>
+                <FlexBoth>
+                  <View>
+                    <Profile>
+                      {/* <ProfileImg><Image source={require("")} /></ProfileImg> */}
+                      <ProfileImg>
+                        <Icon name="person-sharp" color="#bbb" size={21} />
+                      </ProfileImg>
+                      <View>
+                        <ProfileDate style={{ marginTop: 0, marginBottom: 2 }}>
+                          담당 간병인
+                        </ProfileDate>
+                        <ProfileName>{caregiverInfo.user.userName}</ProfileName>
+                        <ProfileDate style={{ marginTop: 0, marginBottom: 2 }}>
+                          담당 간병인 연락처
+                        </ProfileDate>
+                        <ProfileName>{caregiverInfo.user.phone}</ProfileName>
+                      </View>
+                    </Profile>
+                  </View>
+                  <View>
+                    <GoViewBtn onPress={openModal} text="간병인 자세히" />
+                  </View>
+                </FlexBoth>
 
-        {/* 환자 정보(성명, 나이, 몸무게, 장기요양등급) */}
-        <Card2 style={styles.shadow}>
-          <List>
-            <ListTitBox style={{ marginBottom: 15 }}>
-              <ListTit>
-                <Icon name="person-outline" size={14} color="#979797" /> 환자
-                정보
-              </ListTit>
-            </ListTitBox>
-            <ListSubTit>환자 성함</ListSubTit>
-            {/* 환자 성명 */}
-            <ListTxt>김보호</ListTxt>
-          </List>
+                <ProfileModal
+                  showModal={showModal}
+                  setShowModal={setShowModal}
+                />
+              </Card>
+            )}
 
-          <List>
-            <ListSubTit>환자 나이</ListSubTit>
-            {/* 환자 나이 */}
-            <ListTxt>78세</ListTxt>
-          </List>
+            <Card2
+              style={{ ...styles.shadow, paddingTop: 12, paddingBottom: 12 }}
+            >
+              <Text style={{ fontSize: 18, fontWeight: "bold" }}>
+                {data.viewAnnouncement.title}
+              </Text>
+            </Card2>
 
-          <List>
-            <ListSubTit>환자 몸무게</ListSubTit>
-            {/* 환자 몸무게 */}
-            <ListTxt>65kg</ListTxt>
-          </List>
+            <Card2 style={styles.shadow}>
+              <List last={true}>
+                <ListTitBox style={{ marginBottom: 0 }}>
+                  <ListTit>
+                    <Icon name="calendar-outline" size={14} color="#979797" />{" "}
+                    간병 기간
+                  </ListTit>
+                  {/* applyform 수정 페이지로 이동합니다. */}
+                  <EditBtn
+                    activeOpacity={0.8}
+                    onPress={() =>
+                      Alert.alert("ApplyForm 수정 페이지로 이동합니다.")
+                    }
+                  >
+                    {data.viewAnnouncement.status == 1 && (
+                      <>
+                        <Icon name="pencil-outline" size={13} color="#979797" />
+                        <EditTxt>수정하기</EditTxt>
+                      </>
+                    )}
+                  </EditBtn>
+                </ListTitBox>
+              </List>
+              <List>
+                <ListTitBox>
+                  <ListTxt>
+                    {data.viewAnnouncement.startDate}
+                    {" ~ "}
+                    {data.viewAnnouncement.endDate}
+                  </ListTxt>
+                  {/* <Days>(2박 3일)</Days> */}
+                </ListTitBox>
+              </List>
+              <List last={true}>
+                <ListTitBox>
+                  <ListTit>
+                    <Icon name="location-outline" size={14} color="#979797" />{" "}
+                    간병 주소
+                  </ListTit>
+                </ListTitBox>
+                <ListTxt>
+                  {data.viewAnnouncement.address}{" "}
+                  {data.viewAnnouncement.addressDetail}
+                </ListTxt>
+              </List>
+            </Card2>
 
-          <List last={true}>
-            <ListSubTit>장기요양 등급</ListSubTit>
-            {/* 환자 장기요양 등급 */}
-            <ListTxt>2등급</ListTxt>
-          </List>
-        </Card2>
+            <Card2 style={styles.shadow}>
+              <List last={true}>
+                <ListTitBox>
+                  <ListTit>
+                    <Icon name="person-outline" size={14} color="#979797" />{" "}
+                    보호자
+                  </ListTit>
+                </ListTitBox>
+                <ListTxt>{data.viewAnnouncement.protectorName}</ListTxt>
+              </List>
+              <List>
+                <ListTitBox>
+                  <ListTit>
+                    <Icon name="person-outline" size={14} color="#979797" />{" "}
+                    보호자 연락처
+                  </ListTit>
+                </ListTitBox>
+                <ListTxt>ㅊㅊㅊ</ListTxt>
+              </List>
+            </Card2>
 
-        {/* 환자 상세정보 (상세정보는 applyform에서 받았던 데이터입니다.)*/}
-        <Card2 style={styles.shadow}>
-          <List>
-            <ListTitBox style={{ marginBottom: 15 }}>
-              <ListTit>
-                <Icon name="person-outline" size={14} color="#979797" /> 환자
-                정보
-              </ListTit>
+            <Card2 style={styles.shadow}>
+              <List>
+                <ListTitBox style={{ marginBottom: 15 }}>
+                  <ListTit>
+                    <Icon name="person-outline" size={14} color="#979797" />{" "}
+                    환자 정보
+                  </ListTit>
+                </ListTitBox>
+                <ListSubTit>환자 성함</ListSubTit>
+                <ListTxt>{data.viewAnnouncement.patientName}</ListTxt>
+              </List>
 
-              {/* 환자 상세정보 수정으로 넘어갑니다. */}
-              <EditBtn
-                activeOpacity={0.8}
-                onPress={() =>
-                  Alert.alert(
-                    "환자 상세정보(ApplyFormDetail) 수정페이지로 넘어갑니다."
-                  )
-                }
-              >
-                <Icon name="pencil-outline" size={13} color="#979797" />
-                <EditTxt>수정하기</EditTxt>
-              </EditBtn>
-            </ListTitBox>
-            <ListSubTit>식사보조가 필요하신가요?</ListSubTit>
-            <ListTxt>전적으로 도와준다.</ListTxt>
-          </List>
+              <List>
+                <ListSubTit>환자 나이</ListSubTit>
+                <ListTxt>{data.viewAnnouncement.patientAge}세</ListTxt>
+              </List>
 
-          <List>
-            <ListSubTit>대소변 케어가 필요하신가요?</ListSubTit>
-            <ListTxt>소변 주머니 이용</ListTxt>
-          </List>
+              <List>
+                <ListSubTit>환자 몸무게</ListSubTit>
+                <ListTxt>{data.viewAnnouncement.patientWeight}kg</ListTxt>
+              </List>
 
-          <List>
-            <ListSubTit>석션 케어가 필요한가요?</ListSubTit>
-            <ListTxt>아니오</ListTxt>
-          </List>
+              <List last={true}>
+                <ListSubTit>장기요양 등급</ListSubTit>
+                <ListTxt>{data.viewAnnouncement.nursingGrade}</ListTxt>
+              </List>
+            </Card2>
 
-          <List>
-            <ListSubTit>이동시 필요한 케어가 필요하신가요?</ListSubTit>
-            <ListTxt>침대에서 전적인 도움이 필요</ListTxt>
-          </List>
+            <Card2 style={styles.shadow}>
+              <List>
+                <ListTitBox style={{ marginBottom: 15 }}>
+                  <ListTit>
+                    <Icon name="person-outline" size={14} color="#979797" />{" "}
+                    환자 정보
+                  </ListTit>
 
-          <List>
-            <ListSubTit>침대에서 필요한 케어가 필요하신가요?</ListSubTit>
-            <ListTxt>아니오</ListTxt>
-          </List>
+                  <EditBtn
+                    activeOpacity={0.8}
+                    onPress={() =>
+                      Alert.alert(
+                        "환자 상세정보(ApplyFormDetail) 수정페이지로 넘어갑니다."
+                      )
+                    }
+                  >
+                    {data.viewAnnouncement.status == 1 && (
+                      <>
+                        <Icon name="pencil-outline" size={13} color="#979797" />
+                        <EditTxt>수정하기</EditTxt>
+                      </>
+                    )}
+                  </EditBtn>
+                </ListTitBox>
+                <ListSubTit>식사보조가 필요하신가요?</ListSubTit>
+                <ListTxt>{data.viewAnnouncement.needMealCare}</ListTxt>
+              </List>
 
-          <List last={true}>
-            <ListSubTit>위생 관련 케어가 필요하신가요?</ListSubTit>
-            <ListTxt>아니오</ListTxt>
-          </List>
-        </Card2>
+              <List>
+                <ListSubTit>대소변 케어가 필요하신가요?</ListSubTit>
+                <ListTxt>{data.viewAnnouncement.needUrineCare}</ListTxt>
+              </List>
 
-        <SubmitBtn
-          text="희망간병비 입력"
-          onPress={() => Alert.alert("희망간병비 팝업 이동합니다.")}
-        />
-      </Container>
-    </DefulatLayout>
+              <List>
+                <ListSubTit>석션 케어가 필요한가요?</ListSubTit>
+                <ListTxt>{data.viewAnnouncement.needSuctionCare}</ListTxt>
+              </List>
+
+              <List>
+                <ListSubTit>이동시 필요한 케어가 필요하신가요?</ListSubTit>
+                <ListTxt>{data.viewAnnouncement.needMoveCare}</ListTxt>
+              </List>
+
+              <List>
+                <ListSubTit>침대에서 필요한 케어가 필요하신가요?</ListSubTit>
+                <ListTxt>{data.viewAnnouncement.needBedCare}</ListTxt>
+              </List>
+
+              <List last={true}>
+                <ListSubTit>위생 관련 케어가 필요하신가요?</ListSubTit>
+                <ListTxt>{data.viewAnnouncement.needHygieneCare}</ListTxt>
+              </List>
+            </Card2>
+            {data.viewAnnouncement.status == 2 && (
+              <View style={{ marginTop: 10 }}>
+                <SubmitBtn text="희망간병비 입력" onPress={openModal} />
+                <DefaultModal
+                  title="희망 간병비 입력"
+                  showModal={showModal}
+                  setShowModal={setShowModal}
+                >
+                  <FlexBoth style={{ marginBottom: 10 }}>
+                    <Text style={{ fontSize: 16, color: "#333" }}>
+                      예상 간병비
+                    </Text>
+                    <NumberFormat
+                      value={data.viewAnnouncement.expectedCost}
+                      displayType={"text"}
+                      thousandSeparator={true}
+                      suffix={"원"}
+                      renderText={(formattedValue) => (
+                        <Price>{formattedValue}</Price>
+                      )}
+                    />
+                  </FlexBoth>
+                  <FormInput
+                    placeholder="희망간병비를 입력해 주세요."
+                    placeholderTextColor={"#979797"}
+                    returnKeyType="done"
+                    keyboardType="numbers-and-punctuation"
+                    onChangeText={(text) => setValue("hopeCost", text)}
+                  />
+                  {setValue("code", data.viewAnnouncement.code)}
+                  {errors.hopeCost && (
+                    <ErrorsText>{errors.hopeCost.message}</ErrorsText>
+                  )}
+                  <InfoBox style={{ marginBottom: 10 }}>
+                    <InfoTxt style={{ marginBottom: 10 }}>
+                      <Bold>예상 간병비</Bold>는 작성하신 공고에 의해 책정된
+                      금액입니다.
+                    </InfoTxt>
+                    <InfoTxt>
+                      <Bold>희망 간병비</Bold>를 기준으로 간병인과 매칭이
+                      됩니다.
+                    </InfoTxt>
+                  </InfoBox>
+                  <SubmitBtn text="확인" onPress={handleSubmit(onValid)} />
+                </DefaultModal>
+              </View>
+            )}
+          </Container>
+        </DefulatLayout>
+      )}
+    </>
   );
 }
 const styles = StyleSheet.create({

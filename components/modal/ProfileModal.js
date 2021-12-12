@@ -12,6 +12,15 @@ import {
   ProfileDate,
 } from "../form/ListStyle";
 import { SubmitBtn } from "../form/CareFormStyle";
+import NumberFormat from "react-number-format";
+import { useForm } from "react-hook-form";
+import { useMutation } from "@apollo/client";
+import {
+  CHOICE_CAREGIVER_MUTATION,
+  ANNOUNCEMENT_LIST_QUERY,
+} from "../../screens/query";
+import { useReactiveVar } from "@apollo/client";
+import { memberVar } from "../../apollo";
 
 const ModalBackground = styled.View`
   flex: 1;
@@ -79,9 +88,57 @@ const CancelTxt = styled.Text`
 export default function ProfileModal({
   showModal,
   setShowModal,
+  dataArray,
+  navigation,
   children,
   title,
 }) {
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    getValues,
+    formState: { errors },
+    watch,
+  } = useForm();
+
+  const onCompleted = (data) => {
+    const {
+      choiceCaregiver: { ok },
+    } = data;
+    if (ok) {
+      Alert.alert("간병인 선택이 완료되었습니다.");
+      navigation.navigate("ProgressHistoryUser");
+    }
+  };
+  const userInfo = JSON.parse(useReactiveVar(memberVar));
+  const [choiceCaregiverMutation] = useMutation(CHOICE_CAREGIVER_MUTATION, {
+    onCompleted,
+    refetchQueries: () => [
+      {
+        query: ANNOUNCEMENT_LIST_QUERY,
+        variables: {
+          userCode: userInfo.code,
+        },
+      },
+    ],
+  });
+
+  const onValid = async () => {
+    try {
+      await choiceCaregiverMutation({
+        variables: {
+          code: dataArray.code,
+          announcementCode: dataArray.announcementCode,
+        },
+      });
+    } catch (e) {
+      console.log(e);
+      var error = e.toString();
+      error = error.replace("Error: ", "");
+      Alert.alert(`${error}`);
+    }
+  };
   return (
     <>
       {showModal ? (
@@ -98,17 +155,16 @@ export default function ProfileModal({
             <Container>
               <ModalHeader>
                 <ModalHeaderTxt numberOfLines={1} ellipsizeMode="tail">
-                  {/* 간병비 가격 넣어주세요. */}
-                  간병비 100,000원{" "}
-                  <Text
-                    style={{
-                      color: "#676767",
-                      fontWeight: "normal",
-                    }}
-                  >
-                    {/* 간병 기간 */}
-                    (2박 3일)
-                  </Text>
+                  간병비{" "}
+                  <NumberFormat
+                    value={dataArray.caregiverCost}
+                    displayType={"text"}
+                    thousandSeparator={true}
+                    suffix={"원"}
+                    renderText={(formattedValue) => (
+                      <Text>{"(" + formattedValue + ")"}</Text>
+                    )}
+                  />{" "}
                 </ModalHeaderTxt>
                 <Exit
                   activeOpacity={0.8}
@@ -122,19 +178,16 @@ export default function ProfileModal({
               <ModalBody>
                 <FlexBoth>
                   <Profile>
-                    {/* 아래 코드는 프로필 사진 등록하면 들어가는 코드입니다. 주석 처리 해놓았습니다. */}
                     {/* <ProfileImg><Image source={require("")} /></ProfileImg> */}
-
-                    {/* 아래 코드는 프로필 사진 등록 하지 않았을 경우 들어가는 코드입니다. */}
                     <ProfileImg style={{ width: 56, height: 56 }}>
                       <Icon name="person-sharp" color="#bbb" size={23} />
                     </ProfileImg>
                     <View>
-                      {/* 간병인 이름 */}
-                      <ProfileName style={{ fontSize: 17 }}>박간병</ProfileName>
-                      {/* 지원 신청한 날짜 */}
+                      <ProfileName style={{ fontSize: 17 }}>
+                        {dataArray.user.userName}
+                      </ProfileName>
                       <ProfileDate style={{ fontSize: 15 }}>
-                        2021.07.21
+                        {dataArray.user.sex}
                       </ProfileDate>
                     </View>
                   </Profile>
@@ -169,7 +222,7 @@ export default function ProfileModal({
                   <BottomBtnRight>
                     <SubmitBtn
                       text="간병인 선택"
-                      onPress={() => Alert.alert("간병인이 선택 됩니다.")}
+                      onPress={handleSubmit(onValid)}
                     />
                   </BottomBtnRight>
                 </BottomBtnBox>

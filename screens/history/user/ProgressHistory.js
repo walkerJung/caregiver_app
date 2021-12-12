@@ -77,6 +77,7 @@ export default function ProgressHistoryUser({ navigation }) {
                       code: item.code,
                     })
                   }
+                  navigation={navigation}
                   copyToClipboard={copyToClipboard}
                 />
               );
