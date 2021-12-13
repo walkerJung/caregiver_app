@@ -90,6 +90,7 @@ export default function ProfileModal({
   setShowModal,
   dataArray,
   navigation,
+  confirm,
   children,
   title,
 }) {
@@ -208,24 +209,26 @@ export default function ProfileModal({
                     정하는 바에 의하여 연임할 수 있다.
                   </InnerTxt>
                 </ScrollBox>
-                <BottomBtnBox>
-                  <BottomBtnLeft>
-                    <Cancel
-                      activeOpacity={0.8}
-                      onPress={() => {
-                        setShowModal();
-                      }}
-                    >
-                      <CancelTxt>취소</CancelTxt>
-                    </Cancel>
-                  </BottomBtnLeft>
-                  <BottomBtnRight>
-                    <SubmitBtn
-                      text="간병인 선택"
-                      onPress={handleSubmit(onValid)}
-                    />
-                  </BottomBtnRight>
-                </BottomBtnBox>
+                {!confirm && (
+                  <BottomBtnBox>
+                    <BottomBtnLeft>
+                      <Cancel
+                        activeOpacity={0.8}
+                        onPress={() => {
+                          setShowModal();
+                        }}
+                      >
+                        <CancelTxt>취소</CancelTxt>
+                      </Cancel>
+                    </BottomBtnLeft>
+                    <BottomBtnRight>
+                      <SubmitBtn
+                        text="간병인 선택"
+                        onPress={handleSubmit(onValid)}
+                      />
+                    </BottomBtnRight>
+                  </BottomBtnBox>
+                )}
               </ModalBody>
             </Container>
           </ModalBackground>

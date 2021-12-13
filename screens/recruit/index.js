@@ -50,10 +50,14 @@ import { ANNOUNCEMENT_DETAIL_QUERY, WRITE_HOPECOST_MUTATION } from "../query";
 export default function RecruitHome({ route, navigation }) {
   const { code } = route.params;
   const [showModal, setShowModal] = useState(false);
+  const [showModal1, setShowModal1] = useState(false);
+  const [showModal2, setShowModal2] = useState(false);
   const openModal = () => {
     setShowModal((prev) => !prev);
   };
-  const [showModal2, setShowModal2] = useState(false);
+  const openModal1 = () => {
+    setShowModal1((prev) => !prev);
+  };
   const openModal2 = () => {
     setShowModal2((prev) => !prev);
   };
@@ -172,7 +176,8 @@ export default function RecruitHome({ route, navigation }) {
                   />
                 )}
               </StatusTxt>
-              {data?.viewAnnouncement?.status != 5 && (
+              {setValue("code", data.viewAnnouncement.code)}
+              {data?.viewAnnouncement?.status < 4 && (
                 <>
                   <CancelBtn text="신청 취소" onPress={openModal2} />
                   <AlertModal
@@ -180,7 +185,8 @@ export default function RecruitHome({ route, navigation }) {
                     text="정말 취소하시겠습니까?"
                     showModal={showModal2}
                     setShowModal={setShowModal2}
-                    onPress={() => Alert.alert("누르면 신청이 취소됩니다.")}
+                    announcementCode={data.viewAnnouncement.code}
+                    navigation={navigation}
                   />
                 </>
               )}
@@ -208,13 +214,14 @@ export default function RecruitHome({ route, navigation }) {
                     </Profile>
                   </View>
                   <View>
-                    <GoViewBtn onPress={openModal} text="간병인 자세히" />
+                    <GoViewBtn onPress={openModal1} text="간병인 자세히" />
                   </View>
                 </FlexBoth>
-
                 <ProfileModal
-                  showModal={showModal}
-                  setShowModal={setShowModal}
+                  showModal={showModal1}
+                  setShowModal={setShowModal1}
+                  dataArray={caregiverInfo}
+                  confirm={true}
                 />
               </Card>
             )}

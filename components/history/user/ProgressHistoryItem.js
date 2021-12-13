@@ -32,13 +32,15 @@ import { ErrorsText } from "../../../components/join/JoinStyle";
 import NumberFormat from "react-number-format";
 import { FormInput, SubmitBtn } from "../../form/CareFormStyle";
 import { useForm } from "react-hook-form";
-import { useQuery, useMutation } from "@apollo/client";
-import {
-  USER_DETAIL_QUERY,
-  WRITE_HOPECOST_MUTATION,
-} from "../../../screens/query";
+import { useMutation } from "@apollo/client";
+import { WRITE_HOPECOST_MUTATION } from "../../../screens/query";
+import CurrencyInput from "react-native-currency-input";
 
 export default function Item({ onPress, item, copyToClipboard, navigation }) {
+  const [number, setNumber] = useState();
+  const caregiverInfo = item.announcementApplication?.find((element) => {
+    return element.confirm == true;
+  });
   const [showModal, setShowModal] = useState(false);
   const openModal = () => {
     setShowModal((prev) => !prev);
@@ -72,12 +74,6 @@ export default function Item({ onPress, item, copyToClipboard, navigation }) {
       deposit: true,
     },
   };
-
-  const { data, loading } = useQuery(USER_DETAIL_QUERY, {
-    variables: {
-      code: item.confirmCaregiverCode,
-    },
-  });
 
   const {
     register,
@@ -118,6 +114,11 @@ export default function Item({ onPress, item, copyToClipboard, navigation }) {
     }
   };
 
+  const handleHopeCost = (param) => {
+    setNumber(param);
+    setValue("hopeCost", param);
+  };
+
   useEffect(() => {
     register("hopeCost", {
       required: "* 희망 간병비를 입력해주세요",
@@ -153,27 +154,25 @@ export default function Item({ onPress, item, copyToClipboard, navigation }) {
 
         {ChoiceItemStyle[item.status].deposit && (
           <>
-            {!loading && (
-              <>
-                <List>
-                  <ListTitBox>
-                    <ListTit>
-                      <Icon name="person-outline" size={14} color="#979797" />{" "}
-                      담당 간병인
-                    </ListTit>
-                  </ListTitBox>
-                  <ListTxtColor>{data?.viewProfile?.userName}</ListTxtColor>
-                </List>
-                <List>
-                  <ListTitBox>
-                    <ListTit>
-                      <Icon name="person-outline" size={14} color="#979797" />{" "}
-                      담당 간병인 연락처
-                    </ListTit>
-                  </ListTitBox>
-                  <ListTxtColor>{data?.viewProfile?.phone}</ListTxtColor>
-                </List>
-              </>
+            <List>
+              <ListTitBox>
+                <ListTit>
+                  <Icon name="person-outline" size={14} color="#979797" /> 담당
+                  간병인
+                </ListTit>
+              </ListTitBox>
+              <ListTxtColor>{caregiverInfo?.user?.userName}</ListTxtColor>
+            </List>
+            {item.status >= 5 && (
+              <List>
+                <ListTitBox>
+                  <ListTit>
+                    <Icon name="person-outline" size={14} color="#979797" />{" "}
+                    담당 간병인 연락처
+                  </ListTit>
+                </ListTitBox>
+                <ListTxtColor>{caregiverInfo?.user?.phone}</ListTxtColor>
+              </List>
             )}
 
             <List>
@@ -183,7 +182,20 @@ export default function Item({ onPress, item, copyToClipboard, navigation }) {
                   금액
                 </ListTit>
               </ListTitBox>
-              <ListTxtColor>165,000원</ListTxtColor>
+              <ListTxtColor>
+                <NumberFormat
+                  value={Math.floor(
+                    caregiverInfo.caregiverCost / 9 +
+                      caregiverInfo.caregiverCost
+                  )}
+                  displayType={"text"}
+                  thousandSeparator={true}
+                  suffix={"원"}
+                  renderText={(formattedValue) => (
+                    <Price>{formattedValue}</Price>
+                  )}
+                />
+              </ListTxtColor>
               <ClipboardBtn
                 activeOpacity={0.8}
                 onPress={() => copyToClipboard("농협 123-12345678-12")}
@@ -263,12 +275,17 @@ export default function Item({ onPress, item, copyToClipboard, navigation }) {
                   )}
                 />
               </FlexBoth>
-              <FormInput
+              <CurrencyInput
+                style={styles.test}
+                value={number}
+                onChangeValue={handleHopeCost}
+                suffix="원"
+                delimiter=","
+                separator="."
+                precision={0}
+                keyboardType="numbers-and-punctuation"
                 placeholder="희망간병비를 입력해 주세요."
                 placeholderTextColor={"#979797"}
-                returnKeyType="done"
-                keyboardType="numbers-and-punctuation"
-                onChangeText={(text) => setValue("hopeCost", text)}
               />
               {setValue("code", item.code)}
               {errors.hopeCost && (
@@ -315,5 +332,17 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.23,
     shadowRadius: 2.62,
     elevation: 6,
+  },
+  test: {
+    backgroundColor: "#fff",
+    paddingVertical: 12,
+    paddingHorizontal: 12,
+    borderRadius: 8,
+    borderColor: "#ddd",
+    borderWidth: 1,
+    height: 48,
+    fontSize: 16,
+    marginBottom: 10,
+    color: "#111",
   },
 });

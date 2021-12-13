@@ -42,6 +42,7 @@
     "react-native-app-intro-slider": "^4.0.4",
     "react-native-bit-swiper": "^1.1.8",
     "react-native-clipboard-toast": "^1.0.0",
+    "react-native-currency-input": "^1.0.1",
     "react-native-easy-toast": "^2.0.0",
     "react-native-fontawesome-pro": "^2.1.0",
     "react-native-gesture-handler": "^1.10.3",

@@ -2,6 +2,7 @@ import React from "react";
 import { ActivityIndicator, Text } from "react-native";
 import styled from "styled-components/native";
 import { careTheme } from "../../contents";
+import CurrencyInput from "react-native-currency-input";
 
 export const KeyboardAvoidingView = styled.KeyboardAvoidingView`
   flex: 1;
@@ -95,6 +96,7 @@ export const FormInput = ({
   error,
   editable,
   value,
+  suffix,
 }) => {
   const InputBox = styled.View`
     flex: 1;
@@ -145,6 +147,7 @@ export const FormInput = ({
             error={error}
             editable={editable}
             value={value}
+            suffix={suffix}
           />
         </InputBox>
         {text && (

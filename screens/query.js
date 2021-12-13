@@ -233,6 +233,16 @@ export const ANNOUNCEMENT_DETAIL_QUERY = gql`
   }
 `;
 
+// 간병서비스 신청 취소
+export const DELETE_ANNOUNCEMENT_MUTATION = gql`
+  mutation deleteAnnouncement($announcementCode: Int!) {
+    deleteAnnouncement(announcementCode: $announcementCode) {
+      ok
+      error
+    }
+  }
+`;
+
 // 희망간병비 입력
 export const WRITE_HOPECOST_MUTATION = gql`
   mutation writeHopeCost($code: Int!, $hopeCost: Int!) {

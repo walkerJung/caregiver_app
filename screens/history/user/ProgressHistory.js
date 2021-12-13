@@ -1,12 +1,5 @@
 import React, { useState, useCallback, useRef } from "react";
-import {
-  View,
-  Text,
-  RefreshControl,
-  Alert,
-  Clipboard,
-  TouchableHighlight,
-} from "react-native";
+import { View, Text, Alert, Clipboard, TouchableHighlight } from "react-native";
 import {
   ScrollView,
   Container,
@@ -40,33 +33,20 @@ export default function ProgressHistoryUser({ navigation }) {
     Clipboard.setString(text);
     showCopyToast();
   };
-
-  // 새로고침 시작
-  const [refreshing, setRefreshing] = useState(false);
-
-  //refreshcontrol을 호출할 때 실행되는 callback함수
-  const onRefresh = useCallback(() => {
-    setRefreshing(true);
-    wait(1000).then(() => setRefreshing(false));
-  }, []);
-
   const userInfo = JSON.parse(useReactiveVar(memberVar));
   const { data, loading } = useQuery(ANNOUNCEMENT_LIST_QUERY, {
     fetchPolicy: "network-only",
     variables: {
       userCode: userInfo.code,
     },
+    pollInterval: 500,
   });
 
   return (
     <>
-      <ScrollView
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }
-      >
+      <ScrollView>
         <Container>
-          {!loading && data?.listAnnouncement?.announcements ? (
+          {!loading && data?.listAnnouncement?.announcements.length > 0 ? (
             data?.listAnnouncement?.announcements?.map((item, index) => {
               return (
                 <Item

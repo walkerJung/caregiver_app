@@ -1,9 +1,13 @@
 import React, { useState } from "react";
-import { View, StyleSheet, Text, Button } from "react-native";
+import { View, StyleSheet, Text, Button, Alert } from "react-native";
 import styled from "styled-components/native";
 import Modal from "react-native-modal";
 import Icon from "react-native-vector-icons/Ionicons";
 import { SubmitBtn } from "../form/CareFormStyle";
+import { useForm } from "react-hook-form";
+import { useMutation } from "@apollo/client";
+import { DELETE_ANNOUNCEMENT_MUTATION } from "../../screens/query";
+
 const ModalBackground = styled.View`
   flex: 1;
   justify-content: center;
@@ -47,8 +51,45 @@ export default function AlertModal({
   children,
   title,
   text,
-  onPress,
+  announcementCode,
+  navigation,
 }) {
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    getValues,
+    formState: { errors },
+    watch,
+  } = useForm();
+
+  const onCompleted = (data) => {
+    Alert.alert("간병서비스가 취소 되었습니다.");
+    navigation.navigate("ProgressHistoryUser");
+  };
+
+  const [deleteAnnouncementMutation] = useMutation(
+    DELETE_ANNOUNCEMENT_MUTATION,
+    {
+      onCompleted,
+    }
+  );
+
+  const onValid = async () => {
+    try {
+      await deleteAnnouncementMutation({
+        variables: {
+          announcementCode: announcementCode,
+        },
+      });
+    } catch (e) {
+      console.log(e);
+      var error = e.toString();
+      error = error.replace("Error: ", "");
+      Alert.alert(`${error}`);
+    }
+  };
+
   return (
     <>
       {showModal ? (
@@ -88,7 +129,7 @@ export default function AlertModal({
               <ModalBody>
                 <ModalBodyTxt>{text}</ModalBodyTxt>
                 <View style={{ marginBottom: 20 }}>{children}</View>
-                <SubmitBtn small text="확인" onPress={onPress} />
+                <SubmitBtn small text="확인" onPress={handleSubmit(onValid)} />
               </ModalBody>
             </Container>
           </ModalBackground>
