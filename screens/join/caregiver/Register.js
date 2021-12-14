@@ -313,7 +313,7 @@ export default function CaregiverRegister({ navigation }) {
             ref={phoneRef}
             placeholder="- 빼고 입력해주세요."
             placeholderTextColor={"#979797"}
-            keyboardType="numeric"
+            keyboardType="number-pad"
             autoCapitalize="none"
             returnKeyType="next"
             onChangeText={(text) => setValue("phone", text)}
@@ -405,7 +405,7 @@ export default function CaregiverRegister({ navigation }) {
             <FormInput
               placeholder="앞 번호 6자리"
               placeholderTextColor={"#979797"}
-              keyboardType="numeric"
+              keyboardType="number-pad"
               returnKeyType="next"
               maxLength={6}
               style={{ flex: 1, marginRight: 5 }}
@@ -415,7 +415,7 @@ export default function CaregiverRegister({ navigation }) {
             <FormInput
               placeholder="뒷 번호 7자리"
               placeholderTextColor={"#979797"}
-              keyboardType="numeric"
+              keyboardType="number-pad"
               returnKeyType="next"
               secureTextEntry
               maxLength={7}

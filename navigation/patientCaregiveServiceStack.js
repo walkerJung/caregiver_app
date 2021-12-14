@@ -38,14 +38,6 @@ export default function PatientCaregiveServiceStack() {
         }}
       />
       <Stack.Screen
-        name="CompleteHistoryUser"
-        component={CompleteHistoryUser}
-        options={{
-          headerShown: false,
-          title: "간병 서비스 완료 목록",
-        }}
-      />
-      <Stack.Screen
         name="RecruitHome"
         component={RecruitHome}
         options={{
@@ -59,6 +51,15 @@ export default function PatientCaregiveServiceStack() {
         options={{
           headerShown: true,
           title: "간병인 선택",
+        }}
+      />
+      {/* 언제쓰는지 모르는화면 */}
+      <Stack.Screen
+        name="CompleteHistoryUser"
+        component={CompleteHistoryUser}
+        options={{
+          headerShown: false,
+          title: "간병 서비스 완료 목록",
         }}
       />
       <Stack.Screen

@@ -186,6 +186,7 @@ export default function UserRegister({ navigation }) {
             placeholder="- 빼고 입력해주세요."
             placeholderTextColor={"#979797"}
             autoCapitalize="none"
+            keyboardType="number-pad"
             returnKeyType="next"
             onChangeText={(text) => setValue("phone", text)}
           />

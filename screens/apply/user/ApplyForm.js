@@ -157,6 +157,14 @@ export default function ApplyForm({ navigation }) {
     });
     register("endDate", {
       required: "* 간병 종료일을 선택해주세요.",
+      validate: (value) => {
+        let startDate = new Date(watch("startDate"));
+        let endDate = new Date(value);
+
+        return endDate < startDate
+          ? "* 간병 시작일과 간병 종료일을 확인해주세요."
+          : undefined;
+      },
     });
     register("endTime", {
       required: "* 종료 시간을 선택해주세요.",
@@ -448,11 +456,13 @@ export default function ApplyForm({ navigation }) {
             placeholder="연락처 (-)제외"
             placeholderTextColor={"#979797"}
             returnKeyType="next"
-            keyboardType="numbers-and-punctuation"
+            keyboardType="number-pad"
             onChangeText={(text) => {
               setValue("protectorPhone", text);
             }}
             value={getValues("protectorPhone")}
+            maxLength={11}
+            type="number"
           />
           {errors.protectorPhone && (
             <ErrorsText>{errors.protectorPhone.message}</ErrorsText>
@@ -484,7 +494,7 @@ export default function ApplyForm({ navigation }) {
             placeholder="나이"
             placeholderTextColor={"#979797"}
             returnKeyType="next"
-            keyboardType="numbers-and-punctuation"
+            keyboardType="number-pad"
             maxLength={3}
             text="세"
             onChangeText={(text) => {
@@ -503,7 +513,7 @@ export default function ApplyForm({ navigation }) {
             placeholder="몸무게"
             placeholderTextColor={"#979797"}
             returnKeyType="next"
-            keyboardType="numbers-and-punctuation"
+            keyboardType="number-pad"
             maxLength={3}
             text="kg"
             onChangeText={(text) => {
