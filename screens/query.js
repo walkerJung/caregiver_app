@@ -391,8 +391,8 @@ export const EDIT_CAREGIVERINFO_MUTATION = gql`
     $userCode: Int!
     $address: String
     $addressDetail: String
-    $idCard: String
-    $bankInfo: String
+    $idCard: Upload
+    $bankInfo: Upload
     $smoke: String
     $drink: String
     $mealCare: String

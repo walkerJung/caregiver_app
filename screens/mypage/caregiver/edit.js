@@ -1,23 +1,21 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import SectionLayout from "../../../components/layout/SectionLayout";
 import Modal from "react-native-modal";
 import FormLayout from "../../../components/form/FormLayout";
 import DefaultLayout from "../../../components/layout/DefaultLayout";
-import Icon from "react-native-vector-icons/Ionicons";
-import { Alert, Dimensions, Image } from "react-native";
+import { Dimensions } from "react-native";
 import { ListGo } from "../../../components/form/ListStyle";
 import { ListUpload } from "../../../components/form/UploadStyle";
 import { useReactiveVar } from "@apollo/client";
 import { memberVar } from "../../../apollo";
 import { useQuery } from "@apollo/client";
 import { USER_DETAIL_QUERY } from "../../query";
-import * as ImagePicker from "expo-image-picker";
-import { ReactNativeFile } from "apollo-upload-client";
 
 import {
   StepNum,
   StepTxt,
   StepTxtBox,
+  PhotoBox,
 } from "../../../components/join/JoinStyle";
 import { SafeAreaView } from "react-native-safe-area-context";
 import styled from "styled-components/native";
@@ -45,7 +43,6 @@ export const ModalBody = styled.View`
   background-color: #fff;
 `;
 export default function EditCaregiver({ navigation }) {
-  const [idCard, setIdCard] = useState(null);
   const [bankInfo, setBankInfo] = useState(null);
   const [isModalVisible, setModalVisible] = useState(false);
   const toggleModal = () => {
@@ -58,30 +55,6 @@ export default function EditCaregiver({ navigation }) {
       code: userInfo.code,
     },
   });
-  const pickImage = async (set, value) => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
-
-    if (!result.cancelled) {
-      set(result.uri), setValue(value, result.uri);
-    }
-  };
-
-  useEffect(() => {
-    (async () => {
-      if (Platform.OS !== "web") {
-        const { status } =
-          await ImagePicker.requestMediaLibraryPermissionsAsync();
-        if (status !== "granted") {
-          alert("Sorry, we need camera roll permissions to make this work!");
-        }
-      }
-    })();
-  }, []);
 
   return (
     <>
@@ -150,24 +123,28 @@ export default function EditCaregiver({ navigation }) {
               disabled
               error="주민등록번호는 수정이 필요한 경우, 케어코리아에 문의주세요."
             />
-            {idCard ? (
-              <Image
-                style={{ width: "100%", height: "100%" }}
-                source={{ uri: idCard }}
-                resizeMode={"contain"}
-              />
-            ) : (
-              <Icon name="add-outline" size={23} style={{ color: "#979797" }} />
-            )}
+            <ListGo
+              title="간병인 상세정보"
+              value="간병인 상세정보 변경"
+              onPress={() => navigation.navigate("EditDetailCaregiver")}
+              icon
+            />
             <ListUpload
-              title="주민등록증"
+              title="신분증"
               icon
               text="파일첨부"
               onPress={() => {
-                pickImage(setIdCard, "idCard");
+                navigation.navigate("EditIdCardCaregiver");
               }}
             />
-            <ListUpload title="통장사본 첨부" icon text="파일첨부" />
+            <ListUpload
+              title="통장사본"
+              icon
+              text="파일첨부"
+              onPress={() => {
+                navigation.navigate("EditBankInfoCaregiver");
+              }}
+            />
           </SectionLayout>
         </DefaultLayout>
       )}

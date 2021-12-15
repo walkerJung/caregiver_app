@@ -73,18 +73,6 @@ export default function CaregiverRegister({ navigation }) {
 
   const onValid = async (data) => {
     if (!loading) {
-      // const idCard = new ReactNativeFile({
-      //   uri: data.idCard,
-      //   name: data.userId + "_idCard",
-      //   type: "image/jpeg",
-      // });
-
-      // const bankInfo = new ReactNativeFile({
-      //   uri: data.bankInfo,
-      //   name: data.userId + "_bankInfo",
-      //   type: "image/jpeg",
-      // });
-
       try {
         await createAccountMutation({
           variables: {

@@ -5,8 +5,9 @@ import EditNameCaregiver from "../screens/mypage/caregiver/nameEdit";
 import EditPhoneCaregiver from "../screens/mypage/caregiver/phoneEdit";
 import EditPasswordCaregiver from "../screens/mypage/caregiver/passwordEdit";
 import EditAddressCaregiver from "../screens/mypage/caregiver/addressEdit";
+import EditIdCardCaregiver from "../screens/mypage/caregiver/idCardEdit";
+import EditBankInfoCaregiver from "../screens/mypage/caregiver/bankInfoEdit";
 import EditDetailCaregiver from "../screens/mypage/caregiver/editDetail";
-import EditPasswordUser from "../screens/mypage/caregiver/passwordEdit";
 
 const Stack = createStackNavigator();
 
@@ -68,6 +69,30 @@ export default function CaregiverMypageProfileStack() {
         component={EditAddressCaregiver}
         options={{
           title: "주소 변경",
+          headerShown: true,
+        }}
+      />
+      <Stack.Screen
+        name="EditDetailCaregiver"
+        component={EditDetailCaregiver}
+        options={{
+          title: "간병인 상세정보 변경",
+          headerShown: true,
+        }}
+      />
+      <Stack.Screen
+        name="EditIdCardCaregiver"
+        component={EditIdCardCaregiver}
+        options={{
+          title: "신분증 사진 변경",
+          headerShown: true,
+        }}
+      />
+      <Stack.Screen
+        name="EditBankInfoCaregiver"
+        component={EditBankInfoCaregiver}
+        options={{
+          title: "통장사본 사진 변경",
           headerShown: true,
         }}
       />
