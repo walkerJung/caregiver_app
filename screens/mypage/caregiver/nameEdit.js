@@ -14,15 +14,15 @@ import { useReactiveVar } from "@apollo/client";
 import { memberVar } from "../../../apollo";
 import { Alert } from "react-native";
 
-export default function EditPhoneUser({ navigation }) {
+export default function EditNameCaregiver({ navigation }) {
   const userInfo = JSON.parse(useReactiveVar(memberVar));
-  const [phone, setPhone] = useState(userInfo.phone);
+  const [userName, setUserName] = useState(userInfo.userName);
   const {
     handleSubmit,
     formState: { errors },
   } = useForm();
 
-  const phoneRef = useRef();
+  const nameRef = useRef();
 
   const { data, loading } = useQuery(USER_DETAIL_QUERY, {
     fetchPolicy: "network-only",
@@ -33,7 +33,7 @@ export default function EditPhoneUser({ navigation }) {
 
   const onCompleted = async (data) => {
     if (data.editAccount.ok) {
-      navigation.navigate("EditUser");
+      navigation.navigate("EditCaregiver");
     } else {
       Alert.alert("회원정보 변경에 실패하였습니다.");
     }
@@ -59,28 +59,27 @@ export default function EditPhoneUser({ navigation }) {
       editUserMutation({
         variables: {
           userCode: userInfo.code,
-          phone,
+          userName,
         },
       });
     }
   };
-
   return (
     <>
       {!loading && (
         <WriteLayout>
           <FormBox>
             <FormLabelBox>
-              <FormLabel>연락처 변경</FormLabel>
+              <FormLabel>이름 변경</FormLabel>
             </FormLabelBox>
             <FormInput
-              ref={phoneRef}
-              placeholder="연락처"
-              keyboardType="numeric"
+              ref={nameRef}
+              placeholder="이름"
+              retunKeyType="next"
               blurOnSubmit={true}
-              defaultValue={data.viewProfile.phone}
+              defaultValue={data.viewProfile.userName}
               onChangeText={(text) => {
-                setPhone(text);
+                setUserName(text);
               }}
             />
           </FormBox>

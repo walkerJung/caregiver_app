@@ -50,7 +50,6 @@ export default function EditPasswordUser({ navigation }) {
   );
 
   const onValid = (data) => {
-    console.log(data);
     if (!mutationLoading) {
       editUserMutation({
         variables: {

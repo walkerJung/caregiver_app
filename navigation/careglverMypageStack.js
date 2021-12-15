@@ -8,6 +8,8 @@ import EditCaregiver from "../screens/mypage/caregiver/edit"; //수정 페이지
 import EditPasswordCaregiver from "../screens/mypage/caregiver/passwordEdit"; //비밀번호 변경
 import EditRRNnumberCaregiver from "../screens/mypage/caregiver/RRNnumberEdit"; //주민등록번호 변경
 import EditAddressCaregiver from "../screens/mypage/caregiver/addressEdit"; //주소변경
+import CaregiverMypageNoticeStack from "./caregiverMypageNoticeStack";
+import CaregiverMypageProfileStack from "./caregiverMypageProfileStack";
 import EditPhoneCaregiver from "../screens/mypage/caregiver/phoneEdit"; //핸드폰번호 변경
 import EditDetailCaregiver from "../screens/mypage/caregiver/editDetail"; //상세정보 변경
 import EditGenderCaregiver from "../screens/mypage/caregiver/genderEdit"; // 성별변경
@@ -17,9 +19,9 @@ const Stack = createStackNavigator();
 export default function careglverMypageStack() {
   return (
     <Stack.Navigator
-      initialRouteName="MypageUser"
+      initialRouteName="MypageCaregiver"
       screenOptions={{
-        headerShown: false,
+        headerShown: true,
         gestureEnabled: false,
         cardStyle: { backgroundColor: "#fff" },
         headerBackTitleVisible: false,
@@ -35,42 +37,24 @@ export default function careglverMypageStack() {
       }}
       cardStyle={{ backgroundColor: "transparent" }}
     >
-      {/* 마이페이지 탭 클릭시 화면 */}
       <Stack.Screen
-        name="마이페이지"
+        name="MypageCaregiver"
         component={MypageCaregiver}
         options={{
-          headerShown: false,
+          title: "마이페이지",
+          headerShown: true,
         }}
       />
-      {/* 내 정보 수정 Stack */}
       <Stack.Screen
-        name="EditCaregiver"
-        component={EditCaregiver}
+        name="CaregiverMypageProfileStack"
+        component={CaregiverMypageProfileStack}
         options={{
           headerShown: false,
         }}
       />
-      {/* 비밀번호 수정 Stack */}
       <Stack.Screen
-        name="EditRRNnumberCaregiver"
-        component={EditRRNnumberCaregiver}
-        options={{
-          headerShown: false,
-        }}
-      />
-      {/* 내 정보 수정 Stack */}
-      <Stack.Screen
-        name="EditAddressCaregiver"
-        component={EditAddressCaregiver}
-        options={{
-          headerShown: false,
-        }}
-      />
-      {/* 공지사항 Stack */}
-      <Stack.Screen
-        name="EditPasswordCaregiver"
-        component={EditPasswordCaregiver}
+        name="CaregiverMypageNoticeStack"
+        component={CaregiverMypageNoticeStack}
         options={{
           headerShown: false,
         }}

@@ -147,8 +147,8 @@ export const WRITE_ANNOUNCEMENT_MUTATION = gql`
 
 // 환자 간병 서비스
 export const ANNOUNCEMENT_LIST_QUERY = gql`
-  query listAnnouncement($userCode: Int!) {
-    listAnnouncement(userCode: $userCode) {
+  query listAnnouncement($userCode: Int, $status: Int) {
+    listAnnouncement(userCode: $userCode, status: $status) {
       result
       announcements {
         code
@@ -161,6 +161,7 @@ export const ANNOUNCEMENT_LIST_QUERY = gql`
         address
         addressDetail
         expectedCost
+        hopeCost
         announcementApplication {
           code
           userCode
@@ -172,6 +173,66 @@ export const ANNOUNCEMENT_LIST_QUERY = gql`
             userName
             sex
             phone
+          }
+        }
+      }
+    }
+  }
+`;
+// 간병인 지원 간병서비스 내역
+export const ANNOUNCEMENTAPPLICATION_LIST_QUERY = gql`
+  query listAnnouncementApplication($userCode: Int!) {
+    listAnnouncementApplication(userCode: $userCode) {
+      announcementApplications {
+        code
+        caregiverCost
+        announcement {
+          code
+          status
+          confirmCaregiverCode
+          userCode
+          needMealCare
+          needUrineCare
+          needSuctionCare
+          needMoveCare
+          needBedCare
+          needHygieneCare
+          caregiverMeal
+          infectiousDisease
+          title
+          startDate
+          endDate
+          expectedCost
+          hopeCost
+          protectorName
+          protectorPhone
+          patientName
+          patientAge
+          patientWeight
+          address
+          addressDetail
+          nursingGrade
+          disease
+          isolation
+          createdAt
+          user {
+            userId
+            userName
+            sex
+            phone
+          }
+          announcementApplication {
+            userCode
+            caregiverCost
+            confirm
+            announcementCode
+            caregiverCost
+            user {
+              userId
+              userName
+              sex
+              phone
+            }
           }
         }
       }
@@ -222,6 +283,7 @@ export const ANNOUNCEMENT_DETAIL_QUERY = gql`
         caregiverCost
         confirm
         announcementCode
+        caregiverCost
         user {
           userId
           userName
@@ -253,6 +315,19 @@ export const WRITE_HOPECOST_MUTATION = gql`
   }
 `;
 
+// 본인간병비 입력
+export const WRITE_CAREGIVERCOST_MUTATION = gql`
+  mutation writeCaregiverCost($announcementCode: Int!, $caregiverCost: Int!) {
+    writeCaregiverCost(
+      announcementCode: $announcementCode
+      caregiverCost: $caregiverCost
+    ) {
+      ok
+      error
+    }
+  }
+`;
+
 // 간병인 선택
 export const CHOICE_CAREGIVER_MUTATION = gql`
   mutation choiceCaregiver($code: Int!, $announcementCode: Int!) {
@@ -263,7 +338,7 @@ export const CHOICE_CAREGIVER_MUTATION = gql`
   }
 `;
 
-// 환자 마이페이지
+// 마이페이지
 export const USER_DETAIL_QUERY = gql`
   query viewProfile($code: Int!) {
     viewProfile(code: $code) {
@@ -304,6 +379,41 @@ export const EDIT_USER_MUTATION = gql`
       phone: $phone
       userName: $userName
       password: $password
+    ) {
+      ok
+      error
+    }
+  }
+`;
+
+export const EDIT_CAREGIVERINFO_MUTATION = gql`
+  mutation editCaregiverInfo(
+    $userCode: Int!
+    $address: String
+    $addressDetail: String
+    $idCard: String
+    $bankInfo: String
+    $smoke: String
+    $drink: String
+    $mealCare: String
+    $urineCare: String
+    $suctionCare: String
+    $moveCare: String
+    $bedCare: String
+  ) {
+    editCaregiverInfo(
+      userCode: $userCode
+      address: $address
+      addressDetail: $addressDetail
+      idCard: $idCard
+      bankInfo: $bankInfo
+      smoke: $smoke
+      drink: $drink
+      mealCare: $mealCare
+      urineCare: $urineCare
+      suctionCare: $suctionCare
+      moveCare: $moveCare
+      bedCare: $bedCare
     ) {
       ok
       error

@@ -33,12 +33,8 @@ import { useForm } from "react-hook-form";
 import { useMutation } from "@apollo/client";
 import { CREATE_ACCOUNT_MUTATION } from "../../query";
 import Postcode from "@actbase/react-daum-postcode";
-// import * as ImagePicker from "expo-image-picker";
-// import { ReactNativeFile } from "apollo-upload-client";
 
 export default function CaregiverRegister({ navigation }) {
-  const [idCard, setIdCard] = useState(null);
-  const [bankInfo, setBankInfo] = useState(null);
   const [isModal, setModal] = useState("none");
   const [selectMealText, setSelectMealText] = useState("");
   const [selectUrineText, setSelectUrineText] = useState("");
@@ -129,19 +125,6 @@ export default function CaregiverRegister({ navigation }) {
     setValue(set, value), setState(value);
   };
 
-  const pickImage = async (set, value) => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
-
-    if (!result.cancelled) {
-      set(result.uri), setValue(value, result.uri);
-    }
-  };
-
   const passwordRef = useRef();
   const passwordConfirmRef = useRef();
   const usernameRef = useRef();
@@ -215,18 +198,6 @@ export default function CaregiverRegister({ navigation }) {
       required: "* 가능한 음주 여부를 선택해주세요.",
     });
   }, [register]);
-
-  // useEffect(() => {
-  //   (async () => {
-  //     if (Platform.OS !== "web") {
-  //       const { status } =
-  //         await ImagePicker.requestMediaLibraryPermissionsAsync();
-  //       if (status !== "granted") {
-  //         alert("Sorry, we need camera roll permissions to make this work!");
-  //       }
-  //     }
-  //   })();
-  // }, []);
 
   return (
     <WriteLayout>
@@ -317,6 +288,7 @@ export default function CaregiverRegister({ navigation }) {
             autoCapitalize="none"
             returnKeyType="next"
             onChangeText={(text) => setValue("phone", text)}
+            maxLength={11}
           />
           {errors.phone && <ErrorsText>{errors.phone.message}</ErrorsText>}
         </FormBox>
@@ -346,7 +318,7 @@ export default function CaregiverRegister({ navigation }) {
 
         <FormBox>
           <FormLabelBox>
-            <FormLabel>실거주주소</FormLabel>
+            <FormLabel>실거주 주소</FormLabel>
           </FormLabelBox>
           <FlexRow>
             <LeftBtnBox>
@@ -385,7 +357,6 @@ export default function CaregiverRegister({ navigation }) {
             jsOptions={{ animation: true }}
             onSelected={(data) => handleAddress(data)}
           />
-          {/* 상세주소 입력하는 input */}
           <FormInput
             placeholder="상세주소"
             placeholderTextColor={"#979797"}

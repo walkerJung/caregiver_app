@@ -46,9 +46,11 @@ import DefulatLayout from "../../components/layout/DefaultLayout";
 import { useForm } from "react-hook-form";
 import { useQuery, useMutation } from "@apollo/client";
 import { ANNOUNCEMENT_DETAIL_QUERY, WRITE_HOPECOST_MUTATION } from "../query";
+import CurrencyInput from "react-native-currency-input";
 
 export default function RecruitHome({ route, navigation }) {
   const { code } = route.params;
+  const [number, setNumber] = useState();
   const [showModal, setShowModal] = useState(false);
   const [showModal1, setShowModal1] = useState(false);
   const [showModal2, setShowModal2] = useState(false);
@@ -142,6 +144,11 @@ export default function RecruitHome({ route, navigation }) {
       error = error.replace("Error: ", "");
       Alert.alert(`${error}`);
     }
+  };
+
+  const handleHopeCost = (param) => {
+    setNumber(param);
+    setValue("hopeCost", param);
   };
 
   useEffect(() => {
@@ -241,7 +248,6 @@ export default function RecruitHome({ route, navigation }) {
                     <Icon name="calendar-outline" size={14} color="#979797" />{" "}
                     간병 기간
                   </ListTit>
-                  {/* applyform 수정 페이지로 이동합니다. */}
                   <EditBtn
                     activeOpacity={0.8}
                     onPress={() =>
@@ -298,7 +304,7 @@ export default function RecruitHome({ route, navigation }) {
                     보호자 연락처
                   </ListTit>
                 </ListTitBox>
-                <ListTxt>ㅊㅊㅊ</ListTxt>
+                <ListTxt>{data.viewAnnouncement.protectorPhone}</ListTxt>
               </List>
             </Card2>
 
@@ -405,12 +411,17 @@ export default function RecruitHome({ route, navigation }) {
                       )}
                     />
                   </FlexBoth>
-                  <FormInput
+                  <CurrencyInput
+                    style={styles.test}
+                    value={number}
+                    onChangeValue={handleHopeCost}
+                    suffix="원"
+                    delimiter=","
+                    separator="."
+                    precision={0}
+                    keyboardType="number-pad"
                     placeholder="희망간병비를 입력해 주세요."
                     placeholderTextColor={"#979797"}
-                    returnKeyType="done"
-                    keyboardType="numbers-and-punctuation"
-                    onChangeText={(text) => setValue("hopeCost", text)}
                   />
                   {setValue("code", data.viewAnnouncement.code)}
                   {errors.hopeCost && (
@@ -446,5 +457,17 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.23,
     shadowRadius: 2.62,
     elevation: 6,
+  },
+  test: {
+    backgroundColor: "#fff",
+    paddingVertical: 12,
+    paddingHorizontal: 12,
+    borderRadius: 8,
+    borderColor: "#ddd",
+    borderWidth: 1,
+    height: 48,
+    fontSize: 16,
+    marginBottom: 10,
+    color: "#111",
   },
 });

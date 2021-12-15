@@ -109,7 +109,7 @@ export default function UserRegister({ navigation }) {
 
         <FormBox>
           <FormLabelBox>
-            <FormLabel>아이디(이메일)</FormLabel>
+            <FormLabel>아이디</FormLabel>
           </FormLabelBox>
 
           <FormInput
@@ -189,6 +189,7 @@ export default function UserRegister({ navigation }) {
             keyboardType="number-pad"
             returnKeyType="next"
             onChangeText={(text) => setValue("phone", text)}
+            maxLength={11}
           />
           {errors.phone && <ErrorsText>{errors.phone.message}</ErrorsText>}
         </FormBox>

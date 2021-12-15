@@ -19,7 +19,6 @@ import MainButton from "../../components/main/MainButton";
 import MainNotice from "./MainNotice";
 import MainSwiper from "./MainSwiper";
 import logo from "../../assets/img/main_logo.png";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { useQuery } from "@apollo/client";
 import { NOTICE_LIST_QUERY } from "../query";
 
@@ -73,7 +72,7 @@ export default function PatientMain({ navigation }) {
 
           <NotiBox>
             <MainTitle>공지사항</MainTitle>
-            <MainNotice data={data} />
+            <MainNotice data={data} navigation={navigation} />
           </NotiBox>
 
           <SectionLayout last={true}>

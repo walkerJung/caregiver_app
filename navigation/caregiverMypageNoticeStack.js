@@ -1,17 +1,16 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
+import NoticeList from "../screens/board/NoticeList";
+import NoticeView from "../screens/board/NoticeView";
 
 const Stack = createStackNavigator();
 
-import ProgressHistoryCaregiver from "../screens/history/caregiver/ProgressHistory";
-import AnnouncementView from "../screens/apply/caregiver/ApplyView";
-
-export default function HistoryStackCaregiver() {
+export default function CaregiverMypageNoticeStack() {
   return (
     <Stack.Navigator
-      initialRouteName="ProgressHistoryCaregiver"
+      initialRouteName="NoticeList"
       screenOptions={{
-        headerShown: true,
+        headerShown: false,
         gestureEnabled: false,
         cardStyle: { backgroundColor: "#fff" },
         headerBackTitleVisible: false,
@@ -25,16 +24,23 @@ export default function HistoryStackCaregiver() {
           shadowOpacity: 0, // for ios
         },
       }}
+      cardStyle={{ backgroundColor: "transparent" }}
     >
       <Stack.Screen
-        name="ProgressHistoryCaregiver"
-        component={ProgressHistoryCaregiver}
-        options={{ title: "간병인 신청 내역" }}
+        name="NoticeList"
+        component={NoticeList}
+        options={{
+          title: "공지사항",
+          headerShown: true,
+        }}
       />
       <Stack.Screen
-        name="AnnouncementView"
-        component={AnnouncementView}
-        options={{ title: "간병서비스 상세보기" }}
+        name="NoticeView"
+        component={NoticeView}
+        options={{
+          title: "공지사항",
+          headerShown: true,
+        }}
       />
     </Stack.Navigator>
   );

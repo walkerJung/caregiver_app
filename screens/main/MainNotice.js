@@ -6,7 +6,14 @@ const MainNotice = (props) => {
     <>
       {props?.data?.listNotice?.notices?.map((item, index) => {
         return (
-          <MainNotiItem activeOpacity={0.8} onPress={() => {}} key={index}>
+          <MainNotiItem
+            activeOpacity={0.8}
+            onPress={() => {
+              props?.navigation.navigate("PatientMypageNoticeStack");
+              // props?.navigation.navigate("CaregiverMypageNoticeStack");
+            }}
+            key={index}
+          >
             <MainNotiTitle numberOfLines={1} ellipsizeMode="tail">
               {item.title}
             </MainNotiTitle>

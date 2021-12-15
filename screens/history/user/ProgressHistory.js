@@ -11,24 +11,12 @@ import { useReactiveVar } from "@apollo/client";
 import { memberVar } from "../../../apollo";
 import { useQuery } from "@apollo/client";
 import { ANNOUNCEMENT_LIST_QUERY } from "../../query";
-import moment from "moment";
-import { NavigationContainer } from "@react-navigation/native";
 
 export default function ProgressHistoryUser({ navigation }) {
-  //timeout의 시간만큼 함수를 지연하고 처리하는 함수 생성
-  const wait = (timeout) => {
-    return new Promise((resolve) => {
-      setTimeout(resolve, timeout);
-    });
-  };
-
-  // Toast 메세지 출력
   const toastRef = useRef();
   const showCopyToast = useCallback(() => {
-    console.log("showCopyToast");
     toastRef.current.show("계좌번호가 복사되었습니다.");
   }, []);
-  // 클립보드
   const copyToClipboard = (text) => {
     Clipboard.setString(text);
     showCopyToast();

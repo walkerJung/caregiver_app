@@ -14,69 +14,67 @@ import {
 import Item from "../../../components/history/caregiver/ProgressHistoryItem";
 import Toast from "react-native-easy-toast";
 import NoneLayout from "../../../components/layout/NoneLayout";
+import { useReactiveVar } from "@apollo/client";
+import { memberVar } from "../../../apollo";
+import { useQuery } from "@apollo/client";
+import { ANNOUNCEMENTAPPLICATION_LIST_QUERY } from "../../query";
 
-//timeout의 시간만큼 함수를 지연하고 처리하는 함수 생성
-const wait = (timeout) => {
-  return new Promise((resolve) => {
-    setTimeout(resolve, timeout);
-  });
-};
-export default function ProgressHistoryCaregiver() {
-  // Toast 메세지 출력
+export default function ProgressHistoryCaregiver({ navigation }) {
   const toastRef = useRef();
   const showCopyToast = useCallback(() => {
-    console.log("showCopyToast");
     toastRef.current.show("계좌번호가 복사되었습니다.");
   }, []);
-  // 클립보드
   const copyToClipboard = (text) => {
     Clipboard.setString(text);
     showCopyToast();
   };
-
-  // 새로고침 시작
-  const [refreshing, setRefreshing] = useState(false);
-
-  //refreshcontrol을 호출할 때 실행되는 callback함수
-  const onRefresh = useCallback(() => {
-    setRefreshing(true);
-    wait(1000).then(() => setRefreshing(false));
-  }, []);
-
-  const data = [{ key: 0, status: 0 }];
+  const userInfo = JSON.parse(useReactiveVar(memberVar));
+  const { data, loading } = useQuery(ANNOUNCEMENTAPPLICATION_LIST_QUERY, {
+    fetchPolicy: "network-only",
+    variables: {
+      userCode: userInfo.code,
+    },
+    pollInterval: 500,
+  });
   return (
     <>
-      <ScrollView
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }
-      >
-        <Container>
-          {data.map((item) => (
-            <Item
-              key="item.key"
-              item={item}
-              onPress={() => Alert.alert("각 공고로 이동합니다.")}
-              copyToClipboard={copyToClipboard}
-            />
-          ))}
-
-          {/* 등록된 내역이 없으면 nonelayout이 나옵니다. */}
-          {/* <NoneLayout /> */}
-        </Container>
-      </ScrollView>
-      <Toast
-        ref={toastRef}
-        textStyle={{ color: "white" }}
-        positionValue={140}
-        fadeInDuration={200}
-        fadeOutDuration={1000}
-        style={{
-          backgroundColor: "rgba(0, 0, 0, 0.7)",
-          borderRadius: 99,
-          paddingHorizontal: 10,
-        }}
-      />
+      {!loading && (
+        <>
+          <ScrollView>
+            <Container>
+              {data.listAnnouncementApplication.announcementApplications
+                .length > 0 ? (
+                data.listAnnouncementApplication.announcementApplications.map(
+                  (item, index) => {
+                    return (
+                      <Item
+                        key={index}
+                        item={item}
+                        navigation={navigation}
+                        copyToClipboard={copyToClipboard}
+                      />
+                    );
+                  }
+                )
+              ) : (
+                <NoneLayout />
+              )}
+            </Container>
+          </ScrollView>
+          <Toast
+            ref={toastRef}
+            textStyle={{ color: "white" }}
+            positionValue={140}
+            fadeInDuration={200}
+            fadeOutDuration={1000}
+            style={{
+              backgroundColor: "rgba(0, 0, 0, 0.7)",
+              borderRadius: 99,
+              paddingHorizontal: 10,
+            }}
+          />
+        </>
+      )}
     </>
   );
 }

@@ -283,7 +283,7 @@ export default function Item({ onPress, item, copyToClipboard, navigation }) {
                 delimiter=","
                 separator="."
                 precision={0}
-                keyboardType="numbers-and-punctuation"
+                keyboardType="number-pad"
                 placeholder="희망간병비를 입력해 주세요."
                 placeholderTextColor={"#979797"}
               />

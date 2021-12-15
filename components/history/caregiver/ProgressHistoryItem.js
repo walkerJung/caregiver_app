@@ -30,21 +30,33 @@ import {
 } from "../HistoryStyle";
 import { FormInput, SubmitBtn } from "../../form/CareFormStyle";
 import Fontawesome from "react-native-vector-icons/FontAwesome5";
+import NumberFormat from "react-number-format";
 import { careTheme } from "../../../contents";
+import { useReactiveVar } from "@apollo/client";
+import { memberVar } from "../../../apollo";
 
-export default function Item({ onPress, item, copyToClipboard }) {
-  // 모달
-  const [showModal, setShowModal] = useState(false);
-  const openModal = () => {
-    setShowModal((prev) => !prev);
-  };
-
+export default function Item({ item, copyToClipboard, navigation }) {
+  const applicationCaregiverCount = item.announcement.announcementApplication
+    ? item.announcement.announcementApplication.length
+    : 0;
   const ChoiceItemStyle = {
-    0: {
-      statusColor: { color: "#FFB400" },
-      statusText: "진행중",
+    3: {
+      statusColor: { color: "#20CF05" },
+      statusText: `간병인 모집중 (${applicationCaregiverCount}명)`,
+      careChoice: true,
+    },
+    4: {
+      statusColor: { color: "#0077FF" },
+      statusText: "매칭 완료",
+      complete: true,
+    },
+    5: {
+      statusColor: { color: careTheme.COLORS.ERROR },
+      statusText: "매칭 실패",
+      complete: true,
     },
   };
+  const userInfo = JSON.parse(useReactiveVar(memberVar));
 
   return (
     <>
@@ -55,12 +67,33 @@ export default function Item({ onPress, item, copyToClipboard }) {
           borderRadius: 8,
         }}
       >
-        <CardHead>
-          <CardHeadTit style={ChoiceItemStyle[item.status].statusColor}>
-            {ChoiceItemStyle[item.status].statusText}
-          </CardHeadTit>
-          <GoViewBtn text="공고보기" onPress={onPress} />
-        </CardHead>
+        {!item.announcement.confirmCaregiverCode && (
+          <CardHead>
+            <CardHeadTit
+              style={ChoiceItemStyle[item.announcement.status].statusColor}
+            >
+              {ChoiceItemStyle[item.announcement.status].statusText}
+            </CardHeadTit>
+          </CardHead>
+        )}
+
+        {item.announcement.confirmCaregiverCode &&
+          userInfo.code == item.announcement.confirmCaregiverCode && (
+            <CardHead>
+              <CardHeadTit style={ChoiceItemStyle[4].statusColor}>
+                {ChoiceItemStyle[4].statusText}
+              </CardHeadTit>
+            </CardHead>
+          )}
+
+        {item.announcement.confirmCaregiverCode &&
+          userInfo.code != item.announcement.confirmCaregiverCode && (
+            <CardHead>
+              <CardHeadTit style={ChoiceItemStyle[5].statusColor}>
+                {ChoiceItemStyle[5].statusText}
+              </CardHeadTit>
+            </CardHead>
+          )}
 
         <List>
           <ListTitBox>
@@ -68,7 +101,15 @@ export default function Item({ onPress, item, copyToClipboard }) {
               <Fontawesome name="coins" size={14} color="#979797" /> 간병비
             </ListTit>
           </ListTitBox>
-          <ListTxtColor>200,000원</ListTxtColor>
+          <ListTxtColor>
+            <NumberFormat
+              value={item.announcement.hopeCost * 0.9}
+              displayType={"text"}
+              thousandSeparator={true}
+              suffix={"원"}
+              renderText={(formattedValue) => <Price>{formattedValue}</Price>}
+            />
+          </ListTxtColor>
         </List>
 
         <List>
@@ -77,9 +118,11 @@ export default function Item({ onPress, item, copyToClipboard }) {
               <Icon name="calendar-outline" size={14} color="#979797" /> 간병
               기간
             </ListTit>
-            <Days>(2박 3일)</Days>
+            {/* <Days>(2박 3일)</Days> */}
           </ListTitBox>
-          <ListTxt>21.07.23 ~ 21.07.25</ListTxt>
+          <ListTxt>
+            {item.announcement.startDate} ~ {item.announcement.endDate}
+          </ListTxt>
         </List>
 
         <List>
@@ -88,7 +131,7 @@ export default function Item({ onPress, item, copyToClipboard }) {
               <Icon name="person-outline" size={14} color="#979797" /> 환자 성함
             </ListTit>
           </ListTitBox>
-          <ListTxt>김환자</ListTxt>
+          <ListTxt>{item.announcement.patientName}</ListTxt>
         </List>
 
         <List>
@@ -99,14 +142,32 @@ export default function Item({ onPress, item, copyToClipboard }) {
             </ListTit>
           </ListTitBox>
           <ListTxt>
-            대전광역시 중구 목중로 29 (대전광역시 중구 목동10-7) 대전선병원
+            {item.announcement.address} {item.announcement.addressDetail}
           </ListTxt>
         </List>
-        <SubmitBtn
-          small
-          text="공고보기"
-          onPress={() => Alert.alert("공고보기 화면이 보여집니다.")}
-        />
+        {item.announcement.confirmCaregiverCode &&
+          userInfo.code == item.announcement.confirmCaregiverCode && (
+            <SubmitBtn
+              small
+              text="공고보기"
+              onPress={() => {
+                navigation.navigate("AnnouncementView", {
+                  code: item.announcement.code,
+                });
+              }}
+            />
+          )}
+        {!item.announcement.confirmCaregiverCode && (
+          <SubmitBtn
+            small
+            text="공고보기"
+            onPress={() => {
+              navigation.navigate("AnnouncementView", {
+                code: item.announcement.code,
+              });
+            }}
+          />
+        )}
       </Card>
     </>
   );

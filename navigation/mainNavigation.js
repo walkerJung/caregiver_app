@@ -14,7 +14,7 @@ import AuthStack from "./authStack";
 import PatientMypageStack from "./patientMypageStack";
 import PatientMainStack from "./patientMainStack";
 import PatientCaregiveServiceStack from "./patientCaregiveServiceStack";
-// import CaregiverMainStack from "./caregiverMainStack";
+import CaregiverMainStack from "./caregiverMainStack";
 
 // 인트로
 import Intro from "../screens/intro";
@@ -96,11 +96,6 @@ export default function MainNavigation({ isLoggedIn, userInfo }) {
                 component={PatientMainStack}
                 options={{ headerShown: false }}
               />
-              {/* <Tab.Screen
-                name="간병 신청"
-                component={ApplyForm}
-                options={{ headerShown: false }}
-              /> */}
               <Tab.Screen
                 name="간병 서비스"
                 component={PatientCaregiveServiceStack}
@@ -116,7 +111,7 @@ export default function MainNavigation({ isLoggedIn, userInfo }) {
             <>
               <Tab.Screen
                 name="메인"
-                component={MainCaregiver}
+                component={CaregiverMainStack}
                 options={{
                   headerShown: false,
                   tabBarIcon: ({ color, size }) => (
@@ -126,7 +121,7 @@ export default function MainNavigation({ isLoggedIn, userInfo }) {
                   ),
                 }}
               />
-              <Tab.Screen
+              {/* <Tab.Screen
                 name="간병인 전용"
                 component={ApplyForm}
                 options={{
@@ -137,9 +132,9 @@ export default function MainNavigation({ isLoggedIn, userInfo }) {
                     </View>
                   ),
                 }}
-              />
+              /> */}
               <Tab.Screen
-                name="간병 내역"
+                name="신청 내역"
                 component={HistoryStackCaregiver}
                 options={{
                   headerShown: false,

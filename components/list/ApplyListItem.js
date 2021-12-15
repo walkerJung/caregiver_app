@@ -28,6 +28,7 @@ import {
   InfoTxt,
   Bold,
 } from "../../components/history/HistoryStyle";
+import NumberFormat from "react-number-format";
 
 export default function Item({ onPress, item, copyToClipboard }) {
   // 모달
@@ -36,12 +37,33 @@ export default function Item({ onPress, item, copyToClipboard }) {
     setShowModal((prev) => !prev);
   };
 
-  const caregiver = 2;
+  const applicationCaregiverCount = item.announcementApplication
+    ? item.announcementApplication.length
+    : 0;
   const ChoiceItemStyle = {
-    0: {
+    1: {
+      statusColor: { color: "#FFB400" },
+      statusText: "예상 간병비 산출중",
+    },
+    2: {
       statusColor: { color: "#0077FF" },
-      statusText: "희망간병비 200,000원",
+      statusText: "예상간병비",
       modalBtn: true,
+    },
+    3: {
+      statusColor: { color: "#20CF05" },
+      statusText: `간병인 모집중 (${applicationCaregiverCount}명)`,
+      careChoice: true,
+    },
+    4: {
+      statusColor: { color: "#FF5E5E" },
+      statusText: "입금 대기중",
+      deposit: true,
+    },
+    5: {
+      statusColor: { color: "#5e66ff" },
+      statusText: "입금 및 매칭 완료",
+      deposit: true,
     },
   };
 
@@ -57,6 +79,17 @@ export default function Item({ onPress, item, copyToClipboard }) {
         <CardHead>
           <CardHeadTit style={ChoiceItemStyle[item.status].statusColor}>
             {ChoiceItemStyle[item.status].statusText}
+            {item.hopeCost && (
+              <NumberFormat
+                value={item.hopeCost * 0.9}
+                displayType={"text"}
+                thousandSeparator={true}
+                suffix={"원"}
+                renderText={(formattedValue) => (
+                  <Text>{"(희망 간병비: " + formattedValue + ")"}</Text>
+                )}
+              />
+            )}
           </CardHeadTit>
           <GoViewBtn text="공고보기" onPress={onPress} />
         </CardHead>
@@ -67,9 +100,11 @@ export default function Item({ onPress, item, copyToClipboard }) {
               <Icon name="calendar-outline" size={14} color="#979797" /> 간병
               기간
             </ListTit>
-            <Days>(2박 3일)</Days>
+            {/* <Days>(2박 3일)</Days> */}
           </ListTitBox>
-          <ListTxt>21.07.23 ~ 21.07.25</ListTxt>
+          <ListTxt>
+            {item.startDate} ~ {item.endDate}
+          </ListTxt>
         </List>
 
         <List>
@@ -78,7 +113,7 @@ export default function Item({ onPress, item, copyToClipboard }) {
               <Icon name="person-outline" size={14} color="#979797" /> 환자 성함
             </ListTit>
           </ListTitBox>
-          <ListTxt>김환자</ListTxt>
+          <ListTxt>{item.patientName}</ListTxt>
         </List>
 
         <List last={true}>
@@ -89,7 +124,7 @@ export default function Item({ onPress, item, copyToClipboard }) {
             </ListTit>
           </ListTitBox>
           <ListTxt>
-            대전광역시 중구 목중로 29 (대전광역시 중구 목동10-7) 대전선병원
+            {item.address} {item.addressDetail}
           </ListTxt>
         </List>
       </Card>
