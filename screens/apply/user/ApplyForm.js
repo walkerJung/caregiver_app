@@ -129,7 +129,8 @@ export default function ApplyForm({ navigation }) {
     setValue(set, value);
   };
   const handleAddress = (data) => {
-    setValue("address", data.address), setModal("none");
+    setValue("address", data.address);
+    setModal(false);
   };
 
   const {
@@ -204,7 +205,7 @@ export default function ApplyForm({ navigation }) {
     });
   }, [register]);
 
-  const [isModal, setModal] = useState("none");
+  const [isModal, setModal] = useState(false);
 
   return (
     <FormLayout>
@@ -412,7 +413,7 @@ export default function ApplyForm({ navigation }) {
             <LeftBtnBox>
               <TouchableOpacity
                 activeOpacity={0.8}
-                onPress={() => setModal("block")}
+                onPress={() => setModal(true)}
               >
                 <SearchInput
                   placeholder="주소를 입력해주세요."
@@ -427,7 +428,7 @@ export default function ApplyForm({ navigation }) {
               )}
             </LeftBtnBox>
             <RightBtnBox>
-              <SearchBtn activeOpacity={0.8} onPress={() => setModal("block")}>
+              <SearchBtn activeOpacity={0.8} onPress={() => setModal(true)}>
                 <Text
                   style={{
                     fontSize: 14,
@@ -440,11 +441,13 @@ export default function ApplyForm({ navigation }) {
               </SearchBtn>
             </RightBtnBox>
           </FlexRow>
-          <Postcode
-            style={{ width: 320, height: 320, display: isModal }}
-            jsOptions={{ animation: true }}
-            onSelected={(data) => handleAddress(data)}
-          />
+          {isModal && (
+            <Postcode
+              style={{ width: 320, height: 320 }}
+              jsOptions={{ animation: true }}
+              onSelected={(data) => handleAddress(data)}
+            />
+          )}
           <FormInput
             placeholder="상세주소"
             placeholderTextColor={"#979797"}
