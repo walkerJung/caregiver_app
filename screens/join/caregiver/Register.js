@@ -41,9 +41,6 @@ export default function CaregiverRegister({ navigation }) {
   const [selectSuctionText, setSelectSuctionText] = useState("");
   const [selectMoveText, setSelectMoveText] = useState("");
   const [selectBedText, setSelectBedText] = useState("");
-  const onChangeSelectText = (value) => {
-    setSelectText(value);
-  };
 
   const {
     register,
@@ -83,8 +80,6 @@ export default function CaregiverRegister({ navigation }) {
             sex: data.sex,
             phone: data.phone,
             residentNumber: data.resident_1 + data.resident_2,
-            // idCard,
-            // bankInfo,
             smoke: data.smoke,
             drink: data.drink,
             mealCare: data.mealCare,
@@ -158,12 +153,6 @@ export default function CaregiverRegister({ navigation }) {
     register("resident_2", {
       required: "* 주민등록번호 뒷자리를 입력해주세요.",
     });
-    // register("idCard", {
-    //   required: "* 신분증 사진을 입력해주세요.",
-    // });
-    // register("bankInfo", {
-    //   required: "* 통장사본 사진을 입력해주세요.",
-    // });
     register("mealCare", {
       required: "* 가능한 식사케어를 선택해주세요.",
     });
@@ -389,52 +378,6 @@ export default function CaregiverRegister({ navigation }) {
             <ErrorsText>{errors.resident_2.message}</ErrorsText>
           )}
         </FormBox>
-
-        {/* <FormBox>
-          <FormLabelBox>
-            <FormLabel>신분증 사진</FormLabel>
-          </FormLabelBox>
-          <PhotoBox
-            onPress={() => {
-              pickImage(setIdCard, "idCard");
-            }}
-          >
-            {idCard ? (
-              <Image
-                style={{ width: "100%", height: "100%" }}
-                source={{ uri: idCard }}
-                resizeMode={"contain"}
-              />
-            ) : (
-              <Icon name="add-outline" size={23} style={{ color: "#979797" }} />
-            )}
-          </PhotoBox>
-          {errors.idCard && <ErrorsText>{errors.idCard.message}</ErrorsText>}
-        </FormBox> */}
-
-        {/* <FormBox>
-          <FormLabelBox>
-            <FormLabel>통장사본 사진</FormLabel>
-          </FormLabelBox>
-          <PhotoBox
-            onPress={() => {
-              pickImage(setBankInfo, "bankInfo");
-            }}
-          >
-            {bankInfo ? (
-              <Image
-                style={{ width: "100%", height: "100%" }}
-                source={{ uri: bankInfo }}
-                resizeMode={"contain"}
-              />
-            ) : (
-              <Icon name="add-outline" size={23} style={{ color: "#979797" }} />
-            )}
-          </PhotoBox>
-          {errors.bankInfo && (
-            <ErrorsText>{errors.bankInfo.message}</ErrorsText>
-          )}
-        </FormBox> */}
       </SectionLayout>
 
       <SectionLayout last>

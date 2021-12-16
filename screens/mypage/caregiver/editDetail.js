@@ -11,7 +11,7 @@ import {
   StepNum,
 } from "../../../components/join/JoinStyle";
 import { SubmitBtn } from "../../../components/form/CareFormStyle";
-import { View, TextInput, Text } from "react-native";
+import { Alert } from "react-native";
 import { FlexBoth } from "../../../components/form/ListStyle";
 import RNPickerSelect from "react-native-picker-select";
 import JoinRadio from "../../../components/join/JoinRadio";
@@ -21,18 +21,80 @@ import { useMutation, useQuery } from "@apollo/client";
 import { useReactiveVar } from "@apollo/client";
 import { memberVar } from "../../../apollo";
 
-export default function EditDetailCaregiver() {
+export default function EditDetailCaregiver({ navigation }) {
   const userInfo = JSON.parse(useReactiveVar(memberVar));
-  const [SelectText, setSelectText] = useState("");
-  const onChangeSelectText = (value) => {
-    setSelectText(value);
-  };
   const { data, loading } = useQuery(USER_DETAIL_QUERY, {
     fetchPolicy: "network-only",
     variables: {
       code: userInfo.code,
     },
   });
+  const [selectMealText, setSelectMealText] = useState();
+  const [selectUrineText, setSelectUrineText] = useState();
+  const [selectSuctionText, setSelectSuctionText] = useState();
+  const [selectMoveText, setSelectMoveText] = useState();
+  const [selectBedText, setSelectBedText] = useState();
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    getValues,
+    formState: { errors },
+    watch,
+  } = useForm();
+
+  const onCompleted = (data) => {
+    const {
+      editCaregiverInfo: { ok },
+    } = data;
+    if (ok) {
+      Alert.alert("간병인 상세정보 변경이 완료되었습니다.");
+      navigation.navigate("EditCaregiver");
+    }
+  };
+
+  const [editCaregiverInfoMutation] = useMutation(EDIT_CAREGIVERINFO_MUTATION, {
+    onCompleted,
+    refetchQueries: () => [
+      {
+        query: USER_DETAIL_QUERY,
+        variables: {
+          code: userInfo.code,
+        },
+      },
+    ],
+  });
+
+  const onValid = async (data) => {
+    console.log(data);
+    try {
+      await editCaregiverInfoMutation({
+        variables: {
+          userCode: userInfo.code,
+          smoke: data.smoke,
+          drink: data.drink,
+          mealCare: data.mealCare,
+          urineCare: data.urineCare,
+          suctionCare: data.suctionCare,
+          moveCare: data.moveCare,
+          bedCare: data.bedCare,
+        },
+      });
+    } catch (e) {
+      console.log(e);
+      var error = e.toString();
+      error = error.replace("Error: ", "");
+      Alert.alert(`${error}`);
+    }
+  };
+
+  const onChangeSelectText = (value) => {
+    setSelectText(value);
+  };
+
+  const handleSelectBox = (set, value, setState) => {
+    setValue(set, value), setState(value);
+  };
 
   return (
     <>
@@ -52,8 +114,14 @@ export default function EditDetailCaregiver() {
                 label: "선택",
                 color: "#979797",
               }}
-              value={data.viewProfile.CaregiverInfo[0].mealCare}
-              onValueChange={(value) => onChangeSelectText(value)}
+              value={
+                selectMealText
+                  ? selectMealText
+                  : data.viewProfile.CaregiverInfo[0].mealCare
+              }
+              onValueChange={(value) =>
+                handleSelectBox("mealCare", value, setSelectMealText)
+              }
               items={[
                 { label: "콧줄 식사케어 ", value: "콧줄 식사케어 " },
                 { label: "뱃줄 식사케어", value: "뱃줄 식사케어" },
@@ -83,8 +151,14 @@ export default function EditDetailCaregiver() {
                 label: "선택",
                 color: "#979797",
               }}
-              value={data.viewProfile.CaregiverInfo[0].urineCare}
-              onValueChange={(value) => onChangeSelectText(value)}
+              value={
+                selectUrineText
+                  ? selectUrineText
+                  : data.viewProfile.CaregiverInfo[0].urineCare
+              }
+              onValueChange={(value) =>
+                handleSelectBox("urineCare", value, setSelectUrineText)
+              }
               items={[
                 { label: "소변주머니 케어", value: "소변주머니 케어" },
                 { label: "장루 케어", value: "장루 케어" },
@@ -117,8 +191,14 @@ export default function EditDetailCaregiver() {
                 label: "선택",
                 color: "#979797",
               }}
-              value={data.viewProfile.CaregiverInfo[0].suctionCare}
-              onValueChange={(value) => onChangeSelectText(value)}
+              value={
+                selectSuctionText
+                  ? selectSuctionText
+                  : data.viewProfile.CaregiverInfo[0].suctionCare
+              }
+              onValueChange={(value) =>
+                handleSelectBox("suctionCare", value, setSelectSuctionText)
+              }
               items={[
                 { label: "목 석션", value: "목 석션" },
                 { label: "코 석션", value: "코 석션" },
@@ -148,8 +228,14 @@ export default function EditDetailCaregiver() {
                 label: "선택",
                 color: "#979797",
               }}
-              value={data.viewProfile.CaregiverInfo[0].moveCare}
-              onValueChange={(value) => onChangeSelectText(value)}
+              value={
+                selectMoveText
+                  ? selectMoveText
+                  : data.viewProfile.CaregiverInfo[0].moveCare
+              }
+              onValueChange={(value) =>
+                handleSelectBox("moveCare", value, setSelectMoveText)
+              }
               items={[
                 { label: "휠체어 이동케어", value: "휠체어 이동케어" },
                 {
@@ -182,8 +268,14 @@ export default function EditDetailCaregiver() {
                 label: "선택",
                 color: "#979797",
               }}
-              value={data.viewProfile.CaregiverInfo[0].bedCare}
-              onValueChange={(value) => onChangeSelectText(value)}
+              value={
+                selectBedText
+                  ? selectBedText
+                  : data.viewProfile.CaregiverInfo[0].bedCare
+              }
+              onValueChange={(value) =>
+                handleSelectBox("bedCare", value, setSelectBedText)
+              }
               items={[
                 {
                   label: "침대에서 휠체어 이동케어",
@@ -217,6 +309,8 @@ export default function EditDetailCaregiver() {
                 { key: "흡연", text: "흡연" },
                 { key: "비흡연", text: "비흡연" },
               ]}
+              setValue={setValue}
+              fieldName="smoke"
             />
           </FormBox>
 
@@ -232,6 +326,8 @@ export default function EditDetailCaregiver() {
                 { key: "음주", text: "음주" },
                 { key: "비음주", text: "비음주" },
               ]}
+              setValue={setValue}
+              fieldName="drink"
             />
           </FormBox>
 
@@ -245,7 +341,7 @@ export default function EditDetailCaregiver() {
             />
           </FormBox>
 
-          <SubmitBtn text="수정하기" onPress={() => Alert.alert("수정하기")} />
+          <SubmitBtn text="수정하기" onPress={handleSubmit(onValid)} />
         </WriteLayout>
       )}
     </>
