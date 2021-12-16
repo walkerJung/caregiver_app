@@ -35,7 +35,7 @@ import { CREATE_ACCOUNT_MUTATION } from "../../query";
 import Postcode from "@actbase/react-daum-postcode";
 
 export default function CaregiverRegister({ navigation }) {
-  const [isModal, setModal] = useState("none");
+  const [isModal, setModal] = useState(false);
   const [selectMealText, setSelectMealText] = useState("");
   const [selectUrineText, setSelectUrineText] = useState("");
   const [selectSuctionText, setSelectSuctionText] = useState("");
@@ -101,7 +101,8 @@ export default function CaregiverRegister({ navigation }) {
   };
 
   const handleAddress = (data) => {
-    setValue("address", data.address), setModal("none");
+    setValue("address", data.address);
+    setModal(false);
   };
 
   const handleSelectBox = (set, value, setState) => {
@@ -301,7 +302,7 @@ export default function CaregiverRegister({ navigation }) {
             <LeftBtnBox>
               <TouchableOpacity
                 activeOpacity={0.8}
-                onPress={() => setModal("block")}
+                onPress={() => setModal(true)}
               >
                 <SearchInput
                   placeholder="주소를 입력해주세요."
@@ -316,7 +317,7 @@ export default function CaregiverRegister({ navigation }) {
               </TouchableOpacity>
             </LeftBtnBox>
             <RightBtnBox>
-              <SearchBtn activeOpacity={0.8} onPress={() => setModal("block")}>
+              <SearchBtn activeOpacity={0.8} onPress={() => setModal(true)}>
                 <Text
                   style={{
                     fontSize: 14,
@@ -329,11 +330,14 @@ export default function CaregiverRegister({ navigation }) {
               </SearchBtn>
             </RightBtnBox>
           </FlexRow>
-          <Postcode
-            style={{ width: 320, height: 320, display: isModal }}
-            jsOptions={{ animation: true }}
-            onSelected={(data) => handleAddress(data)}
-          />
+
+          {isModal && (
+            <Postcode
+              style={{ width: 320, height: 320 }}
+              jsOptions={{ animation: true }}
+              onSelected={(data) => handleAddress(data)}
+            />
+          )}
           <FormInput
             placeholder="상세주소"
             placeholderTextColor={"#979797"}
