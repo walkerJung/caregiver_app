@@ -127,21 +127,44 @@ export default function EditIdCardCaregiver({ navigation }) {
                   pickImage(setIdCard, "idCard");
                 }}
               >
-                {idCard ? (
-                  <Image
-                    style={{ width: "100%", height: "100%" }}
-                    source={{
-                      // uri: `http://3.36.22.165:4000${data.viewProfile.CaregiverInfo[0].idCard}`,
-                      uri: idCard,
-                    }}
-                    resizeMode={"contain"}
-                  />
+                {data.viewProfile.CaregiverInfo[0].idCard == "idCard" ? (
+                  <>
+                    {idCard ? (
+                      <Image
+                        style={{ width: "100%", height: "100%" }}
+                        source={{
+                          uri: idCard,
+                        }}
+                        resizeMode={"contain"}
+                      />
+                    ) : (
+                      <Icon
+                        name="add-outline"
+                        size={23}
+                        style={{ color: "#979797" }}
+                      />
+                    )}
+                  </>
                 ) : (
-                  <Icon
-                    name="add-outline"
-                    size={23}
-                    style={{ color: "#979797" }}
-                  />
+                  <>
+                    {idCard ? (
+                      <Image
+                        style={{ width: "100%", height: "100%" }}
+                        source={{
+                          uri: idCard,
+                        }}
+                        resizeMode={"contain"}
+                      />
+                    ) : (
+                      <Image
+                        style={{ width: "100%", height: "100%" }}
+                        source={{
+                          uri: `http://3.36.22.165:4000${data.viewProfile.CaregiverInfo[0].idCard}`,
+                        }}
+                        resizeMode={"contain"}
+                      />
+                    )}
+                  </>
                 )}
               </PhotoBox>
               {errors.idCard && (
