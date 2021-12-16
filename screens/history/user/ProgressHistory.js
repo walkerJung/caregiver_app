@@ -12,7 +12,7 @@ import { memberVar } from "../../../apollo";
 import { useQuery } from "@apollo/client";
 import { ANNOUNCEMENT_LIST_QUERY } from "../../query";
 
-export default function ProgressHistoryUser({ navigation }) {
+export default function ProgressHistoryUser({ navigation, route }) {
   const toastRef = useRef();
   const showCopyToast = useCallback(() => {
     toastRef.current.show("계좌번호가 복사되었습니다.");

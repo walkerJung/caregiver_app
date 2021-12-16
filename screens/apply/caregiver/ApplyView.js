@@ -36,9 +36,11 @@ import {
 } from "../../query";
 import NumberFormat from "react-number-format";
 import CurrencyInput from "react-native-currency-input";
+import ConfirmModal from "../../../components/modal/ConfirmModal";
 
 export default function ApplyViewCaregiver({ route, navigation }) {
   const { code } = route.params;
+  const [isVisible, setIsVisible] = useState(false);
   const [number, setNumber] = useState();
   const [showModal, setShowModal] = useState(false);
   const openModal = () => {
@@ -93,8 +95,10 @@ export default function ApplyViewCaregiver({ route, navigation }) {
 
   const onCompleted = (data) => {
     if (data.writeCaregiverCost.ok) {
-      Alert.alert("본인간병비 입력이 완료되었습니다.");
-      navigation.navigate("AnnouncementList");
+      // Alert.alert("본인간병비 입력이 완료되었습니다.");
+      // navigation.navigate("AnnouncementList");
+      setShowModal(false);
+      setIsVisible(true);
     } else {
       Alert.alert("본인간병비 입력에 실패하였습니다. 관리자에게 문의해주세요.");
       navigation.navigate("AnnouncementList");
@@ -355,6 +359,14 @@ export default function ApplyViewCaregiver({ route, navigation }) {
           </Container>
         </DefulatLayout>
       )}
+      <ConfirmModal
+        title="확인"
+        isVisible={isVisible}
+        text="본인간병비 입력이 완료되었습니다."
+        setIsVisible={setIsVisible}
+        navigation={navigation}
+        screen={"AnnouncementList"}
+      />
     </>
   );
 }

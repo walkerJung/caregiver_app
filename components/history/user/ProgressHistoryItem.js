@@ -35,6 +35,7 @@ import { useForm } from "react-hook-form";
 import { useMutation } from "@apollo/client";
 import { WRITE_HOPECOST_MUTATION } from "../../../screens/query";
 import CurrencyInput from "react-native-currency-input";
+import ConfirmModal from "../../../components/modal/ConfirmModal";
 
 export default function Item({ onPress, item, copyToClipboard, navigation }) {
   const [number, setNumber] = useState();
@@ -45,6 +46,7 @@ export default function Item({ onPress, item, copyToClipboard, navigation }) {
   const openModal = () => {
     setShowModal((prev) => !prev);
   };
+
   const applicationCaregiverCount = item.announcementApplication
     ? item.announcementApplication.length
     : 0;
@@ -89,8 +91,8 @@ export default function Item({ onPress, item, copyToClipboard, navigation }) {
       writeHopeCost: { ok },
     } = data;
     if (ok) {
-      Alert.alert("희망간병비 입력이 완료되었습니다.");
-      navigation.replace("ProgressHistoryUser");
+      setIsVisible(true);
+      // navigation.replace("ProgressHistoryUser");
     }
   };
 
@@ -128,6 +130,8 @@ export default function Item({ onPress, item, copyToClipboard, navigation }) {
   const nightsAndDays =
     (new Date(item.endDate).getTime() - new Date(item.startDate).getTime()) /
     (1000 * 60 * 60 * 24);
+
+  const [isVisible, setIsVisible] = useState(false);
 
   return (
     <>
@@ -324,6 +328,14 @@ export default function Item({ onPress, item, copyToClipboard, navigation }) {
           </View>
         )}
       </Card>
+      <ConfirmModal
+        title="확인"
+        isVisible={isVisible}
+        text="완료되었습니다."
+        setIsVisible={setIsVisible}
+        navigation={navigation}
+        screen={"ProgressHistoryUser"}
+      />
     </>
   );
 }
