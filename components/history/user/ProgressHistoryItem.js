@@ -125,6 +125,10 @@ export default function Item({ onPress, item, copyToClipboard, navigation }) {
     });
   }, [register]);
 
+  const nightsAndDays =
+    (new Date(item.endDate).getTime() - new Date(item.startDate).getTime()) /
+    (1000 * 60 * 60 * 24);
+
   return (
     <>
       <Card
@@ -227,7 +231,9 @@ export default function Item({ onPress, item, copyToClipboard, navigation }) {
               <Icon name="calendar-outline" size={14} color="#979797" /> 간병
               기간
             </ListTit>
-            {/* <Days>(2박 3일)</Days> */}
+            <Days>
+              ({nightsAndDays - 1}박 {nightsAndDays}일)
+            </Days>
           </ListTitBox>
           <ListTxt>
             {item.startDate} ~ {item.endDate}

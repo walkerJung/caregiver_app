@@ -157,6 +157,10 @@ export default function RecruitHome({ route, navigation }) {
     });
   }, [register]);
 
+  const nightsAndDays =
+    (new Date(data?.viewAnnouncement?.endDate).getTime() -
+      new Date(data?.viewAnnouncement?.startDate).getTime()) /
+    (1000 * 60 * 60 * 24);
   return (
     <>
       {!loading && (
@@ -270,7 +274,9 @@ export default function RecruitHome({ route, navigation }) {
                     {" ~ "}
                     {data.viewAnnouncement.endDate}
                   </ListTxt>
-                  {/* <Days>(2박 3일)</Days> */}
+                  <Days>
+                    ({nightsAndDays - 1}박 {nightsAndDays}일)
+                  </Days>
                 </ListTitBox>
               </List>
               <List last={true}>

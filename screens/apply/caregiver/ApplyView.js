@@ -135,6 +135,11 @@ export default function ApplyViewCaregiver({ route, navigation }) {
     });
   }, [register]);
 
+  const nightsAndDays =
+    (new Date(data?.viewAnnouncement?.endDate).getTime() -
+      new Date(data?.viewAnnouncement?.startDate).getTime()) /
+    (1000 * 60 * 60 * 24);
+  console.log(nightsAndDays);
   return (
     <>
       {!loading && (
@@ -186,6 +191,9 @@ export default function ApplyViewCaregiver({ route, navigation }) {
                     <Icon name="calendar-outline" size={14} color="#979797" />{" "}
                     간병 기간
                   </ListTit>
+                  <Days>
+                    ({nightsAndDays - 1}박 {nightsAndDays}일)
+                  </Days>
                 </ListTitBox>
                 <ListTxt>
                   {data.viewAnnouncement.startDate}
