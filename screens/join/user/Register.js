@@ -1,5 +1,5 @@
-import React, { useEffect, useRef } from "react";
-import { Alert } from "react-native";
+import React, { useEffect, useRef, useState } from "react";
+import { Alert, TouchableOpacity } from "react-native";
 import WriteLayout from "../../../components/layout/WriteLayout";
 import SectionLayout from "../../../components/layout/SectionLayout";
 import {
@@ -10,14 +10,57 @@ import {
   FormLabel,
   FormInput,
   ErrorsText,
+  JoinCheckWrap,
+  CheckBoxAllBox,
+  BoxRow,
+  CheckBoxInner,
+  CheckBoxContainer,
+  MoreText,
 } from "../../../components/join/JoinStyle";
 import JoinRadio from "../../../components/join/JoinRadio";
 import { SubmitBtn } from "../../../components/form/CareFormStyle";
 import { useForm } from "react-hook-form";
 import { useMutation } from "@apollo/client";
 import { CREATE_ACCOUNT_MUTATION } from "../../query";
+import Check from "../../../components/join/CheckBox";
+import { faCheck } from "@fortawesome/pro-light-svg-icons";
+import { faCheckCircle } from "@fortawesome/pro-solid-svg-icons";
+import { useNavigation } from "@react-navigation/core";
+import AlertModal from "../../../components/modal/AlertModal";
+import PrivacyModal from "../../../components/modal/PrivacyModal";
+import ProvisionModal from "../../../components/modal/ProvisionModal";
 
 export default function UserRegister({ navigation }) {
+  const [category, setCategory] = useState(null);
+  const [allProvision, setAllProvision] = useState(false);
+  const [personalInfo, setPersonalInfo] = useState(false);
+  const [provision, setProvision] = useState(false);
+  const allAgree = () => {
+    if (allProvision === true) {
+      setPersonalInfo(false);
+      setProvision(false);
+      setAllProvision(false);
+    } else {
+      setPersonalInfo(true);
+      setProvision(true);
+      setAllProvision(true);
+    }
+  };
+  useEffect(() => {
+    if (personalInfo === true && provision === true) {
+      setAllProvision(true);
+    }
+  }, [personalInfo, provision]);
+
+  const [privacyModal, setPrivacyModal] = useState(false);
+  const openPrivacyModal = () => {
+    setPrivacyModal((prev) => !prev);
+  };
+  const [provisionModal, setProvisionModal] = useState(false);
+  const openProvisionModal = () => {
+    setProvisionModal((prev) => !prev);
+  };
+
   const {
     register,
     handleSubmit,
@@ -172,7 +215,7 @@ export default function UserRegister({ navigation }) {
             onSubmitEditing={() => onNext(phoneRef)}
             onChangeText={(text) => setValue("userName", text)}
           />
-          {errors.username && (
+          {errors.userName && (
             <ErrorsText>{errors.userName.message}</ErrorsText>
           )}
         </FormBox>
@@ -210,7 +253,68 @@ export default function UserRegister({ navigation }) {
           {errors.sex && <ErrorsText>{errors.sex.message}</ErrorsText>}
         </FormBox>
 
-        <SubmitBtn text="회원가입" onPress={handleSubmit(onValid)} />
+        <JoinCheckWrap>
+          <CheckBoxAllBox>
+            <BoxRow>
+              <Check
+                icon={faCheckCircle}
+                status={personalInfo && provision ? "checked" : "unchecked"}
+                onPress={() => {
+                  allAgree();
+                }}
+                title={"모두 동의합니다."}
+              />
+            </BoxRow>
+          </CheckBoxAllBox>
+          <CheckBoxContainer>
+            <CheckBoxInner>
+              <Check
+                icon={faCheck}
+                status={personalInfo ? "checked" : "unchecked"}
+                onPress={() => {
+                  setPersonalInfo(!personalInfo);
+                }}
+                subtit={"(필수) 개인정보 취급방침"}
+              />
+            </CheckBoxInner>
+            <TouchableOpacity onPress={openPrivacyModal}>
+              <MoreText>보기</MoreText>
+            </TouchableOpacity>
+            <PrivacyModal
+              showModal={privacyModal}
+              setShowModal={setPrivacyModal}
+            />
+          </CheckBoxContainer>
+
+          <CheckBoxContainer>
+            <CheckBoxInner>
+              <Check
+                icon={faCheck}
+                status={provision ? "checked" : "unchecked"}
+                onPress={() => {
+                  setProvision(!provision);
+                }}
+                subtit={"(필수) 이용약관"}
+              />
+            </CheckBoxInner>
+
+            <TouchableOpacity onPress={openProvisionModal}>
+              <MoreText>보기</MoreText>
+            </TouchableOpacity>
+            <ProvisionModal
+              showModal={provisionModal}
+              setShowModal={setProvisionModal}
+            />
+          </CheckBoxContainer>
+        </JoinCheckWrap>
+
+        <SubmitBtn
+          text="회원가입"
+          onPress={handleSubmit(onValid)}
+          // disabled={
+          //   category != null && personalInfo && provision ? false : true
+          // }
+        />
       </SectionLayout>
     </WriteLayout>
   );

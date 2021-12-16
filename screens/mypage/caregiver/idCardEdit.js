@@ -17,6 +17,7 @@ import { Alert, Image } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { ReactNativeFile } from "apollo-upload-client";
 import Icon from "react-native-vector-icons/Ionicons";
+import SectionLayout from "../../../components/layout/SectionLayout";
 
 export default function EditIdCardCaregiver({ navigation }) {
   const userInfo = JSON.parse(useReactiveVar(memberVar));
@@ -116,35 +117,39 @@ export default function EditIdCardCaregiver({ navigation }) {
     <>
       {!loading && (
         <WriteLayout>
-          <FormBox>
-            <FormLabelBox>
-              <FormLabel>신분증 사진 변경</FormLabel>
-            </FormLabelBox>
-            <PhotoBox
-              onPress={() => {
-                pickImage(setIdCard, "idCard");
-              }}
-            >
-              {idCard ? (
-                <Image
-                  style={{ width: "100%", height: "100%" }}
-                  source={{
-                    // uri: `http://3.36.22.165:4000${data.viewProfile.CaregiverInfo[0].idCard}`,
-                    uri: idCard,
-                  }}
-                  resizeMode={"contain"}
-                />
-              ) : (
-                <Icon
-                  name="add-outline"
-                  size={23}
-                  style={{ color: "#979797" }}
-                />
+          <SectionLayout>
+            <FormBox>
+              <FormLabelBox>
+                <FormLabel>신분증 사진 변경</FormLabel>
+              </FormLabelBox>
+              <PhotoBox
+                onPress={() => {
+                  pickImage(setIdCard, "idCard");
+                }}
+              >
+                {idCard ? (
+                  <Image
+                    style={{ width: "100%", height: "100%" }}
+                    source={{
+                      // uri: `http://3.36.22.165:4000${data.viewProfile.CaregiverInfo[0].idCard}`,
+                      uri: idCard,
+                    }}
+                    resizeMode={"contain"}
+                  />
+                ) : (
+                  <Icon
+                    name="add-outline"
+                    size={23}
+                    style={{ color: "#979797" }}
+                  />
+                )}
+              </PhotoBox>
+              {errors.idCard && (
+                <ErrorsText>{errors.idCard.message}</ErrorsText>
               )}
-            </PhotoBox>
-            {errors.idCard && <ErrorsText>{errors.idCard.message}</ErrorsText>}
-          </FormBox>
-          <SubmitBtn text="수정하기" onPress={handleSubmit(onValid)} />
+            </FormBox>
+            <SubmitBtn text="수정하기" onPress={handleSubmit(onValid)} />
+          </SectionLayout>
         </WriteLayout>
       )}
     </>

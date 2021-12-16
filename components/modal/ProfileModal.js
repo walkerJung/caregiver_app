@@ -1,5 +1,12 @@
 import React from "react";
-import { Alert, ScrollView, StyleSheet, Text, View } from "react-native";
+import {
+  Alert,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+  Dimensions,
+} from "react-native";
 import styled from "styled-components/native";
 import Modal from "react-native-modal";
 import Icon from "react-native-vector-icons/Ionicons";
@@ -21,7 +28,8 @@ import {
 } from "../../screens/query";
 import { useReactiveVar } from "@apollo/client";
 import { memberVar } from "../../apollo";
-
+const { chartHeight } = Dimensions.get("window").height;
+const chartWidth = Dimensions.get("window").width;
 const ModalBackground = styled.View`
   flex: 1;
   justify-content: flex-end;
@@ -54,7 +62,7 @@ const Exit = styled.TouchableOpacity`
 const ScrollBox = styled.ScrollView`
   margin-top: 20px;
   margin-bottom: 20px;
-  height: 280px;
+  height: 300px;
 `;
 const InnerTxt = styled.Text`
   font-size: 18px;
@@ -140,6 +148,7 @@ export default function ProfileModal({
       Alert.alert(`${error}`);
     }
   };
+
   return (
     <>
       {showModal ? (

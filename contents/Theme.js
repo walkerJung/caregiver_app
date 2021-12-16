@@ -5,6 +5,7 @@ export default {
     PRIMARY: "#2faf37",
     PRIMARY_TYPE2: "#26862C",
     ERROR: "#FF4646",
+    DISABLED: "#c4c4c4",
     SECONDARY: "#F7FAFC",
     DISABLED_TXT: "#818181",
     LABEL: "#FE2472",

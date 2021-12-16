@@ -2,7 +2,6 @@ import React from "react";
 import { ActivityIndicator, Text } from "react-native";
 import styled from "styled-components/native";
 import { careTheme } from "../../contents";
-import CurrencyInput from "react-native-currency-input";
 
 export const KeyboardAvoidingView = styled.KeyboardAvoidingView`
   flex: 1;
@@ -184,12 +183,14 @@ export const SubmitBtn = ({ onPress, disabled, text, loading, small }) => {
     height: ${(props) => (props.small ? "48" : "56")}px;
     justify-content: center;
     align-items: center;
-    background-color: ${careTheme.COLORS.PRIMARY};
+    background-color: ${(props) =>
+      props.disabled ? careTheme.COLORS.DISABLED : careTheme.COLORS.PRIMARY};
     border-radius: 8px;
   `;
 
   const SubmitTxt = styled.Text`
-    color: #fff;
+    color: ${(props) =>
+      props.disabled ? careTheme.COLORS.DISABLED_TXT : "#fff"};
     font-weight: bold;
     text-align: center;
     font-size: ${(props) => (props.small ? "15" : "18")}px;
@@ -204,7 +205,9 @@ export const SubmitBtn = ({ onPress, disabled, text, loading, small }) => {
       {loading ? (
         <ActivityIndicator color="white" />
       ) : (
-        <SubmitTxt small={small}>{text}</SubmitTxt>
+        <SubmitTxt disabled={disabled} small={small}>
+          {text}
+        </SubmitTxt>
       )}
     </Submit>
   );

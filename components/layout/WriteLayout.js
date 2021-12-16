@@ -14,7 +14,7 @@ export default function WriteLayout({ children }) {
     <>
       <SafeAreaView edges={["left", "right"]} style={{ flex: 1 }}>
         <KeyboardAvoidingView
-          style={{ flex: 1 }}
+          style={{ flex: 1, backgroundColor: "#f9f9f9" }}
           behavior={Platform.OS === "ios" ? "padding" : undefined}
           enabled
           keyboardVerticalOffset={Platform.OS === "ios" ? 65 : 0}
@@ -24,16 +24,9 @@ export default function WriteLayout({ children }) {
             scrollIndicatorInsets={{ right: 1 }}
           >
             {/* <TouchableWithoutFeedback onPress={Keyboard.dismiss()}> */}
-            <View
-              style={{
-                flex: 1,
-                paddingVertical: 20,
-                paddingHorizontal: "5%",
-                backgroundColor: "#fff",
-              }}
-            >
-              {children}
-            </View>
+
+            {children}
+
             {/* </TouchableWithoutFeedback> */}
           </ScrollView>
         </KeyboardAvoidingView>

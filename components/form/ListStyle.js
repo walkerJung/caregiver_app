@@ -15,6 +15,7 @@ export const Item = styled.View`
   padding: 15px 20px;
   background-color: #fff;
   border-radius: 8px;
+  margin-bottom: 15px;
 `;
 export const FlexBoth = styled.View`
   flex-direction: row;

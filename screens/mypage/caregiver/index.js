@@ -48,7 +48,7 @@ export default function MypageCaregiver({ navigation }) {
               />
               <MypageList title="로그아웃" onPress={() => logUserOut()} />
             </>
-            <Tell title="고객센터" number="1588-0000" />
+            {/* <Tell title="고객센터" number="1588-0000" /> */}
           </Container>
         </DefulatLayout>
       )}

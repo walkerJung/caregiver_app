@@ -14,6 +14,12 @@ import {
   PhotoBox,
   Textarea,
   ErrorsText,
+  JoinCheckWrap,
+  CheckBoxAllBox,
+  BoxRow,
+  CheckBoxInner,
+  CheckBoxContainer,
+  MoreText,
 } from "../../../components/join/JoinStyle";
 import JoinRadio from "../../../components/join/JoinRadio";
 import {
@@ -26,6 +32,9 @@ import {
   SearchInput,
   SubmitBtn,
 } from "../../../components/form/CareFormStyle";
+import Check from "../../../components/join/CheckBox";
+import { faCheck } from "@fortawesome/pro-light-svg-icons";
+import { faCheckCircle } from "@fortawesome/pro-solid-svg-icons";
 import { careTheme } from "../../../contents";
 import RNPickerSelect from "react-native-picker-select";
 import { FlexBoth } from "../../../components/form/ListStyle";
@@ -33,8 +42,40 @@ import { useForm } from "react-hook-form";
 import { useMutation } from "@apollo/client";
 import { CREATE_ACCOUNT_MUTATION } from "../../query";
 import Postcode from "@actbase/react-daum-postcode";
+import PrivacyModal from "../../../components/modal/PrivacyModal";
+import ProvisionModal from "../../../components/modal/ProvisionModal";
 
 export default function CaregiverRegister({ navigation }) {
+  const [category, setCategory] = useState(null);
+  const [allProvision, setAllProvision] = useState(false);
+  const [personalInfo, setPersonalInfo] = useState(false);
+  const [provision, setProvision] = useState(false);
+  const allAgree = () => {
+    if (allProvision === true) {
+      setPersonalInfo(false);
+      setProvision(false);
+      setAllProvision(false);
+    } else {
+      setPersonalInfo(true);
+      setProvision(true);
+      setAllProvision(true);
+    }
+  };
+  useEffect(() => {
+    if (personalInfo === true && provision === true) {
+      setAllProvision(true);
+    }
+  }, [personalInfo, provision]);
+
+  const [privacyModal, setPrivacyModal] = useState(false);
+  const openPrivacyModal = () => {
+    setPrivacyModal((prev) => !prev);
+  };
+  const [provisionModal, setProvisionModal] = useState(false);
+  const openProvisionModal = () => {
+    setProvisionModal((prev) => !prev);
+  };
+
   const [isModal, setModal] = useState(false);
   const [selectMealText, setSelectMealText] = useState("");
   const [selectUrineText, setSelectUrineText] = useState("");
@@ -607,6 +648,61 @@ export default function CaregiverRegister({ navigation }) {
           />
           {errors.drink && <ErrorsText>{errors.drink.message}</ErrorsText>}
         </FormBox>
+
+        <JoinCheckWrap>
+          <CheckBoxAllBox>
+            <BoxRow>
+              <Check
+                icon={faCheckCircle}
+                status={personalInfo && provision ? "checked" : "unchecked"}
+                onPress={() => {
+                  allAgree();
+                }}
+                title={"모두 동의합니다."}
+              />
+            </BoxRow>
+          </CheckBoxAllBox>
+          <CheckBoxContainer>
+            <CheckBoxInner>
+              <Check
+                icon={faCheck}
+                status={personalInfo ? "checked" : "unchecked"}
+                onPress={() => {
+                  setPersonalInfo(!personalInfo);
+                }}
+                subtit={"(필수) 개인정보 취급방침"}
+              />
+            </CheckBoxInner>
+            <TouchableOpacity onPress={openPrivacyModal}>
+              <MoreText>보기</MoreText>
+            </TouchableOpacity>
+            <PrivacyModal
+              showModal={privacyModal}
+              setShowModal={setPrivacyModal}
+            />
+          </CheckBoxContainer>
+
+          <CheckBoxContainer>
+            <CheckBoxInner>
+              <Check
+                icon={faCheck}
+                status={provision ? "checked" : "unchecked"}
+                onPress={() => {
+                  setProvision(!provision);
+                }}
+                subtit={"(필수) 이용약관"}
+              />
+            </CheckBoxInner>
+
+            <TouchableOpacity onPress={openProvisionModal}>
+              <MoreText>보기</MoreText>
+            </TouchableOpacity>
+            <ProvisionModal
+              showModal={provisionModal}
+              setShowModal={setProvisionModal}
+            />
+          </CheckBoxContainer>
+        </JoinCheckWrap>
 
         <SubmitBtn text="회원가입" onPress={handleSubmit(onValid)} />
       </SectionLayout>

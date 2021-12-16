@@ -68,7 +68,7 @@ export const ListSubTit = styled.Text`
   margin-bottom: 3px;
 `;
 export const ListTxt = styled.Text`
-  font-size: 17px;
+  font-size: 16px;
   color: #212121;
   font-weight: bold;
 `;

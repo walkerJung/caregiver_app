@@ -217,10 +217,10 @@ export default function RecruitHome({ route, navigation }) {
                           담당 간병인
                         </ProfileDate>
                         <ProfileName>{caregiverInfo.user.userName}</ProfileName>
-                        <ProfileDate style={{ marginTop: 0, marginBottom: 2 }}>
+                        {/* <ProfileDate style={{ marginTop: 0, marginBottom: 2 }}>
                           담당 간병인 연락처
                         </ProfileDate>
-                        <ProfileName>{caregiverInfo.user.phone}</ProfileName>
+                        <ProfileName>{caregiverInfo.user.phone}</ProfileName> */}
                       </View>
                     </Profile>
                   </View>
@@ -252,19 +252,19 @@ export default function RecruitHome({ route, navigation }) {
                     <Icon name="calendar-outline" size={14} color="#979797" />{" "}
                     간병 기간
                   </ListTit>
-                  <EditBtn
-                    activeOpacity={0.8}
-                    onPress={() =>
-                      Alert.alert("ApplyForm 수정 페이지로 이동합니다.")
-                    }
-                  >
-                    {data.viewAnnouncement.status == 1 && (
+                  {/* {data.viewAnnouncement.status == 1 && (
+                    <EditBtn
+                      activeOpacity={0.8}
+                      onPress={() =>
+                        Alert.alert("ApplyForm 수정 페이지로 이동합니다.")
+                      }
+                    >
                       <>
                         <Icon name="pencil-outline" size={13} color="#979797" />
                         <EditTxt>수정하기</EditTxt>
                       </>
-                    )}
-                  </EditBtn>
+                    </EditBtn>
+                  )} */}
                 </ListTitBox>
               </List>
               <List>
@@ -294,7 +294,7 @@ export default function RecruitHome({ route, navigation }) {
             </Card2>
 
             <Card2 style={styles.shadow}>
-              <List last={true}>
+              <List last>
                 <ListTitBox>
                   <ListTit>
                     <Icon name="person-outline" size={14} color="#979797" />{" "}
@@ -303,7 +303,7 @@ export default function RecruitHome({ route, navigation }) {
                 </ListTitBox>
                 <ListTxt>{data.viewAnnouncement.protectorName}</ListTxt>
               </List>
-              <List>
+              {/* <List last>
                 <ListTitBox>
                   <ListTit>
                     <Icon name="person-outline" size={14} color="#979797" />{" "}
@@ -311,7 +311,7 @@ export default function RecruitHome({ route, navigation }) {
                   </ListTit>
                 </ListTitBox>
                 <ListTxt>{data.viewAnnouncement.protectorPhone}</ListTxt>
-              </List>
+              </List> */}
             </Card2>
 
             <Card2 style={styles.shadow}>
@@ -349,22 +349,21 @@ export default function RecruitHome({ route, navigation }) {
                     <Icon name="person-outline" size={14} color="#979797" />{" "}
                     환자 정보
                   </ListTit>
-
-                  <EditBtn
-                    activeOpacity={0.8}
-                    onPress={() =>
-                      Alert.alert(
-                        "환자 상세정보(ApplyFormDetail) 수정페이지로 넘어갑니다."
-                      )
-                    }
-                  >
-                    {data.viewAnnouncement.status == 1 && (
+                  {/* {data.viewAnnouncement.status == 1 && (
+                    <EditBtn
+                      activeOpacity={0.8}
+                      onPress={() =>
+                        Alert.alert(
+                          "환자 상세정보(ApplyFormDetail) 수정페이지로 넘어갑니다."
+                        )
+                      }
+                    >
                       <>
                         <Icon name="pencil-outline" size={13} color="#979797" />
                         <EditTxt>수정하기</EditTxt>
                       </>
-                    )}
-                  </EditBtn>
+                    </EditBtn>
+                  )} */}
                 </ListTitBox>
                 <ListSubTit>식사보조가 필요하신가요?</ListSubTit>
                 <ListTxt>{data.viewAnnouncement.needMealCare}</ListTxt>

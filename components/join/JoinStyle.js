@@ -172,9 +172,44 @@ export const Textarea = ({ placeholder, numberOfLines }) => {
 };
 
 export const ErrorsText = styled.Text`
-  color: #5182e5;
+  color: red;
   margin-top: 7px;
   margin-left: 5px;
   font-size: 13px;
   letter-spacing: -0.5px;
+`;
+
+export const JoinCheckWrap = styled.View`
+  padding: 0px 0px 20px;
+`;
+export const CheckBoxAllBox = styled.View`
+  align-items: center;
+  flex-direction: row;
+  padding: 20px 0;
+  border-top-width: 1px;
+  border-bottom-width: 1px;
+  border-color: #f4f4f4;
+  justify-content: space-between;
+  align-items: center;
+`;
+export const BoxRow = styled.View`
+  flex-direction: row;
+  align-items: center;
+`;
+
+export const CheckBoxContainer = styled.View`
+  padding: 10px 0;
+  justify-content: space-between;
+  flex-direction: row;
+  align-items: center;
+`;
+export const CheckBoxInner = styled.View`
+  flex-direction: row;
+  align-items: center;
+`;
+
+export const MoreText = styled.Text`
+  font-size: 13px;
+  text-decoration: underline;
+  color: #9b9b9b;
 `;
