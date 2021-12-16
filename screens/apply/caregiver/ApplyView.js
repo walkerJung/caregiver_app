@@ -139,7 +139,6 @@ export default function ApplyViewCaregiver({ route, navigation }) {
     (new Date(data?.viewAnnouncement?.endDate).getTime() -
       new Date(data?.viewAnnouncement?.startDate).getTime()) /
     (1000 * 60 * 60 * 24);
-  console.log(nightsAndDays);
   return (
     <>
       {!loading && (
