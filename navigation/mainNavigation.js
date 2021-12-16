@@ -6,18 +6,20 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import {
   faBallot,
-  faCoffee,
+  faHeart,
   faHome,
   faUser,
-} from "@fortawesome/pro-regular-svg-icons";
+} from "@fortawesome/pro-light-svg-icons";
 import AuthStack from "./authStack";
 import PatientMypageStack from "./patientMypageStack";
 import PatientMainStack from "./patientMainStack";
 import PatientCaregiveServiceStack from "./patientCaregiveServiceStack";
 import CaregiverMainStack from "./caregiverMainStack";
+import CaregiverApplyStack from "./caregiverApplyStack";
 import Intro from "../screens/intro";
 import HistoryStackCaregiver from "../navigation/HistoryStackCaregiver";
 import careglverMypageStack from "../navigation/careglverMypageStack";
+import { careTheme } from "../contents";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -30,23 +32,53 @@ export default function MainNavigation({ isLoggedIn, userInfo }) {
           options={{
             tabBarShowLabel: false,
           }}
+          tabBarOptions={{
+            activeTintColor: careTheme.COLORS.PRIMARY,
+            inactiveTintColor: "#212121",
+          }}
         >
           {JSON.parse(userInfo).userType === "환자" ? (
             <>
               <Tab.Screen
                 name="메인"
                 component={PatientMainStack}
-                options={{ headerShown: false }}
+                options={{
+                  headerShown: false,
+                  tabBarIcon: ({ color, size }) => (
+                    <View>
+                      <FontAwesomeIcon icon={faHome} color={color} size={23} />
+                    </View>
+                  ),
+                }}
               />
               <Tab.Screen
                 name="간병 서비스"
                 component={PatientCaregiveServiceStack}
-                options={{ headerShown: false }}
+                options={{
+                  headerShown: false,
+                  tabBarIcon: ({ color, size, focused }) => (
+                    <View>
+                      <FontAwesomeIcon icon={faHeart} color={color} size={20} />
+                    </View>
+                  ),
+                }}
               />
               <Tab.Screen
                 name="마이페이지"
                 component={PatientMypageStack}
-                options={{ headerShown: false }}
+                options={{
+                  headerShown: false,
+                  tabBarIcon: ({ color, size, focus }) => (
+                    <View>
+                      <FontAwesomeIcon
+                        icon={faUser}
+                        color={color}
+                        focus={"#333"}
+                        size={20}
+                      />
+                    </View>
+                  ),
+                }}
               />
             </>
           ) : (
@@ -58,7 +90,7 @@ export default function MainNavigation({ isLoggedIn, userInfo }) {
                   headerShown: false,
                   tabBarIcon: ({ color, size }) => (
                     <View>
-                      <FontAwesomeIcon icon={faHome} />
+                      <FontAwesomeIcon icon={faHome} color={color} size={23} />
                     </View>
                   ),
                 }}
@@ -70,7 +102,11 @@ export default function MainNavigation({ isLoggedIn, userInfo }) {
                   headerShown: false,
                   tabBarIcon: ({ color, size }) => (
                     <View>
-                      <FontAwesomeIcon icon={faBallot} />
+                      <FontAwesomeIcon
+                        icon={faBallot}
+                        color={color}
+                        size={20}
+                      />
                     </View>
                   ),
                 }}
@@ -82,7 +118,7 @@ export default function MainNavigation({ isLoggedIn, userInfo }) {
                   headerShown: false,
                   tabBarIcon: ({ color, size }) => (
                     <View>
-                      <FontAwesomeIcon icon={faUser} />
+                      <FontAwesomeIcon icon={faUser} color={color} size={20} />
                     </View>
                   ),
                 }}

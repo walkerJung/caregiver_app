@@ -58,7 +58,7 @@ export default function ProgressHistoryUser({ navigation }) {
       <Toast
         ref={toastRef}
         textStyle={{ color: "white" }}
-        positionValue={140}
+        positionValue={150}
         fadeInDuration={200}
         fadeOutDuration={1000}
         style={{

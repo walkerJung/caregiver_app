@@ -1,12 +1,5 @@
-import React, { useRef, useCallback, useState } from "react";
-import {
-  View,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  Clipboard,
-  Alert,
-} from "react-native";
+import React, { useState } from "react";
+import { StyleSheet, Text, Clipboard } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import DefaultModal from "../modal/DefaultModal";
 import {
@@ -18,15 +11,7 @@ import {
   ListTitBox,
   ListTit,
   ListTxt,
-  ListTxtColor,
   Days,
-  ClipboardBtn,
-  FlexBoth,
-  ClipSpan,
-  Price,
-  InfoBox,
-  InfoTxt,
-  Bold,
 } from "../../components/history/HistoryStyle";
 import NumberFormat from "react-number-format";
 
@@ -81,17 +66,20 @@ export default function Item({ onPress, item, copyToClipboard }) {
       >
         <CardHead>
           <CardHeadTit style={ChoiceItemStyle[item.status].statusColor}>
-            {ChoiceItemStyle[item.status].statusText}
+            <Text>{ChoiceItemStyle[item.status].statusText}</Text>
             {item.hopeCost && (
-              <NumberFormat
-                value={item.hopeCost * 0.9}
-                displayType={"text"}
-                thousandSeparator={true}
-                suffix={"원"}
-                renderText={(formattedValue) => (
-                  <Text>{"(희망 간병비: " + formattedValue + ")"}</Text>
-                )}
-              />
+              <>
+                {"\n"}
+                <NumberFormat
+                  value={item.hopeCost * 0.9}
+                  displayType={"text"}
+                  thousandSeparator={true}
+                  suffix={"원"}
+                  renderText={(formattedValue) => (
+                    <Text>{"(희망 간병비: " + formattedValue + ")"}</Text>
+                  )}
+                />
+              </>
             )}
           </CardHeadTit>
           <GoViewBtn text="공고보기" onPress={onPress} />

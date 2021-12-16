@@ -8,7 +8,10 @@ export default function DefulatLayout({
 }) {
   return (
     <>
-      <SafeAreaView edges={["left", "right"]} style={{ flex: 1 }}>
+      <SafeAreaView
+        edges={["left", "right"]}
+        style={{ flex: 1, backgroundColor: "#f9f9f9" }}
+      >
         <ScrollView
           nestedScrollEnabled={nestedScrollEnabled}
           contentContainerStyle={{ flexGrow: 1 }}

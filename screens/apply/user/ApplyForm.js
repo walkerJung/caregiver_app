@@ -247,6 +247,13 @@ export default function ApplyForm({ navigation }) {
                   color="#cacaca"
                   style={styles.dateIcon}
                 />
+                <View
+                  style={{
+                    position: "absolute",
+                    width: "100%",
+                    height: 48,
+                  }}
+                />
                 <DateTimePickerModal
                   locale="Ko"
                   headerTextIOS="간병 시작일"
@@ -282,6 +289,13 @@ export default function ApplyForm({ navigation }) {
                   size={18}
                   color="#cacaca"
                   style={styles.dateIcon}
+                />
+                <View
+                  style={{
+                    position: "absolute",
+                    width: "100%",
+                    height: 48,
+                  }}
                 />
                 <DateTimePickerModal
                   locale="Ko"
@@ -324,6 +338,13 @@ export default function ApplyForm({ navigation }) {
                   color="#cacaca"
                   style={styles.dateIcon}
                 />
+                <View
+                  style={{
+                    position: "absolute",
+                    width: "100%",
+                    height: 48,
+                  }}
+                />
                 <DateTimePickerModal
                   locale="Ko"
                   headerTextIOS="간병 종료일"
@@ -360,6 +381,13 @@ export default function ApplyForm({ navigation }) {
                   color="#cacaca"
                   style={styles.dateIcon}
                 />
+                <View
+                  style={{
+                    position: "absolute",
+                    width: "100%",
+                    height: 48,
+                  }}
+                />
                 <DateTimePickerModal
                   locale="Ko"
                   headerTextIOS="간병 종료일"
@@ -378,7 +406,7 @@ export default function ApplyForm({ navigation }) {
           </FlexRow>
         </FormBox>
 
-        <FormBox last={true}>
+        <FormBox last>
           <FormLabel>간병 받으실 주소를 입력해주세요.</FormLabel>
           <FlexRow>
             <LeftBtnBox>
@@ -470,7 +498,7 @@ export default function ApplyForm({ navigation }) {
         </FormBox>
       </SectionLayout>
 
-      <SectionLayout last={true}>
+      <SectionLayout last>
         <FormTitle>환자 정보 입력</FormTitle>
         <FormBox>
           <FormLabel>환자 성함</FormLabel>

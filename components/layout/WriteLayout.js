@@ -27,8 +27,8 @@ export default function WriteLayout({ children }) {
             <View
               style={{
                 flex: 1,
-                paddingHorizontal: "5%",
                 paddingVertical: 20,
+                paddingHorizontal: "5%",
                 backgroundColor: "#fff",
               }}
             >

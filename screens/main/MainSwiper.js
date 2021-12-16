@@ -37,14 +37,14 @@ export default function AutoplayExample() {
 
   const Images = [
     require(`../../assets/img/video_cover.png`),
-    require(`../../assets/img/hq720.jpg`),
-    require(`../../assets/img/video_cover.png`),
+    // require(`../../assets/img/hq720.jpg`),
+    // require(`../../assets/img/video_cover.png`),
   ];
 
   return (
     <>
       <BitSwiper
-        items={["1", "2", "3"]}
+        items={["1"]}
         inactiveItemOffset={-10}
         paginateDotStyle={{
           backgroundColor: "rgba(0, 0, 0, .2)",
@@ -52,6 +52,7 @@ export default function AutoplayExample() {
           height: 8,
           borderRadius: 5,
           marginHorizontal: 3,
+          display: "none",
         }}
         paginateActiveDotStyle={{
           backgroundColor: careTheme.COLORS.PRIMARY,
@@ -59,6 +60,7 @@ export default function AutoplayExample() {
           height: 8,
           borderRadius: 5,
           marginHorizontal: 3,
+          display: "none",
         }}
         onItemRender={(item, index) => (
           <TouchableOpacity

@@ -14,7 +14,7 @@ export default function FormLayout({ children }) {
     <>
       <SafeAreaView style={{ flex: 1 }}>
         <KeyboardAvoidingView
-          style={{ flex: 1 }}
+          style={{ flex: 1, backgroundColor: "#f9f9f9" }}
           behavior={Platform.OS === "ios" ? "padding" : undefined}
           enabled
           keyboardVerticalOffset={Platform.OS === "ios" ? 65 : 0}

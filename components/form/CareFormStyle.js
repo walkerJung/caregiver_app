@@ -72,6 +72,7 @@ export const InfoBox = styled.View`
   border-radius: 4px;
   margin-bottom: 30px;
   flex-wrap: wrap;
+  align-items: center;
 `;
 export const InfoTxt = styled.Text`
   font-size: 15px;

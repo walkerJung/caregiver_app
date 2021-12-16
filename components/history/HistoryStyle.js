@@ -31,7 +31,7 @@ export const CardHead = styled.View`
   flex-direction: row;
   margin-bottom: 15px;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
 `;
 export const CardHeadTit = styled.Text`
   font-size: 14px;

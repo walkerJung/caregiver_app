@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Animated } from "react-native";
 import styled from "styled-components/native";
-import { MaterialTopTabBarProps } from "@react-navigation/material-top-tabs";
 import { careTheme } from "../contents";
 import TabAni from "../contents/tab/TabAni";
 
