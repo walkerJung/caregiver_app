@@ -97,6 +97,7 @@ export const FormInput = ({
   editable,
   value,
   suffix,
+  inputRef,
 }) => {
   const InputBox = styled.View`
     flex: 1;
@@ -137,6 +138,7 @@ export const FormInput = ({
       <FlexRow>
         <InputBox>
           <Input
+            ref={inputRef}
             placeholder={placeholder}
             placeholderTextColor={error ? careTheme.COLORS.ERROR : "#979797"}
             returnKeyType={returnKeyType}

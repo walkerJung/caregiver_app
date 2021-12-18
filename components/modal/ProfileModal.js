@@ -65,12 +65,26 @@ const Exit = styled.TouchableOpacity`
 const ScrollBox = styled.ScrollView`
   margin-top: 20px;
   margin-bottom: 20px;
-  height: 300px;
+  max-height: 300px;
+`;
+const InnerBox = styled.View`
+  margin-bottom: 15px;
+  padding-bottom: 15px;
+  /* border-bottom-width: ${(props) => (props.last ? "0px" : "1px")}; */
+  border-bottom-width: 1px;
+  border-style: solid;
+  border-color: #eee;
+`;
+const InnerTit = styled.Text`
+  font-size: 16px;
+  color: #212121;
+  margin-bottom: 8px;
+  font-weight: bold;
 `;
 const InnerTxt = styled.Text`
-  font-size: 18px;
+  font-size: 16px;
   color: #333;
-  line-height: 28px;
+  line-height: 24px;
 `;
 const BottomBtnBox = styled.View`
   flex-direction: row;
@@ -102,8 +116,6 @@ export default function ProfileModal({
   dataArray,
   navigation,
   confirm,
-  children,
-  title,
 }) {
   const {
     register,
@@ -211,19 +223,56 @@ export default function ProfileModal({
                 </FlexBoth>
 
                 <ScrollBox>
-                  <InnerTxt>
-                    안녕하세요. 간병인 홍길동입니다. 환자를 잘 보살피겠습니다.
-                    선거운동은 각급 선거관리위원회의 관리하에 법률이 정하는
-                    범위안에서 하되, 균등한 기회가 보장되어야 한다. 모든 국민은
-                    고문을 받지 아니하며, 형사상 자기에게 불리한 진술을
-                    강요당하지 아니한다. 대법관의 임기는 6년으로 하며, 법률이
-                    정하는 바에 의하여 연임할 수 있다. 고문을 받지 아니하며,
-                    형사상 자기에게 불리한 진술을 강요당하지 아니한다. 대법관의
-                    임기는 6년으로 하며, 법률이 정하는 바에 의하여 연임할 수
-                    있다. 고문을 받지 아니하며, 형사상 자기에게 불리한 진술을
-                    강요당하지 아니한다. 대법관의 임기는 6년으로 하며, 법률이
-                    정하는 바에 의하여 연임할 수 있다.
-                  </InnerTxt>
+                  <InnerBox>
+                    <InnerTit>자기소개</InnerTit>
+                    <InnerTxt>
+                      안녕하세요. 간병인 홍길동입니다. 환자를 잘 보살피겠습니다.
+                      선거운동은 각급 선거관리위원회의 관리하에 법률이 정하는
+                      범위안에서 하되, 균등한 기회가 보장되어야 한다.
+                    </InnerTxt>
+                  </InnerBox>
+                  {/* <InnerBox>
+                    <FlexBoth>
+                      <InnerTit>가능한 식사 케어</InnerTit>
+                      <InnerTxt>전적으로 먹여줌</InnerTxt>
+                    </FlexBoth>
+                  </InnerBox>
+                  <InnerBox>
+                    <FlexBoth>
+                      <InnerTit>가능한 대소변 케어</InnerTit>
+                      <InnerTxt>기저귀 케어</InnerTxt>
+                    </FlexBoth>
+                  </InnerBox>
+                  <InnerBox>
+                    <FlexBoth>
+                      <InnerTit>가능한 석션 케어</InnerTit>
+                      <InnerTxt>입 석션</InnerTxt>
+                    </FlexBoth>
+                  </InnerBox>
+                  <InnerBox>
+                    <FlexBoth>
+                      <InnerTit>가능한 이동케어</InnerTit>
+                      <InnerTxt>지팡이 보행 이동케어</InnerTxt>
+                    </FlexBoth>
+                  </InnerBox>
+                  <InnerBox>
+                    <FlexBoth>
+                      <InnerTit>가능한 침대케어</InnerTit>
+                      <InnerTxt>욕창관리</InnerTxt>
+                    </FlexBoth>
+                  </InnerBox> */}
+                  <InnerBox>
+                    <FlexBoth>
+                      <InnerTit>흡연 여부</InnerTit>
+                      <InnerTxt>피우지 않음</InnerTxt>
+                    </FlexBoth>
+                  </InnerBox>
+                  <InnerBox last>
+                    <FlexBoth>
+                      <InnerTit>음주 여부</InnerTit>
+                      <InnerTxt>마시지 않음</InnerTxt>
+                    </FlexBoth>
+                  </InnerBox>
                 </ScrollBox>
                 {!confirm && (
                   <BottomBtnBox>

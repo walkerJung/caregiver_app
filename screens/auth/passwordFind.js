@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import {
   FormBox,
   FormLabelBox,
@@ -24,6 +24,13 @@ export default function PasswordFind() {
       phone,
     },
   });
+
+  const usernameRef = useRef();
+  const phoneRef = useRef();
+
+  const onNext = (nextOne) => {
+    nextOne?.current?.focus();
+  };
   return (
     <WriteLayout>
       <SectionLayout>
@@ -33,8 +40,9 @@ export default function PasswordFind() {
           </FormLabelBox>
           <FormInput
             placeholder="아이디를 입력해주세요."
-            retunKeyType="next"
+            returnKeyType="next"
             value={userId}
+            onSubmitEditing={() => onNext(usernameRef)}
             onChangeText={(text) => {
               setUserId(text);
             }}
@@ -45,9 +53,11 @@ export default function PasswordFind() {
             <FormLabel>이름</FormLabel>
           </FormLabelBox>
           <FormInput
+            ref={usernameRef}
             placeholder="이름을 입력해주세요."
-            retunKeyType="next"
+            returnKeyType="next"
             value={userName}
+            onSubmitEditing={() => onNext(phoneRef)}
             onChangeText={(text) => {
               setUserName(text);
             }}
@@ -58,8 +68,10 @@ export default function PasswordFind() {
             <FormLabel>핸드폰 번호</FormLabel>
           </FormLabelBox>
           <FormInput
+            ref={phoneRef}
             placeholder="핸드폰 번호를 입력해주세요."
             keyboardType="numeric"
+            returnKeyType="done"
             blurOnSubmit={true}
             value={phone}
             onChangeText={(text) => {

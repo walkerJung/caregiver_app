@@ -146,6 +146,18 @@ export default function ApplyForm({ navigation }) {
     navigation.navigate("ApplyFormDetail", { data });
   };
 
+  const addressDetailRef = useRef();
+  const protectorNameRef = useRef();
+  const protectorPhoneRef = useRef();
+  const patientNameRef = useRef();
+  const patientAgeRef = useRef();
+  const patientWeightRef = useRef();
+  const diseaseRef = useRef();
+
+  const onNext = (nextOne) => {
+    nextOne?.current?.focus();
+  };
+
   useEffect(() => {
     register("title", {
       required: "* 제목을 입력해주세요.",
@@ -449,9 +461,12 @@ export default function ApplyForm({ navigation }) {
             />
           )}
           <FormInput
+            inputRef={addressDetailRef}
             placeholder="상세주소"
             placeholderTextColor={"#979797"}
             keyboardType="default"
+            returnKeyType="next"
+            onSubmitEditing={() => onNext(protectorNameRef)}
             onChangeText={(text) => {
               setValue("addressDetail", text);
             }}
@@ -468,9 +483,11 @@ export default function ApplyForm({ navigation }) {
         <FormBox>
           <FormLabel>보호자 성함</FormLabel>
           <FormInput
+            inputRef={protectorNameRef}
             placeholder="성함"
             placeholderTextColor={"#979797"}
             returnKeyType="next"
+            onSubmitEditing={() => onNext(protectorPhoneRef)}
             onChangeText={(text) => {
               setValue("protectorName", text);
             }}
@@ -484,10 +501,12 @@ export default function ApplyForm({ navigation }) {
         <FormBox last={true}>
           <FormLabel>보호자 연락처</FormLabel>
           <FormInput
+            inputRef={protectorPhoneRef}
             placeholder="연락처 (-)제외"
             placeholderTextColor={"#979797"}
             returnKeyType="next"
             keyboardType="number-pad"
+            onSubmitEditing={() => onNext(patientNameRef)}
             onChangeText={(text) => {
               setValue("protectorPhone", text);
             }}
@@ -506,9 +525,11 @@ export default function ApplyForm({ navigation }) {
         <FormBox>
           <FormLabel>환자 성함</FormLabel>
           <FormInput
+            inputRef={patientNameRef}
             placeholder="성함"
             placeholderTextColor={"#979797"}
             returnKeyType="next"
+            onSubmitEditing={() => onNext(patientAgeRef)}
             onChangeText={(text) => {
               setValue("patientName", text);
             }}
@@ -522,12 +543,14 @@ export default function ApplyForm({ navigation }) {
         <FormBox>
           <FormLabel>환자 나이</FormLabel>
           <FormInput
+            inputRef={patientAgeRef}
             placeholder="나이"
             placeholderTextColor={"#979797"}
             returnKeyType="next"
             keyboardType="number-pad"
             maxLength={3}
             text="세"
+            onSubmitEditing={() => onNext(patientWeightRef)}
             onChangeText={(text) => {
               setValue("patientAge", text);
             }}
@@ -541,12 +564,14 @@ export default function ApplyForm({ navigation }) {
         <FormBox>
           <FormLabel>환자 몸무게</FormLabel>
           <FormInput
+            inputRef={patientWeightRef}
             placeholder="몸무게"
             placeholderTextColor={"#979797"}
             returnKeyType="next"
             keyboardType="number-pad"
             maxLength={3}
             text="kg"
+            onSubmitEditing={() => onNext(diseaseRef)}
             onChangeText={(text) => {
               setValue("patientWeight", text);
             }}
@@ -560,9 +585,10 @@ export default function ApplyForm({ navigation }) {
         <FormBox>
           <FormLabel>진단상병은 무엇인가요?</FormLabel>
           <FormInput
+            inputRef={diseaseRef}
             placeholder="진단상명을 입력해주세요."
             placeholderTextColor={"#979797"}
-            returnKeyType="next"
+            returnKeyType="done"
             onChangeText={(text) => {
               setValue("disease", text);
             }}

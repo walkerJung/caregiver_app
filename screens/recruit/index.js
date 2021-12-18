@@ -211,7 +211,6 @@ export default function RecruitHome({ route, navigation }) {
                 <FlexBoth>
                   <View>
                     <Profile>
-                      {/* <ProfileImg><Image source={require("")} /></ProfileImg> */}
                       <ProfileImg>
                         <Icon name="person-sharp" color="#bbb" size={21} />
                       </ProfileImg>
@@ -219,11 +218,7 @@ export default function RecruitHome({ route, navigation }) {
                         <ProfileDate style={{ marginTop: 0, marginBottom: 2 }}>
                           담당 간병인
                         </ProfileDate>
-                        <ProfileName>{caregiverInfo.user.userName}</ProfileName>
-                        {/* <ProfileDate style={{ marginTop: 0, marginBottom: 2 }}>
-                          담당 간병인 연락처
-                        </ProfileDate>
-                        <ProfileName>{caregiverInfo.user.phone}</ProfileName> */}
+                        {/* <ProfileName>{caregiverInfo.user.userName}</ProfileName> */}
                       </View>
                     </Profile>
                   </View>

@@ -141,7 +141,7 @@ export default function Item({ item, copyToClipboard, navigation }) {
           <ListTxt>{item.announcement.patientName}</ListTxt>
         </List>
 
-        <List>
+        <List last>
           <ListTitBox>
             <ListTit>
               <Icon name="location-outline" size={14} color="#979797" /> 간병

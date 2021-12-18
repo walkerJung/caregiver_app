@@ -1,5 +1,5 @@
-import React, { useState, useCallback, useRef } from "react";
-import { View, Text, Alert, Clipboard, TouchableHighlight } from "react-native";
+import React, { useCallback, useRef } from "react";
+import { Clipboard } from "react-native";
 import {
   ScrollView,
   Container,

@@ -43,7 +43,8 @@ export const FullBtn = styled.TouchableOpacity`
 
 export const ErrorsText = styled.Text`
   color: ${careTheme.COLORS.ERROR};
-  margin-top: 7px;
+  margin-top: -5px;
+  margin-bottom: 15px;
   margin-left: 5px;
   font-size: 13px;
   letter-spacing: -0.5px;

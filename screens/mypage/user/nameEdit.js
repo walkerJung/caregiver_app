@@ -80,7 +80,7 @@ export default function EditNameUser({ navigation }) {
               <FormInput
                 ref={nameRef}
                 placeholder="이름"
-                retunKeyType="next"
+                returnKeyType="done"
                 blurOnSubmit={true}
                 defaultValue={data.viewProfile.userName}
                 onChangeText={(text) => {

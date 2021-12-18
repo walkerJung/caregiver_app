@@ -231,7 +231,7 @@ export default function UserRegister({ navigation }) {
             placeholderTextColor={"#979797"}
             autoCapitalize="none"
             keyboardType="number-pad"
-            returnKeyType="next"
+            returnKeyType="done"
             onChangeText={(text) => setValue("phone", text)}
             maxLength={11}
           />

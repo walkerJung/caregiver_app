@@ -15,6 +15,7 @@ import {
 } from "../../components/login/loginStyle";
 
 import LoginBtn from "../../components/login/LoginBtn";
+import { FormBox } from "../../components/join/JoinStyle";
 
 export default function Login({ navigation }) {
   const {
@@ -68,35 +69,38 @@ export default function Login({ navigation }) {
 
   return (
     <KeyboardAvoidingView>
-      <View></View>
       <Image
         source={require("../../assets/img/main_logo.png")}
         style={{ width: 230, height: 56, marginBottom: 30 }}
         resizeMode={"contain"}
       />
 
-      <TextInput
-        value={watch("userId")}
-        placeholder="아이디"
-        placeholderTextColor={"#979797"}
-        returnKeyType="next"
-        autoCapitalize="none"
-        onSubmitEditing={() => onNext(passwordRef)}
-        onChangeText={(text) => setValue("userId", text)}
-      />
-      {errors.userId && <ErrorsText>{errors.userId.message}</ErrorsText>}
-
-      <TextInput
-        value={watch("password")}
-        placeholder="비밀번호"
-        ref={passwordRef}
-        placeholderTextColor={"#979797"}
-        returnKeyType="done"
-        secureTextEntry
-        onSubmitEditing={handleSubmit(onValid)}
-        onChangeText={(text) => setValue("password", text)}
-      />
-      {errors.password && <ErrorsText>{errors.password.message}</ErrorsText>}
+      <FormBox last>
+        <TextInput
+          value={watch("userId")}
+          placeholder="아이디"
+          placeholderTextColor={"#979797"}
+          returnKeyType="next"
+          autoCapitalize="none"
+          onSubmitEditing={() => onNext(passwordRef)}
+          onChangeText={(text) => setValue("userId", text)}
+          blurOnSubmit={false}
+        />
+        {errors.userId && <ErrorsText>{errors.userId.message}</ErrorsText>}
+      </FormBox>
+      <FormBox last>
+        <TextInput
+          value={watch("password")}
+          placeholder="비밀번호"
+          ref={passwordRef}
+          placeholderTextColor={"#979797"}
+          returnKeyType="done"
+          secureTextEntry
+          onSubmitEditing={handleSubmit(onValid)}
+          onChangeText={(text) => setValue("password", text)}
+        />
+        {errors.password && <ErrorsText>{errors.password.message}</ErrorsText>}
+      </FormBox>
 
       <LoginBtn title="로그인" line={false} onPress={handleSubmit(onValid)} />
 

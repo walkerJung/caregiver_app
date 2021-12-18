@@ -57,7 +57,7 @@ export default function MainCaregiver({ navigation }) {
             <MainBannerHd />
           </MainBanner>
 
-          <SectionLayout lastBox={false}>
+          {/* <SectionLayout lastBox={false}>
             <View
               style={{
                 ...styles.shadow,
@@ -73,14 +73,14 @@ export default function MainCaregiver({ navigation }) {
                 <BtnTxt>앱 사용법을 알려드립니다!</BtnTxt>
               </Btn>
             </View>
-          </SectionLayout>
+          </SectionLayout> */}
 
           <NotiBox>
             <MainTitle>공지사항</MainTitle>
             <MainNotice data={data} navigation={navigation} />
           </NotiBox>
 
-          <SectionLayout last={true}>
+          <SectionLayout last={false}>
             <MainTitle>케어코리아 홍보영상</MainTitle>
             <MainSwiper />
           </SectionLayout>

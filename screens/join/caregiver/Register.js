@@ -157,6 +157,7 @@ export default function CaregiverRegister({ navigation }) {
   const passwordConfirmRef = useRef();
   const usernameRef = useRef();
   const phoneRef = useRef();
+  const residentRef = useRef();
 
   const onNext = (nextOne) => {
     nextOne?.current?.focus();
@@ -289,6 +290,7 @@ export default function CaregiverRegister({ navigation }) {
             ref={usernameRef}
             placeholder="이름을 입력해주세요."
             placeholderTextColor={"#979797"}
+            returnKeyType="next"
             autoCapitalize="none"
             onSubmitEditing={() => onNext(phoneRef)}
             onChangeText={(text) => setValue("userName", text)}
@@ -308,7 +310,7 @@ export default function CaregiverRegister({ navigation }) {
             placeholderTextColor={"#979797"}
             keyboardType="number-pad"
             autoCapitalize="none"
-            returnKeyType="next"
+            returnKeyType="done"
             onChangeText={(text) => setValue("phone", text)}
             maxLength={11}
           />
@@ -403,16 +405,18 @@ export default function CaregiverRegister({ navigation }) {
               placeholderTextColor={"#979797"}
               keyboardType="number-pad"
               returnKeyType="next"
+              onSubmitEditing={() => onNext(residentRef)}
               maxLength={6}
               style={{ flex: 1, marginRight: 5 }}
               onChangeText={(text) => setValue("resident_1", text)}
             />
             <Text>-</Text>
             <FormInput
+              ref={residentRef}
               placeholder="뒷 번호 7자리"
               placeholderTextColor={"#979797"}
               keyboardType="number-pad"
-              returnKeyType="next"
+              returnKeyType="done"
               secureTextEntry
               maxLength={7}
               style={{ flex: 1, marginLeft: 5 }}

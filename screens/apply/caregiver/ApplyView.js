@@ -219,7 +219,7 @@ export default function ApplyViewCaregiver({ route, navigation }) {
             </Card2>
 
             <Card2 style={styles.shadow}>
-              <List>
+              <List last>
                 <ListTitBox>
                   <ListTit>
                     <Icon name="person-outline" size={14} color="#979797" />{" "}
@@ -228,7 +228,7 @@ export default function ApplyViewCaregiver({ route, navigation }) {
                 </ListTitBox>
                 <ListTxt>{data.viewAnnouncement.protectorName}</ListTxt>
               </List>
-              {data.viewAnnouncement.status == 5 && (
+              {/* {data.viewAnnouncement.status == 5 && (
                 <List last={true}>
                   <ListTitBox>
                     <ListTit>
@@ -238,7 +238,7 @@ export default function ApplyViewCaregiver({ route, navigation }) {
                   </ListTitBox>
                   <ListTxt>{data.viewAnnouncement.protectorPhone}</ListTxt>
                 </List>
-              )}
+              )} */}
             </Card2>
 
             <Card2 style={styles.shadow}>

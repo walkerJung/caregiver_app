@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, Image, Alert } from "react-native";
+import { View, Text, StyleSheet, Image } from "react-native";
 import {
   ScrollView,
   Container,
@@ -12,9 +12,9 @@ import {
   PriceTxt,
 } from "../../components/form/ListStyle";
 import { SubmitBtn } from "../../components/form/CareFormStyle";
-import Icon from "react-native-vector-icons/Ionicons";
 import ProfileModal from "../../components/modal/ProfileModal";
 import NumberFormat from "react-number-format";
+import logo from "../../assets/img/simbol.png";
 
 export default function ApplicantList({ route, navigation }) {
   const [showModal, setShowModal] = useState(false);
@@ -42,9 +42,12 @@ export default function ApplicantList({ route, navigation }) {
               <FlexBoth style={{ marginBottom: 13 }}>
                 <View>
                   <Profile>
-                    {/* <ProfileImg><Image source={require("")} /></ProfileImg> */}
                     <ProfileImg>
-                      <Icon name="person-sharp" color="#bbb" size={21} />
+                      <Image
+                        style={{ width: 26, height: 26 }}
+                        resizeMode="contain"
+                        source={logo}
+                      />
                     </ProfileImg>
                     <View>
                       <ProfileName>{item.user.userName}</ProfileName>

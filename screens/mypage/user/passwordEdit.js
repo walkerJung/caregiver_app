@@ -97,7 +97,7 @@ export default function EditPasswordUser({ navigation }) {
             placeholder="비밀번호"
             secureTextEntry={true}
             password={true}
-            retunKeyType="next"
+            returnKeyType="next"
             blurOnSubmit={false}
             onChangeText={(text) => setValue("newPassword", text)}
             onSubmitEditing={() => onNext(confirmPasswordRef)}
@@ -115,7 +115,7 @@ export default function EditPasswordUser({ navigation }) {
             placeholder="비밀번호 확인"
             secureTextEntry={true}
             password={true}
-            retunKeyType="next"
+            returnKeyType="done"
             blurOnSubmit={true}
             onChangeText={(text) => setValue("newPasswordConfirm", text)}
           />

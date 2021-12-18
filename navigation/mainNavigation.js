@@ -30,11 +30,14 @@ export default function MainNavigation({ isLoggedIn, userInfo }) {
       {isLoggedIn && userInfo ? (
         <Tab.Navigator
           screenOptions={{
+            tabBarItemStyle: {
+              padding: 2,
+            },
             headerShown: false,
             tabBarLabelStyle: {
-              fontSize: 12,
+              fontSize: 11,
               fontWeight: "600",
-              marginTop: -5,
+              marginTop: -2,
             },
             tabBarBadgeStyle: {
               fontSize: 11,
@@ -47,13 +50,6 @@ export default function MainNavigation({ isLoggedIn, userInfo }) {
             // headerTitleStyle: {
             //   color: careTheme.COLORS.PRIMARY,
             // },
-          }}
-          // options={{
-          //   tabBarShowLabel: false,
-          // }}
-          tabBarOptions={{
-            activeTintColor: careTheme.COLORS.PRIMARY,
-            inactiveTintColor: "#212121",
           }}
         >
           {JSON.parse(userInfo).userType === "환자" ? (
