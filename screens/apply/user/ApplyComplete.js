@@ -1,12 +1,11 @@
 import React from "react";
 import {
   Complete,
-  CompleteLogo,
   CompleteTit,
   CompleteTxt,
   SubmitBtn,
 } from "../../../components/form/CareFormStyle";
-import { Alert, Image } from "react-native";
+import { Image } from "react-native";
 import logo from "../../../assets/img/main_logo.png";
 
 export default function ApplyCompleteUser({ navigation }) {

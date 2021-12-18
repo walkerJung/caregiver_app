@@ -25,16 +25,16 @@ import { CREATE_ACCOUNT_MUTATION } from "../../query";
 import Check from "../../../components/join/CheckBox";
 import { faCheck } from "@fortawesome/pro-light-svg-icons";
 import { faCheckCircle } from "@fortawesome/pro-solid-svg-icons";
-import { useNavigation } from "@react-navigation/core";
-import AlertModal from "../../../components/modal/AlertModal";
 import PrivacyModal from "../../../components/modal/PrivacyModal";
 import ProvisionModal from "../../../components/modal/ProvisionModal";
+import ConfirmModal from "../../../components/modal/ConfirmModal";
 
 export default function UserRegister({ navigation }) {
   const [category, setCategory] = useState(null);
   const [allProvision, setAllProvision] = useState(false);
   const [personalInfo, setPersonalInfo] = useState(false);
   const [provision, setProvision] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
   const allAgree = () => {
     if (allProvision === true) {
       setPersonalInfo(false);
@@ -75,8 +75,9 @@ export default function UserRegister({ navigation }) {
       createAccount: { ok },
     } = data;
     if (ok) {
-      Alert.alert("회원가입이 완료되었습니다. 감사합니다.");
-      navigation.navigate("Login");
+      setIsVisible(true);
+      // Alert.alert("회원가입이 완료되었습니다. 감사합니다.");
+      // navigation.navigate("Login");
     }
   };
 
@@ -316,6 +317,14 @@ export default function UserRegister({ navigation }) {
           // }
         />
       </SectionLayout>
+      <ConfirmModal
+        title="알림"
+        isVisible={isVisible}
+        text="회원가입이 완료되었습니다."
+        setIsVisible={setIsVisible}
+        navigation={navigation}
+        screen={"Login"}
+      />
     </WriteLayout>
   );
 }

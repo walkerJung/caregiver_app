@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import WriteLayout from "../../../components/layout/WriteLayout";
 import {
   FormBox,
@@ -14,8 +14,11 @@ import { useMutation } from "@apollo/client";
 import { useReactiveVar } from "@apollo/client";
 import { memberVar } from "../../../apollo";
 import { Alert } from "react-native";
+import SectionLayout from "../../../components/layout/SectionLayout";
+import ConfirmModal from "../../../components/modal/ConfirmModal";
 
 export default function EditPasswordCaregiver({ navigation }) {
+  const [isVisible, setIsVisible] = useState(false);
   const userInfo = JSON.parse(useReactiveVar(memberVar));
   const {
     watch,
@@ -27,8 +30,9 @@ export default function EditPasswordCaregiver({ navigation }) {
 
   const onCompleted = async (data) => {
     if (data.editAccount.ok) {
-      Alert.alert("비밀번호 변경이 완료되었습니다.");
-      navigation.navigate("EditCaregiver");
+      setIsVisible(true);
+      // Alert.alert("비밀번호 변경이 완료되었습니다.");
+      // navigation.navigate("EditCaregiver");
     } else {
       Alert.alert("회원정보 변경에 실패하였습니다.");
     }
@@ -83,43 +87,53 @@ export default function EditPasswordCaregiver({ navigation }) {
 
   return (
     <WriteLayout>
-      <FormBox>
-        <FormLabelBox>
-          <FormLabel>변경할 비밀번호</FormLabel>
-        </FormLabelBox>
-        <FormInput
-          ref={passwordRef}
-          placeholder="비밀번호"
-          secureTextEntry={true}
-          password={true}
-          retunKeyType="next"
-          blurOnSubmit={false}
-          onChangeText={(text) => setValue("newPassword", text)}
-          onSubmitEditing={() => onNext(confirmPasswordRef)}
-        />
-        {errors.newPassword && (
-          <ErrorsText>{errors.newPassword.message}</ErrorsText>
-        )}
-      </FormBox>
-      <FormBox>
-        <FormLabelBox>
-          <FormLabel>변경할 비밀번호 확인</FormLabel>
-        </FormLabelBox>
-        <FormInput
-          ref={confirmPasswordRef}
-          placeholder="비밀번호 확인"
-          secureTextEntry={true}
-          password={true}
-          retunKeyType="next"
-          blurOnSubmit={true}
-          onChangeText={(text) => setValue("newPasswordConfirm", text)}
-        />
-        {errors.newPasswordConfirm && (
-          <ErrorsText>{errors.newPasswordConfirm.message}</ErrorsText>
-        )}
-      </FormBox>
+      <SectionLayout>
+        <FormBox>
+          <FormLabelBox>
+            <FormLabel>변경할 비밀번호</FormLabel>
+          </FormLabelBox>
+          <FormInput
+            ref={passwordRef}
+            placeholder="비밀번호"
+            secureTextEntry={true}
+            password={true}
+            retunKeyType="next"
+            blurOnSubmit={false}
+            onChangeText={(text) => setValue("newPassword", text)}
+            onSubmitEditing={() => onNext(confirmPasswordRef)}
+          />
+          {errors.newPassword && (
+            <ErrorsText>{errors.newPassword.message}</ErrorsText>
+          )}
+        </FormBox>
+        <FormBox>
+          <FormLabelBox>
+            <FormLabel>변경할 비밀번호 확인</FormLabel>
+          </FormLabelBox>
+          <FormInput
+            ref={confirmPasswordRef}
+            placeholder="비밀번호 확인"
+            secureTextEntry={true}
+            password={true}
+            retunKeyType="next"
+            blurOnSubmit={true}
+            onChangeText={(text) => setValue("newPasswordConfirm", text)}
+          />
+          {errors.newPasswordConfirm && (
+            <ErrorsText>{errors.newPasswordConfirm.message}</ErrorsText>
+          )}
+        </FormBox>
 
-      <SubmitBtn text="수정하기" onPress={handleSubmit(onValid)} />
+        <SubmitBtn text="수정하기" onPress={handleSubmit(onValid)} />
+      </SectionLayout>
+      <ConfirmModal
+        title="알림"
+        isVisible={isVisible}
+        text="비밀번호 변경이 완료되었습니다."
+        setIsVisible={setIsVisible}
+        navigation={navigation}
+        screen={"EditCaregiver"}
+      />
     </WriteLayout>
   );
 }

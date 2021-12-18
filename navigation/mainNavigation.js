@@ -29,9 +29,28 @@ export default function MainNavigation({ isLoggedIn, userInfo }) {
     <NavigationContainer>
       {isLoggedIn && userInfo ? (
         <Tab.Navigator
-          options={{
-            tabBarShowLabel: false,
+          screenOptions={{
+            headerShown: false,
+            tabBarLabelStyle: {
+              fontSize: 12,
+              fontWeight: "600",
+              marginTop: -5,
+            },
+            tabBarBadgeStyle: {
+              fontSize: 11,
+            },
+            tabBarActiveTintColor: careTheme.COLORS.PRIMARY,
+            tabBarInactiveTintColor: "#212121",
+            // headerStyle: {
+            //   backgroundColor: careTheme.COLORS.PRIMARY,
+            // },
+            // headerTitleStyle: {
+            //   color: careTheme.COLORS.PRIMARY,
+            // },
           }}
+          // options={{
+          //   tabBarShowLabel: false,
+          // }}
           tabBarOptions={{
             activeTintColor: careTheme.COLORS.PRIMARY,
             inactiveTintColor: "#212121",

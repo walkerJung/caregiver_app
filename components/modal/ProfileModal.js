@@ -6,6 +6,7 @@ import {
   Text,
   View,
   Dimensions,
+  Image,
 } from "react-native";
 import styled from "styled-components/native";
 import Modal from "react-native-modal";
@@ -28,6 +29,8 @@ import {
 } from "../../screens/query";
 import { useReactiveVar } from "@apollo/client";
 import { memberVar } from "../../apollo";
+import logo from "../../assets/img/simbol.png";
+
 const { chartHeight } = Dimensions.get("window").height;
 const chartWidth = Dimensions.get("window").width;
 const ModalBackground = styled.View`
@@ -190,7 +193,11 @@ export default function ProfileModal({
                   <Profile>
                     {/* <ProfileImg><Image source={require("")} /></ProfileImg> */}
                     <ProfileImg style={{ width: 56, height: 56 }}>
-                      <Icon name="person-sharp" color="#bbb" size={23} />
+                      <Image
+                        style={{ width: 26, height: 26 }}
+                        resizeMode="contain"
+                        source={logo}
+                      />
                     </ProfileImg>
                     <View>
                       <ProfileName style={{ fontSize: 17 }}>

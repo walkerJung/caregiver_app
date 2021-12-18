@@ -8,24 +8,27 @@ import {
 } from "../../../components/join/JoinStyle";
 import { SubmitBtn } from "../../../components/form/CareFormStyle";
 import JoinRadio from "../../../components/join/JoinRadio";
+import SectionLayout from "../../../components/layout/SectionLayout";
 
 export default function EditGenderCaregiver() {
   return (
     <WriteLayout>
-      <FormBox>
-        <FormLabelBox>
-          <FormLabel>성별 변경</FormLabel>
-        </FormLabelBox>
-        <JoinRadio
-          lineover={true}
-          options={[
-            { key: 1, text: "남성" },
-            { key: 2, text: "여성" },
-          ]}
-        />
-      </FormBox>
+      <SectionLayout>
+        <FormBox>
+          <FormLabelBox>
+            <FormLabel>성별 변경</FormLabel>
+          </FormLabelBox>
+          <JoinRadio
+            lineover={true}
+            options={[
+              { key: 1, text: "남성" },
+              { key: 2, text: "여성" },
+            ]}
+          />
+        </FormBox>
 
-      <SubmitBtn text="수정하기" onPress={() => Alert.alert("수정하기")} />
+        <SubmitBtn text="수정하기" onPress={() => Alert.alert("수정하기")} />
+      </SectionLayout>
     </WriteLayout>
   );
 }

@@ -1,5 +1,4 @@
 import React from "react";
-import { Alert } from "react-native";
 import DefulatLayout from "../../../components/layout/DefaultLayout";
 import {
   Container,

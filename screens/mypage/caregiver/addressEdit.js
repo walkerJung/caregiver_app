@@ -21,9 +21,12 @@ import Postcode from "@actbase/react-daum-postcode";
 import { useForm } from "react-hook-form";
 import { useMutation } from "@apollo/client";
 import { USER_DETAIL_QUERY, EDIT_CAREGIVERINFO_MUTATION } from "../../query";
+import SectionLayout from "../../../components/layout/SectionLayout";
+import ConfirmModal from "../../../components/modal/ConfirmModal";
 
 export default function EditAddressCaregiver({ route, navigation }) {
-  const [isModal, setModal] = useState("none");
+  const [isVisible, setIsVisible] = useState(false);
+  const [isModal, setModal] = useState();
   const {
     register,
     handleSubmit,
@@ -38,8 +41,9 @@ export default function EditAddressCaregiver({ route, navigation }) {
       editCaregiverInfo: { ok },
     } = data;
     if (ok) {
-      Alert.alert("주소 변경이 완료되었습니다.");
-      navigation.navigate("EditCaregiver");
+      setIsVisible(true);
+      // Alert.alert("주소 변경이 완료되었습니다.");
+      // navigation.navigate("EditCaregiver");
     }
   };
 
@@ -76,7 +80,8 @@ export default function EditAddressCaregiver({ route, navigation }) {
   };
 
   const handleAddress = (data) => {
-    setValue("address", data.address), setModal("none");
+    setValue("address", data.address);
+    setModal(true);
   };
 
   useEffect(() => {
@@ -90,59 +95,71 @@ export default function EditAddressCaregiver({ route, navigation }) {
 
   return (
     <WriteLayout>
-      <FormBox>
-        <FormLabelBox>
-          <FormLabel>실거주 주소</FormLabel>
-        </FormLabelBox>
-        <FlexRow>
-          <LeftBtnBox>
-            <TouchableOpacity
-              activeOpacity={0.8}
-              onPress={() => setModal("block")}
-            >
-              <SearchInput
-                placeholder={route.params.address}
-                placeholderTextColor={"#676767"}
-                keyboardType="default"
-                value={getValues("address")}
-                editable={false}
-              />
-              {errors.address && (
-                <ErrorsText>{errors.address.message}</ErrorsText>
-              )}
-            </TouchableOpacity>
-          </LeftBtnBox>
-          <RightBtnBox>
-            <SearchBtn activeOpacity={0.8} onPress={() => setModal("block")}>
-              <Text
-                style={{
-                  fontSize: 14,
-                  color: careTheme.COLORS.PRIMARY,
-                  fontWeight: "bold",
-                }}
+      <SectionLayout>
+        <FormBox>
+          <FormLabelBox>
+            <FormLabel>실거주 주소</FormLabel>
+          </FormLabelBox>
+          <FlexRow>
+            <LeftBtnBox>
+              <TouchableOpacity
+                activeOpacity={0.8}
+                onPress={() => setModal(true)}
               >
-                주소찾기
-              </Text>
-            </SearchBtn>
-          </RightBtnBox>
-        </FlexRow>
-        <Postcode
-          style={{ width: 320, height: 320, display: isModal }}
-          jsOptions={{ animation: true }}
-          onSelected={(data) => handleAddress(data)}
-        />
-        <FormInput
-          placeholder={route.params.addressDetail}
-          placeholderTextColor={"#979797"}
-          keyboardType="default"
-          onChangeText={(text) => setValue("addressDetail", text)}
-        />
-        {errors.addressDetail && (
-          <ErrorsText>{errors.addressDetail.message}</ErrorsText>
-        )}
-      </FormBox>
+                <SearchInput
+                  placeholder={route.params.address}
+                  placeholderTextColor={"#676767"}
+                  keyboardType="default"
+                  value={getValues("address")}
+                  editable={false}
+                />
+                {errors.address && (
+                  <ErrorsText>{errors.address.message}</ErrorsText>
+                )}
+              </TouchableOpacity>
+            </LeftBtnBox>
+            <RightBtnBox>
+              <SearchBtn activeOpacity={0.8} onPress={() => setModal(true)}>
+                <Text
+                  style={{
+                    fontSize: 14,
+                    color: careTheme.COLORS.PRIMARY,
+                    fontWeight: "bold",
+                  }}
+                >
+                  주소찾기
+                </Text>
+              </SearchBtn>
+            </RightBtnBox>
+          </FlexRow>
+          {isModal && (
+            <Postcode
+              style={{ width: 320, height: 320 }}
+              jsOptions={{ animation: true }}
+              onSelected={(data) => handleAddress(data)}
+            />
+          )}
+          <FormInput
+            placeholder={route.params.addressDetail}
+            placeholderTextColor={"#979797"}
+            keyboardType="default"
+            onChangeText={(text) => setValue("addressDetail", text)}
+          />
+          {errors.addressDetail && (
+            <ErrorsText>{errors.addressDetail.message}</ErrorsText>
+          )}
+        </FormBox>
 
-      <SubmitBtn text="수정하기" onPress={handleSubmit(onValid)} />
+        <SubmitBtn text="수정하기" onPress={handleSubmit(onValid)} />
+      </SectionLayout>
+      <ConfirmModal
+        title="알림"
+        isVisible={isVisible}
+        text="주소 변경이 완료되었습니다."
+        setIsVisible={setIsVisible}
+        navigation={navigation}
+        screen={"EditCaregiver"}
+      />
     </WriteLayout>
   );
 }

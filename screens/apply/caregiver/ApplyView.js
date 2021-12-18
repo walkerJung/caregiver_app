@@ -360,7 +360,7 @@ export default function ApplyViewCaregiver({ route, navigation }) {
         </DefulatLayout>
       )}
       <ConfirmModal
-        title="확인"
+        title="알림"
         isVisible={isVisible}
         text="본인간병비 입력이 완료되었습니다."
         setIsVisible={setIsVisible}

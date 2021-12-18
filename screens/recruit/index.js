@@ -47,6 +47,7 @@ import { useForm } from "react-hook-form";
 import { useQuery, useMutation } from "@apollo/client";
 import { ANNOUNCEMENT_DETAIL_QUERY, WRITE_HOPECOST_MUTATION } from "../query";
 import CurrencyInput from "react-native-currency-input";
+import ConfirmModal from "../../components/modal/ConfirmModal";
 
 export default function RecruitHome({ route, navigation }) {
   const { code } = route.params;
@@ -54,6 +55,7 @@ export default function RecruitHome({ route, navigation }) {
   const [showModal, setShowModal] = useState(false);
   const [showModal1, setShowModal1] = useState(false);
   const [showModal2, setShowModal2] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
   const openModal = () => {
     setShowModal((prev) => !prev);
   };
@@ -121,8 +123,9 @@ export default function RecruitHome({ route, navigation }) {
       writeHopeCost: { ok },
     } = data;
     if (ok) {
-      Alert.alert("희망간병비 입력이 완료되었습니다.");
-      navigation.replace("ProgressHistoryUser");
+      setIsVisible(true);
+      // Alert.alert("희망간병비 입력이 완료되었습니다.");
+      // navigation.replace("ProgressHistoryUser");
     }
   };
 
@@ -447,6 +450,14 @@ export default function RecruitHome({ route, navigation }) {
               </View>
             )}
           </Container>
+          <ConfirmModal
+            title="알림"
+            isVisible={isVisible}
+            text="희망간병비 입력이 완료되었습니다."
+            setIsVisible={setIsVisible}
+            navigation={navigation}
+            screen={"ProgressHistoryUser"}
+          />
         </DefulatLayout>
       )}
     </>

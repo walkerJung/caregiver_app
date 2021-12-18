@@ -18,8 +18,10 @@ import * as ImagePicker from "expo-image-picker";
 import { ReactNativeFile } from "apollo-upload-client";
 import Icon from "react-native-vector-icons/Ionicons";
 import SectionLayout from "../../../components/layout/SectionLayout";
+import ConfirmModal from "../../../components/modal/ConfirmModal";
 
 export default function EditBankInfoCaregiver({ navigation }) {
+  const [isVisible, setIsVisible] = useState(false);
   const userInfo = JSON.parse(useReactiveVar(memberVar));
   const [bankInfo, setBankInfo] = useState();
   const {
@@ -43,8 +45,9 @@ export default function EditBankInfoCaregiver({ navigation }) {
       editCaregiverInfo: { ok },
     } = data;
     if (ok) {
-      Alert.alert("통장사본 사진 변경이 완료되었습니다.");
-      navigation.navigate("EditCaregiver");
+      setIsVisible(true);
+      // Alert.alert("통장사본 사진 변경이 완료되었습니다.");
+      // navigation.navigate("EditCaregiver");
     }
   };
 
@@ -173,6 +176,14 @@ export default function EditBankInfoCaregiver({ navigation }) {
             </FormBox>
             <SubmitBtn text="수정하기" onPress={handleSubmit(onValid)} />
           </SectionLayout>
+          <ConfirmModal
+            title="알림"
+            isVisible={isVisible}
+            text="통장 사진 변경이 완료되었습니다."
+            setIsVisible={setIsVisible}
+            navigation={navigation}
+            screen={"EditCaregiver"}
+          />
         </WriteLayout>
       )}
     </>
