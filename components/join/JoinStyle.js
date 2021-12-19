@@ -146,7 +146,7 @@ export const MemberBtnTxt = styled.Text`
   font-size: 20px;
   font-weight: bold;
 `;
-export const Textarea = ({ placeholder, numberOfLines }) => {
+export const Textarea = ({ placeholder, numberOfLines, onChangeText }) => {
   const TextAreaContainer = styled.View`
     border-width: 1px;
     border-color: #ddd;
@@ -161,6 +161,7 @@ export const Textarea = ({ placeholder, numberOfLines }) => {
   return (
     <TextAreaContainer>
       <TextArea
+        onChangeText={onChangeText}
         placeholder={placeholder}
         placeholderTextColor={"#979797"}
         multiline={true}

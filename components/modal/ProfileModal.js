@@ -226,9 +226,7 @@ export default function ProfileModal({
                   <InnerBox>
                     <InnerTit>자기소개</InnerTit>
                     <InnerTxt>
-                      안녕하세요. 간병인 홍길동입니다. 환자를 잘 보살피겠습니다.
-                      선거운동은 각급 선거관리위원회의 관리하에 법률이 정하는
-                      범위안에서 하되, 균등한 기회가 보장되어야 한다.
+                      {dataArray.user.caregiverInfo.introduce}
                     </InnerTxt>
                   </InnerBox>
                   {/* <InnerBox>
@@ -264,13 +262,13 @@ export default function ProfileModal({
                   <InnerBox>
                     <FlexBoth>
                       <InnerTit>흡연 여부</InnerTit>
-                      <InnerTxt>피우지 않음</InnerTxt>
+                      <InnerTxt>{dataArray.user.caregiverInfo.smoke}</InnerTxt>
                     </FlexBoth>
                   </InnerBox>
                   <InnerBox last>
                     <FlexBoth>
                       <InnerTit>음주 여부</InnerTit>
-                      <InnerTxt>마시지 않음</InnerTxt>
+                      <InnerTxt>{dataArray.user.caregiverInfo.drink}</InnerTxt>
                     </FlexBoth>
                   </InnerBox>
                 </ScrollBox>

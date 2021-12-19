@@ -52,8 +52,6 @@ export default function EditDetailCaregiver({ navigation }) {
     } = data;
     if (ok) {
       setIsVisible(true);
-      // Alert.alert("간병인 상세정보 변경이 완료되었습니다.");
-      // navigation.navigate("EditCaregiver");
     }
   };
 
@@ -70,7 +68,6 @@ export default function EditDetailCaregiver({ navigation }) {
   });
 
   const onValid = async (data) => {
-    console.log(data);
     try {
       await editCaregiverInfoMutation({
         variables: {
@@ -90,10 +87,6 @@ export default function EditDetailCaregiver({ navigation }) {
       error = error.replace("Error: ", "");
       Alert.alert(`${error}`);
     }
-  };
-
-  const onChangeSelectText = (value) => {
-    setSelectText(value);
   };
 
   const handleSelectBox = (set, value, setState) => {
@@ -321,7 +314,7 @@ export default function EditDetailCaregiver({ navigation }) {
 
             <FormBox>
               <FormLabelBox>
-                <FormLabel>술</FormLabel>
+                <FormLabel>음주 여부</FormLabel>
               </FormLabelBox>
 
               <JoinRadio

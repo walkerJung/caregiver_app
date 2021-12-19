@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Alert, TouchableOpacity, Text, Image, Modal } from "react-native";
+import { Alert, TouchableOpacity, Text } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import WriteLayout from "../../../components/layout/WriteLayout";
 import SectionLayout from "../../../components/layout/SectionLayout";
@@ -11,7 +11,6 @@ import {
   FormLabelBox,
   FormLabel,
   FormInput,
-  PhotoBox,
   Textarea,
   ErrorsText,
   JoinCheckWrap,
@@ -23,8 +22,6 @@ import {
 } from "../../../components/join/JoinStyle";
 import JoinRadio from "../../../components/join/JoinRadio";
 import {
-  FormTitle,
-  FormSubLabel,
   FlexRow,
   LeftBtnBox,
   RightBtnBox,
@@ -47,7 +44,6 @@ import ProvisionModal from "../../../components/modal/ProvisionModal";
 import ConfirmModal from "../../../components/modal/ConfirmModal";
 
 export default function CaregiverRegister({ navigation }) {
-  const [category, setCategory] = useState(null);
   const [allProvision, setAllProvision] = useState(false);
   const [personalInfo, setPersonalInfo] = useState(false);
   const [provision, setProvision] = useState(false);
@@ -100,8 +96,6 @@ export default function CaregiverRegister({ navigation }) {
     } = data;
     if (ok) {
       setIsVisible(true);
-      // Alert.alert("회원가입이 완료되었습니다.");
-      // navigation.navigate("Login");
     }
   };
 
@@ -115,6 +109,10 @@ export default function CaregiverRegister({ navigation }) {
   const onValid = async (data) => {
     if (!loading) {
       try {
+        if (!personalInfo || !provision) {
+          Alert.alert("개인정보 취급방침 및 이용약관에 동의해주세요.");
+          return false;
+        }
         await createAccountMutation({
           variables: {
             userId: data.userId,
@@ -133,6 +131,7 @@ export default function CaregiverRegister({ navigation }) {
             bedCare: data.bedCare,
             address: data.address,
             addressDetail: data.addressDetail,
+            introduce: data.introduce,
           },
         });
       } catch (e) {
@@ -219,6 +218,9 @@ export default function CaregiverRegister({ navigation }) {
     });
     register("drink", {
       required: "* 가능한 음주 여부를 선택해주세요.",
+    });
+    register("introduce", {
+      required: "* 간단한 자기소개를 입력해주세요.",
     });
   }, [register]);
 
@@ -654,6 +656,22 @@ export default function CaregiverRegister({ navigation }) {
             fieldName="drink"
           />
           {errors.drink && <ErrorsText>{errors.drink.message}</ErrorsText>}
+        </FormBox>
+
+        <FormBox>
+          <FormLabelBox>
+            <FormLabel>자기소개</FormLabel>
+          </FormLabelBox>
+          <Textarea
+            placeholder="자기소개글을 입력해주세요."
+            numberOfLines={10}
+            onChangeText={(text) => {
+              setValue("introduce", text);
+            }}
+          />
+          {errors.introduce && (
+            <ErrorsText>{errors.introduce.message}</ErrorsText>
+          )}
         </FormBox>
 
         <JoinCheckWrap>

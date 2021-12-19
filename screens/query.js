@@ -39,6 +39,7 @@ export const CREATE_ACCOUNT_MUTATION = gql`
     $bedCare: String
     $address: String
     $addressDetail: String
+    $introduce: String
   ) {
     createAccount(
       userId: $userId
@@ -57,6 +58,7 @@ export const CREATE_ACCOUNT_MUTATION = gql`
       bedCare: $bedCare
       address: $address
       addressDetail: $addressDetail
+      introduce: $introduce
     ) {
       ok
       error
@@ -76,7 +78,7 @@ export const LOGIN_MUTATION = gql`
         userType
         userName
         phone
-        CaregiverInfo {
+        caregiverInfo {
           bankInfo
           idCard
         }
@@ -173,6 +175,11 @@ export const ANNOUNCEMENT_LIST_QUERY = gql`
             userName
             sex
             phone
+            caregiverInfo {
+              introduce
+              smoke
+              drink
+            }
           }
         }
       }
@@ -232,6 +239,11 @@ export const ANNOUNCEMENTAPPLICATION_LIST_QUERY = gql`
               userName
               sex
               phone
+              caregiverInfo {
+                introduce
+                smoke
+                drink
+              }
             }
           }
         }
@@ -289,6 +301,11 @@ export const ANNOUNCEMENT_DETAIL_QUERY = gql`
           userName
           sex
           phone
+          caregiverInfo {
+            introduce
+            smoke
+            drink
+          }
         }
       }
     }
@@ -348,7 +365,7 @@ export const USER_DETAIL_QUERY = gql`
       sex
       phone
       createdAt
-      CaregiverInfo {
+      caregiverInfo {
         userCode
         address
         addressDetail
@@ -362,6 +379,7 @@ export const USER_DETAIL_QUERY = gql`
         suctionCare
         moveCare
         bedCare
+        introduce
       }
     }
   }
@@ -400,6 +418,7 @@ export const EDIT_CAREGIVERINFO_MUTATION = gql`
     $suctionCare: String
     $moveCare: String
     $bedCare: String
+    $introduce: String
   ) {
     editCaregiverInfo(
       userCode: $userCode
@@ -414,6 +433,7 @@ export const EDIT_CAREGIVERINFO_MUTATION = gql`
       suctionCare: $suctionCare
       moveCare: $moveCare
       bedCare: $bedCare
+      introduce: $introduce
     ) {
       ok
       error

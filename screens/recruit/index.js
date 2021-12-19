@@ -218,7 +218,7 @@ export default function RecruitHome({ route, navigation }) {
                         <ProfileDate style={{ marginTop: 0, marginBottom: 2 }}>
                           담당 간병인
                         </ProfileDate>
-                        {/* <ProfileName>{caregiverInfo.user.userName}</ProfileName> */}
+                        <ProfileName>{caregiverInfo.user.userName}</ProfileName>
                       </View>
                     </Profile>
                   </View>
