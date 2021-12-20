@@ -92,7 +92,7 @@ export default function EditDetailCaregiver({ navigation }) {
   const handleSelectBox = (set, value, setState) => {
     setValue(set, value), setState(value);
   };
-
+  console.log(data);
   return (
     <>
       {!loading && (
