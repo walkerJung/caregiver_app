@@ -752,7 +752,7 @@ const pickerSelectStyles = {
     borderColor: "#ddd",
     borderRadius: 8,
     color: "#212121",
-    paddingRight: 30, // to ensure the text is never behind the icon
+    paddingRight: 30,
     marginTop: 5,
     height: 48,
   },
@@ -764,7 +764,7 @@ const pickerSelectStyles = {
     borderColor: "#ddd",
     borderRadius: 8,
     color: "#212121",
-    paddingRight: 30, // to ensure the text is never behind the icon
+    paddingRight: 30,
     marginTop: 5,
     height: 48,
   },

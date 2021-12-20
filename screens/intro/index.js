@@ -21,7 +21,6 @@ const slides = [
 ];
 
 function Intro({ navigation }) {
-  let [showRealApp, setShowRealApp] = useState(false);
   const renderItem = ({ item }) => {
     return (
       <View
@@ -121,7 +120,7 @@ const styles = StyleSheet.create({
     height: 56,
     borderRadius: 8,
     backgroundColor: "#DEDEDE",
-    marginTop: 30,
+    marginTop: 5,
   },
   nextBtnTxt: {
     color: "#767676",
@@ -134,7 +133,7 @@ const styles = StyleSheet.create({
     height: 56,
     borderRadius: 8,
     backgroundColor: careTheme.COLORS.PRIMARY,
-    marginTop: 30,
+    marginTop: 5,
   },
   doneBtnTxt: {
     color: "#fff",

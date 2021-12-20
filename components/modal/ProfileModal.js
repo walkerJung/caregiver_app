@@ -31,8 +31,6 @@ import { useReactiveVar } from "@apollo/client";
 import { memberVar } from "../../apollo";
 import logo from "../../assets/img/simbol.png";
 
-const { chartHeight } = Dimensions.get("window").height;
-const chartWidth = Dimensions.get("window").width;
 const ModalBackground = styled.View`
   flex: 1;
   justify-content: flex-end;
@@ -203,7 +201,6 @@ export default function ProfileModal({
               <ModalBody>
                 <FlexBoth>
                   <Profile>
-                    {/* <ProfileImg><Image source={require("")} /></ProfileImg> */}
                     <ProfileImg style={{ width: 56, height: 56 }}>
                       <Image
                         style={{ width: 26, height: 26 }}

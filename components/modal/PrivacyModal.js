@@ -3,17 +3,12 @@ import { StyleSheet } from "react-native";
 import styled from "styled-components/native";
 import Modal from "react-native-modal";
 import Icon from "react-native-vector-icons/Ionicons";
+import { SafeAreaView } from "react-native-safe-area-context";
 
-const ModalBackground = styled.View`
-  flex: 1;
-  justify-content: flex-end;
-  align-items: center;
-  background-color: rgba(0, 0, 0, 0.8);
-`;
 const Container = styled.View`
   width: 100%;
   background-color: #fff;
-  padding: 20px 20px;
+  padding: 20px 0px;
 `;
 const ModalHeader = styled.View`
   position: relative;
@@ -35,11 +30,13 @@ const Exit = styled.TouchableOpacity`
 `;
 const ScrollBox = styled.ScrollView`
   height: 95%;
+  padding: 20px 5%;
 `;
 const InnerTxt = styled.Text`
   font-size: 14px;
   color: #333;
   line-height: 22px;
+  padding-bottom: 20%;
 `;
 
 export default function PrivacyModal({ showModal, setShowModal }) {
@@ -55,7 +52,7 @@ export default function PrivacyModal({ showModal, setShowModal }) {
             setShowModal(!showModal);
           }}
         >
-          <ModalBackground>
+          <SafeAreaView>
             <Container>
               <ModalHeader>
                 <ModalHeaderTxt numberOfLines={1} ellipsizeMode="tail">
@@ -110,7 +107,8 @@ export default function PrivacyModal({ showModal, setShowModal }) {
                     이용이 이루어지는 경우 이에 따른 요금 정산을 위해
                     사용됩니다.{"\n"}
                     4. 신규 서비스가 개발되거나 이벤트 행사 시 참여기회를 알리기
-                    위한 정보 전달 및 마케팅 및 광고 등에도 사용됩니다.{"\n"}
+                    위한 정보 전달 및 마케팅 및 광고 등에도 사용됩니다.
+                    {"\n"}
                     5. 이용자의 서비스 이용 기록과 접속 빈도 분석 및 서비스
                     이용에 대한 통계, 이를 통한 맞춤형 서비스 제공과 서비스
                     개선에도 사용됩니다.{"\n"}
@@ -130,7 +128,8 @@ export default function PrivacyModal({ showModal, setShowModal }) {
                     2. 표시/광고에 관한 기록 보존 근거 : 전자상거래 등에서의
                     소비자보호에 관한 법률 보존 기간 : 6개월{"\n"}
                     3. 계약 또는 청약철회 등에 관한 기록 보존 근거 : 전자상거래
-                    등에서의 소비자보호에 관한 법률 보존 기간 : 5년{"\n"}
+                    등에서의 소비자보호에 관한 법률 보존 기간 : 5년
+                    {"\n"}
                     4. 대금결제 및 재화 등의 공급에 관한 기록 보존 근거 :
                     전자상거래 등에서의 소비자보호에 관한 법률 보존 기간 : 5년
                     {"\n"}
@@ -145,7 +144,7 @@ export default function PrivacyModal({ showModal, setShowModal }) {
                 </ScrollBox>
               </ModalBody>
             </Container>
-          </ModalBackground>
+          </SafeAreaView>
         </Modal>
       ) : null}
     </>

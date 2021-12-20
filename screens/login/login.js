@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from "react";
-import { Text, TouchableOpacity, Alert, Image, View } from "react-native";
+import { Platform, Alert, Image } from "react-native";
 import { useForm } from "react-hook-form";
 import { LOGIN_MUTATION } from "../query";
 import { useMutation } from "@apollo/client";
@@ -68,7 +68,12 @@ export default function Login({ navigation }) {
   }, [register]);
 
   return (
-    <KeyboardAvoidingView>
+    <KeyboardAvoidingView
+      style={{ flex: 1, backgroundColor: "#fff" }}
+      behavior={Platform.OS === "ios" ? "padding" : undefined}
+      enabled
+      keyboardVerticalOffset={Platform.OS === "ios" ? 65 : 0}
+    >
       <Image
         source={require("../../assets/img/main_logo.png")}
         style={{ width: 230, height: 56, marginBottom: 30 }}

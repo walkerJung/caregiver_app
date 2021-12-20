@@ -3,17 +3,12 @@ import { StyleSheet } from "react-native";
 import styled from "styled-components/native";
 import Modal from "react-native-modal";
 import Icon from "react-native-vector-icons/Ionicons";
+import { SafeAreaView } from "react-native-safe-area-context";
 
-const ModalBackground = styled.View`
-  flex: 1;
-  justify-content: flex-end;
-  align-items: center;
-  background-color: rgba(0, 0, 0, 0.8);
-`;
 const Container = styled.View`
   width: 100%;
   background-color: #fff;
-  padding: 20px 20px;
+  padding: 20px 0px;
 `;
 const ModalHeader = styled.View`
   position: relative;
@@ -35,11 +30,13 @@ const Exit = styled.TouchableOpacity`
 `;
 const ScrollBox = styled.ScrollView`
   height: 95%;
+  padding: 20px 5%;
 `;
 const InnerTxt = styled.Text`
   font-size: 14px;
   color: #333;
   line-height: 22px;
+  padding-bottom: 30%;
 `;
 
 export default function ProvisionModal({ showModal, setShowModal }) {
@@ -55,7 +52,7 @@ export default function ProvisionModal({ showModal, setShowModal }) {
             setShowModal(!showModal);
           }}
         >
-          <ModalBackground>
+          <SafeAreaView>
             <Container>
               <ModalHeader>
                 <ModalHeaderTxt numberOfLines={1} ellipsizeMode="tail">
@@ -478,7 +475,7 @@ export default function ProvisionModal({ showModal, setShowModal }) {
                 </ScrollBox>
               </ModalBody>
             </Container>
-          </ModalBackground>
+          </SafeAreaView>
         </Modal>
       ) : null}
     </>

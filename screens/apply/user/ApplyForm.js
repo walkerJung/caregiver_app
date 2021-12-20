@@ -720,6 +720,7 @@ const pickerSelectStyles = {
     color: "#212121",
     paddingRight: 30, // to ensure the text is never behind the icon
     marginTop: 5,
+    marginBottom: 8,
     height: 48,
   },
   inputAndroid: {
@@ -732,6 +733,7 @@ const pickerSelectStyles = {
     color: "#212121",
     paddingRight: 30, // to ensure the text is never behind the icon
     marginTop: 5,
+    marginBottom: 8,
     height: 48,
   },
 };

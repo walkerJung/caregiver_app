@@ -6,6 +6,7 @@ import {
   Alert,
   Text,
   TouchableOpacity,
+  Image,
 } from "react-native";
 import {
   Container,
@@ -48,6 +49,7 @@ import { useQuery, useMutation } from "@apollo/client";
 import { ANNOUNCEMENT_DETAIL_QUERY, WRITE_HOPECOST_MUTATION } from "../query";
 import CurrencyInput from "react-native-currency-input";
 import ConfirmModal from "../../components/modal/ConfirmModal";
+import logo from "../../assets/img/simbol.png";
 
 export default function RecruitHome({ route, navigation }) {
   const { code } = route.params;
@@ -212,7 +214,11 @@ export default function RecruitHome({ route, navigation }) {
                   <View>
                     <Profile>
                       <ProfileImg>
-                        <Icon name="person-sharp" color="#bbb" size={21} />
+                        <Image
+                          style={{ width: 26, height: 26 }}
+                          resizeMode="contain"
+                          source={logo}
+                        />
                       </ProfileImg>
                       <View>
                         <ProfileDate style={{ marginTop: 0, marginBottom: 2 }}>

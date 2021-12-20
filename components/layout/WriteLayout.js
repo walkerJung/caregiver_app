@@ -1,12 +1,5 @@
 import React from "react";
-import {
-  KeyboardAvoidingView,
-  Platform,
-  ScrollView,
-  Keyboard,
-  TouchableWithoutFeedback,
-  View,
-} from "react-native";
+import { KeyboardAvoidingView, Platform, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function WriteLayout({ children }) {
