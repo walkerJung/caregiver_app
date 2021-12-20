@@ -146,7 +146,12 @@ export const MemberBtnTxt = styled.Text`
   font-size: 20px;
   font-weight: bold;
 `;
-export const Textarea = ({ placeholder, numberOfLines, onChangeText }) => {
+export const Textarea = ({
+  placeholder,
+  numberOfLines,
+  onChangeText,
+  defaultValue,
+}) => {
   const TextAreaContainer = styled.View`
     border-width: 1px;
     border-color: #ddd;
@@ -161,6 +166,7 @@ export const Textarea = ({ placeholder, numberOfLines, onChangeText }) => {
   return (
     <TextAreaContainer>
       <TextArea
+        defaultValue={defaultValue}
         onChangeText={onChangeText}
         placeholder={placeholder}
         placeholderTextColor={"#979797"}

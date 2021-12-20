@@ -43,11 +43,6 @@ export const ModalBody = styled.View`
   background-color: #fff;
 `;
 export default function EditCaregiver({ navigation }) {
-  const [bankInfo, setBankInfo] = useState(null);
-  const [isModalVisible, setModalVisible] = useState(false);
-  const toggleModal = () => {
-    setModalVisible(!isModalVisible);
-  };
   const userInfo = JSON.parse(useReactiveVar(memberVar));
   const { data, loading } = useQuery(USER_DETAIL_QUERY, {
     fetchPolicy: "network-only",
@@ -101,16 +96,15 @@ export default function EditCaregiver({ navigation }) {
             <ListGo
               title="실거주주소"
               value={
-                data?.viewProfile?.CaregiverInfo[0]?.address +
+                data?.viewProfile?.caregiverInfo?.address +
                 " " +
-                data?.viewProfile?.CaregiverInfo[0]?.addressDetail
+                data?.viewProfile?.caregiverInfo?.addressDetail
               }
               onPress={() => {
                 navigation.navigate("EditAddressCaregiver", {
                   userCode: userInfo.code,
-                  address: data.viewProfile.CaregiverInfo[0].address,
-                  addressDetail:
-                    data.viewProfile.CaregiverInfo[0].addressDetail,
+                  address: data.viewProfile.caregiverInfo.address,
+                  addressDetail: data.viewProfile.caregiverInfo.addressDetail,
                 });
               }}
               icon

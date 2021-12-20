@@ -92,7 +92,7 @@ export default function EditDetailCaregiver({ navigation }) {
   const handleSelectBox = (set, value, setState) => {
     setValue(set, value), setState(value);
   };
-
+  console.log(data);
   return (
     <>
       {!loading && (
@@ -115,7 +115,7 @@ export default function EditDetailCaregiver({ navigation }) {
                 value={
                   selectMealText
                     ? selectMealText
-                    : data.viewProfile.CaregiverInfo[0].mealCare
+                    : data.viewProfile.caregiverInfo.mealCare
                 }
                 onValueChange={(value) =>
                   handleSelectBox("mealCare", value, setSelectMealText)
@@ -152,7 +152,7 @@ export default function EditDetailCaregiver({ navigation }) {
                 value={
                   selectUrineText
                     ? selectUrineText
-                    : data.viewProfile.CaregiverInfo[0].urineCare
+                    : data.viewProfile.caregiverInfo.urineCare
                 }
                 onValueChange={(value) =>
                   handleSelectBox("urineCare", value, setSelectUrineText)
@@ -192,7 +192,7 @@ export default function EditDetailCaregiver({ navigation }) {
                 value={
                   selectSuctionText
                     ? selectSuctionText
-                    : data.viewProfile.CaregiverInfo[0].suctionCare
+                    : data.viewProfile.caregiverInfo.suctionCare
                 }
                 onValueChange={(value) =>
                   handleSelectBox("suctionCare", value, setSelectSuctionText)
@@ -229,7 +229,7 @@ export default function EditDetailCaregiver({ navigation }) {
                 value={
                   selectMoveText
                     ? selectMoveText
-                    : data.viewProfile.CaregiverInfo[0].moveCare
+                    : data.viewProfile.caregiverInfo.moveCare
                 }
                 onValueChange={(value) =>
                   handleSelectBox("moveCare", value, setSelectMoveText)
@@ -269,7 +269,7 @@ export default function EditDetailCaregiver({ navigation }) {
                 value={
                   selectBedText
                     ? selectBedText
-                    : data.viewProfile.CaregiverInfo[0].bedCare
+                    : data.viewProfile.caregiverInfo.bedCare
                 }
                 onValueChange={(value) =>
                   handleSelectBox("bedCare", value, setSelectBedText)
@@ -301,7 +301,7 @@ export default function EditDetailCaregiver({ navigation }) {
               </FormLabelBox>
 
               <JoinRadio
-                defaultValue={data.viewProfile.CaregiverInfo[0].smoke}
+                defaultValue={data.viewProfile.caregiverInfo.smoke}
                 lineover={true}
                 options={[
                   { key: "흡연", text: "흡연" },
@@ -318,7 +318,7 @@ export default function EditDetailCaregiver({ navigation }) {
               </FormLabelBox>
 
               <JoinRadio
-                defaultValue={data.viewProfile.CaregiverInfo[0].drink}
+                defaultValue={data.viewProfile.caregiverInfo.drink}
                 lineover={true}
                 options={[
                   { key: "음주", text: "음주" },
@@ -334,6 +334,7 @@ export default function EditDetailCaregiver({ navigation }) {
                 <FormLabel>자기소개</FormLabel>
               </FormLabelBox>
               <Textarea
+                defaultValue={data.viewProfile.caregiverInfo.introduce}
                 placeholder="자기소개글을 입력해주세요."
                 numberOfLines={10}
               />
