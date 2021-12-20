@@ -64,10 +64,13 @@ export default function EditBankInfoCaregiver({ navigation }) {
   });
 
   const onValid = async (data) => {
+    const paths = data.bankInfo.split("/");
+    const filename = paths[paths.length - 1];
+
     try {
       const bankInfo = new ReactNativeFile({
         uri: data.bankInfo,
-        name: userInfo.userId + "_bankInfo",
+        name: filename,
         type: "image/jpeg",
       });
 
@@ -130,7 +133,7 @@ export default function EditBankInfoCaregiver({ navigation }) {
                   pickImage(setBankInfo, "bankInfo");
                 }}
               >
-                {data.viewProfile.CaregiverInfo[0].bankInfo == "bankInfo" ? (
+                {data.viewProfile.caregiverInfo.bankInfo == "bankInfo" ? (
                   <>
                     {bankInfo ? (
                       <Image
@@ -162,7 +165,7 @@ export default function EditBankInfoCaregiver({ navigation }) {
                       <Image
                         style={{ width: "100%", height: "100%" }}
                         source={{
-                          uri: `http://3.36.22.165:4000${data.viewProfile.CaregiverInfo[0].bankInfo}`,
+                          uri: `http://3.36.22.165:4000${data.viewProfile.caregiverInfo.bankInfo}`,
                         }}
                         resizeMode={"contain"}
                       />

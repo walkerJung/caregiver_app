@@ -64,13 +64,16 @@ export default function EditIdCardCaregiver({ navigation }) {
   });
 
   const onValid = async (data) => {
+    const paths = data.idCard.split("/");
+    const filename = paths[paths.length - 1];
+
     try {
       const idCard = new ReactNativeFile({
         uri: data.idCard,
-        name: userInfo.userId + "_idCard",
+        name: filename,
         type: "image/jpeg",
       });
-
+      console.log(idCard);
       await editCaregiverInfoMutation({
         variables: {
           userCode: userInfo.code,
@@ -92,6 +95,8 @@ export default function EditIdCardCaregiver({ navigation }) {
       aspect: [4, 3],
       quality: 1,
     });
+
+    console.log({ result });
 
     if (!result.cancelled) {
       set(result.uri), setValue(value, result.uri);
@@ -130,7 +135,7 @@ export default function EditIdCardCaregiver({ navigation }) {
                   pickImage(setIdCard, "idCard");
                 }}
               >
-                {data.viewProfile.caregiverInfo[0].idCard == "idCard" ? (
+                {data.viewProfile.caregiverInfo.idCard == "idCard" ? (
                   <>
                     {idCard ? (
                       <Image
@@ -162,7 +167,7 @@ export default function EditIdCardCaregiver({ navigation }) {
                       <Image
                         style={{ width: "100%", height: "100%" }}
                         source={{
-                          uri: `http://3.36.22.165:4000${data.viewProfile.caregiverInfo[0].idCard}`,
+                          uri: `http://3.36.22.165:4000${data.viewProfile.caregiverInfo.idCard}`,
                         }}
                         resizeMode={"contain"}
                       />
