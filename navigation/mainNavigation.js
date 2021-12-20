@@ -44,12 +44,6 @@ export default function MainNavigation({ isLoggedIn, userInfo }) {
             },
             tabBarActiveTintColor: careTheme.COLORS.PRIMARY,
             tabBarInactiveTintColor: "#212121",
-            // headerStyle: {
-            //   backgroundColor: careTheme.COLORS.PRIMARY,
-            // },
-            // headerTitleStyle: {
-            //   color: careTheme.COLORS.PRIMARY,
-            // },
           }}
         >
           {JSON.parse(userInfo).userType === "환자" ? (
