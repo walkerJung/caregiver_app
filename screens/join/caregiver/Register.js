@@ -11,7 +11,6 @@ import {
   FormLabelBox,
   FormLabel,
   FormInput,
-  Textarea,
   ErrorsText,
   JoinCheckWrap,
   CheckBoxAllBox,
@@ -662,7 +661,8 @@ export default function CaregiverRegister({ navigation }) {
           <FormLabelBox>
             <FormLabel>자기소개</FormLabel>
           </FormLabelBox>
-          <Textarea
+          <FormInput
+            style={{ height: 100, textAlignVertical: "top", fontSize: 15 }}
             placeholder="자기소개글을 입력해주세요."
             numberOfLines={10}
             onChangeText={(text) => {

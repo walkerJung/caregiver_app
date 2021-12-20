@@ -151,6 +151,7 @@ export const Textarea = ({
   numberOfLines,
   onChangeText,
   defaultValue,
+  refInput,
 }) => {
   const TextAreaContainer = styled.View`
     border-width: 1px;
@@ -166,6 +167,7 @@ export const Textarea = ({
   return (
     <TextAreaContainer>
       <TextArea
+        ref={refInput}
         defaultValue={defaultValue}
         onChangeText={onChangeText}
         placeholder={placeholder}

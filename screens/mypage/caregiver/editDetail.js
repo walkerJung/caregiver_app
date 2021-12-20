@@ -6,7 +6,6 @@ import {
   FormLabelBox,
   FormLabel,
   FormInput,
-  Textarea,
   StepTxtBox,
   StepNum,
 } from "../../../components/join/JoinStyle";
@@ -334,7 +333,8 @@ export default function EditDetailCaregiver({ navigation }) {
               <FormLabelBox>
                 <FormLabel>자기소개</FormLabel>
               </FormLabelBox>
-              <Textarea
+              <FormInput
+                style={{ height: 100, textAlignVertical: "top", fontSize: 15 }}
                 defaultValue={data.viewProfile.caregiverInfo.introduce}
                 onChangeText={(text) => {
                   setValue("introduce", text);
