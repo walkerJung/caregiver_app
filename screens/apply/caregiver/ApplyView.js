@@ -178,7 +178,7 @@ export default function ApplyViewCaregiver({ route, navigation }) {
                 </ListTitBox>
                 <ListTxtColor>
                   <NumberFormat
-                    value={data?.viewAnnouncement?.hopeCost * 0.9}
+                    value={Math.floor(data?.viewAnnouncement?.hopeCost * 0.9)}
                     displayType={"text"}
                     thousandSeparator={true}
                     suffix={"원"}
@@ -327,7 +327,7 @@ export default function ApplyViewCaregiver({ route, navigation }) {
                       희망 간병비
                     </Text>
                     <NumberFormat
-                      value={data.viewAnnouncement.hopeCost * 0.9}
+                      value={Math.floor(data.viewAnnouncement.hopeCost * 0.9)}
                       displayType={"text"}
                       thousandSeparator={true}
                       suffix={"원"}

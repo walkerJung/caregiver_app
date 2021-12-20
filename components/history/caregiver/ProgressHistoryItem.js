@@ -108,7 +108,7 @@ export default function Item({ item, copyToClipboard, navigation }) {
           </ListTitBox>
           <ListTxtColor>
             <NumberFormat
-              value={item.announcement.hopeCost * 0.9}
+              value={Math.floor(item.announcement.hopeCost * 0.9)}
               displayType={"text"}
               thousandSeparator={true}
               suffix={"원"}

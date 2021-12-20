@@ -71,7 +71,7 @@ export default function Item({ onPress, item, copyToClipboard }) {
               <>
                 {"\n"}
                 <NumberFormat
-                  value={item.hopeCost * 0.9}
+                  value={Math.floor(item.hopeCost * 0.9)}
                   displayType={"text"}
                   thousandSeparator={true}
                   suffix={"원"}

@@ -79,6 +79,7 @@ export default function EditDetailCaregiver({ navigation }) {
           suctionCare: data.suctionCare,
           moveCare: data.moveCare,
           bedCare: data.bedCare,
+          introduce: data.introduce,
         },
       });
     } catch (e) {
@@ -335,6 +336,9 @@ export default function EditDetailCaregiver({ navigation }) {
               </FormLabelBox>
               <Textarea
                 defaultValue={data.viewProfile.caregiverInfo.introduce}
+                onChangeText={(text) => {
+                  setValue("introduce", text);
+                }}
                 placeholder="자기소개글을 입력해주세요."
                 numberOfLines={10}
               />
