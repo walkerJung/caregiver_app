@@ -15,7 +15,10 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSPhotoLibraryUsageDescription": "간병인 신분증 및 통장사본 이미지를 업로드 하려면 사진첩 접근 권한이 필요합니다."
+      }
     },
     "android": {
       "adaptiveIcon": {
