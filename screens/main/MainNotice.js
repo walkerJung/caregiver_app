@@ -10,7 +10,6 @@ const MainNotice = (props) => {
             activeOpacity={0.8}
             onPress={() => {
               props?.navigation.navigate("PatientMypageNoticeStack");
-              // props?.navigation.navigate("CaregiverMypageNoticeStack");
             }}
             key={index}
           >

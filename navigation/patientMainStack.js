@@ -2,6 +2,7 @@ import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import PatientMainScreen from "../screens/main/Main";
 import UserApplyStack from "./userApplyStack";
+import PatientMypageNoticeStack from "./patientMypageNoticeStack";
 
 const Stack = createStackNavigator();
 
@@ -36,6 +37,13 @@ export default function PatientMainStack() {
       <Stack.Screen
         name="UserApplyStack"
         component={UserApplyStack}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="PatientMypageNoticeStack"
+        component={PatientMypageNoticeStack}
         options={{
           headerShown: false,
         }}
