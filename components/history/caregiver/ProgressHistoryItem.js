@@ -47,12 +47,12 @@ export default function Item({ item, copyToClipboard, navigation }) {
     },
     4: {
       statusColor: { color: "#0077FF" },
-      statusText: "매칭 완료",
+      statusText: "입금 대기중",
       complete: true,
     },
     5: {
       statusColor: { color: careTheme.COLORS.ERROR },
-      statusText: "매칭 실패",
+      statusText: "입금 및 매칭 완료",
       complete: true,
     },
   };
