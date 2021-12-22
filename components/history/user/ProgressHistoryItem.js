@@ -91,8 +91,10 @@ export default function Item({ onPress, item, copyToClipboard, navigation }) {
       writeHopeCost: { ok },
     } = data;
     if (ok) {
-      setIsVisible(true);
-      // navigation.replace("ProgressHistoryUser");
+      setShowModal(false);
+      setTimeout(() => {
+        setIsVisible(true);
+      }, 500);
     }
   };
 
@@ -329,9 +331,9 @@ export default function Item({ onPress, item, copyToClipboard, navigation }) {
         )}
       </Card>
       <ConfirmModal
-        title="확인"
+        title="알림"
         isVisible={isVisible}
-        text="완료되었습니다."
+        text="간병서비스가 취소 되었습니다."
         setIsVisible={setIsVisible}
         navigation={navigation}
         screen={"ProgressHistoryUser"}
