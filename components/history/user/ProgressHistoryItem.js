@@ -331,9 +331,9 @@ export default function Item({ onPress, item, copyToClipboard, navigation }) {
         )}
       </Card>
       <ConfirmModal
-        title="알림"
+        title="확인"
         isVisible={isVisible}
-        text="간병서비스가 취소 되었습니다."
+        text="희망간병비 입력이 완료 되었습니다."
         setIsVisible={setIsVisible}
         navigation={navigation}
         screen={"ProgressHistoryUser"}
