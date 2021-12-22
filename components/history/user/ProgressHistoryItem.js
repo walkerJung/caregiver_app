@@ -36,6 +36,7 @@ import { useMutation } from "@apollo/client";
 import { WRITE_HOPECOST_MUTATION } from "../../../screens/query";
 import CurrencyInput from "react-native-currency-input";
 import ConfirmModal from "../../../components/modal/ConfirmModal";
+import { careTheme } from "../../../contents";
 
 export default function Item({ onPress, item, copyToClipboard, navigation }) {
   const [number, setNumber] = useState();
@@ -66,7 +67,7 @@ export default function Item({ onPress, item, copyToClipboard, navigation }) {
       careChoice: true,
     },
     4: {
-      statusColor: { color: "#FF5E5E" },
+      statusColor: { color: careTheme.COLORS.ERROR },
       statusText: "입금 대기중",
       deposit: true,
     },

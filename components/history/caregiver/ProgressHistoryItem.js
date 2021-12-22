@@ -46,12 +46,12 @@ export default function Item({ item, copyToClipboard, navigation }) {
       careChoice: true,
     },
     4: {
-      statusColor: { color: "#0077FF" },
+      statusColor: { color: careTheme.COLORS.ERROR },
       statusText: "입금 대기중",
       complete: true,
     },
     5: {
-      statusColor: { color: careTheme.COLORS.ERROR },
+      statusColor: { color: "#5e66ff" },
       statusText: "입금 및 매칭 완료",
       complete: true,
     },

@@ -37,6 +37,7 @@ import {
 import NumberFormat from "react-number-format";
 import CurrencyInput from "react-native-currency-input";
 import ConfirmModal from "../../../components/modal/ConfirmModal";
+import { careTheme } from "../../../contents";
 
 export default function ApplyViewCaregiver({ route, navigation }) {
   const { code } = route.params;
@@ -71,12 +72,12 @@ export default function ApplyViewCaregiver({ route, navigation }) {
       statusText: `간병인 모집중 (${applicationCaregiverCount}명)`,
     },
     4: {
-      statusColor: { color: "#FF5E5E" },
+      statusColor: { color: careTheme.COLORS.ERROR },
       statusText: "입금 대기중",
     },
     5: {
-      statusColor: { color: "#0077FF" },
-      statusText: "매칭 완료",
+      statusColor: { color: "#5e66ff" },
+      statusText: "입금 및 매칭 완료",
     },
     6: {
       statusColor: { color: "#20CF05" },

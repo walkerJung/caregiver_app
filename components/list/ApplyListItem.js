@@ -14,6 +14,7 @@ import {
   Days,
 } from "../../components/history/HistoryStyle";
 import NumberFormat from "react-number-format";
+import { careTheme } from "../../contents";
 
 export default function Item({ onPress, item, copyToClipboard }) {
   // 모달
@@ -41,7 +42,7 @@ export default function Item({ onPress, item, copyToClipboard }) {
       careChoice: true,
     },
     4: {
-      statusColor: { color: "#FF5E5E" },
+      statusColor: { color: careTheme.COLORS.ERROR },
       statusText: "입금 대기중",
       deposit: true,
     },

@@ -50,6 +50,7 @@ import { ANNOUNCEMENT_DETAIL_QUERY, WRITE_HOPECOST_MUTATION } from "../query";
 import CurrencyInput from "react-native-currency-input";
 import ConfirmModal from "../../components/modal/ConfirmModal";
 import logo from "../../assets/img/simbol.png";
+import { careTheme } from "../../contents";
 
 export default function RecruitHome({ route, navigation }) {
   const { code } = route.params;
@@ -92,7 +93,7 @@ export default function RecruitHome({ route, navigation }) {
       statusText: `간병인 모집중 (${applicationCaregiverCount}명)`,
     },
     4: {
-      statusColor: { color: "#FF5E5E" },
+      statusColor: { color: careTheme.COLORS.ERROR },
       statusText: "입금 대기중",
     },
     5: {
