@@ -83,7 +83,8 @@ export default function Item({ item, copyToClipboard, navigation }) {
         )}
 
         {item.announcement.confirmCaregiverCode &&
-          userInfo.code == item.announcement.confirmCaregiverCode && (
+          userInfo.code == item.announcement.confirmCaregiverCode &&
+          item.announcement.status === 4 && (
             <CardHead>
               <CardHeadTit style={ChoiceItemStyle[4].statusColor}>
                 {ChoiceItemStyle[4].statusText}
@@ -92,7 +93,8 @@ export default function Item({ item, copyToClipboard, navigation }) {
           )}
 
         {item.announcement.confirmCaregiverCode &&
-          userInfo.code != item.announcement.confirmCaregiverCode && (
+          userInfo.code == item.announcement.confirmCaregiverCode &&
+          item.announcement.status === 5 && (
             <CardHead>
               <CardHeadTit style={ChoiceItemStyle[5].statusColor}>
                 {ChoiceItemStyle[5].statusText}
