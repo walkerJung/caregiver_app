@@ -195,7 +195,7 @@ export const SubmitBtn = ({ onPress, disabled, text, loading, small }) => {
       props.disabled ? careTheme.COLORS.DISABLED_TXT : "#fff"};
     font-weight: bold;
     text-align: center;
-    font-size: ${(props) => (props.small ? "15" : "18")}px;
+    font-size: ${(props) => (props.small ? "16" : "18")}px;
   `;
   return (
     <Submit

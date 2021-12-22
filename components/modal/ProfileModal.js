@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Alert,
   ScrollView,
@@ -30,6 +30,7 @@ import {
 import { useReactiveVar } from "@apollo/client";
 import { memberVar } from "../../apollo";
 import logo from "../../assets/img/simbol.png";
+import ConfirmModal from "./ConfirmModal";
 
 const ModalBackground = styled.View`
   flex: 1;
@@ -124,13 +125,17 @@ export default function ProfileModal({
     watch,
   } = useForm();
 
+  const [isVisible, setIsVisible] = useState(false);
+
   const onCompleted = (data) => {
     const {
       choiceCaregiver: { ok },
     } = data;
     if (ok) {
-      Alert.alert("간병인 선택이 완료되었습니다.");
-      navigation.navigate("ProgressHistoryUser");
+      setShowModal(false);
+      setIsVisible(true);
+      // Alert.alert("간병인 선택이 완료되었습니다.");
+      // navigation.navigate("ProgressHistoryUser");
     }
   };
   const userInfo = JSON.parse(useReactiveVar(memberVar));
@@ -294,6 +299,14 @@ export default function ProfileModal({
           </ModalBackground>
         </Modal>
       ) : null}
+      <ConfirmModal
+        title="알림"
+        isVisible={isVisible}
+        text="간병인 선택이 완료되었습니다."
+        setIsVisible={setIsVisible}
+        navigation={navigation}
+        screen={"ProgressHistoryUser"}
+      />
     </>
   );
 }
