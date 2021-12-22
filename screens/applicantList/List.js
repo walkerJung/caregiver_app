@@ -15,6 +15,7 @@ import { SubmitBtn } from "../../components/form/CareFormStyle";
 import ProfileModal from "../../components/modal/ProfileModal";
 import NumberFormat from "react-number-format";
 import logo from "../../assets/img/simbol.png";
+import NoneLayout from "../../components/layout/NoneLayout";
 
 export default function ApplicantList({ route, navigation }) {
   const [showModal, setShowModal] = useState(false);
@@ -24,7 +25,7 @@ export default function ApplicantList({ route, navigation }) {
     setDataArray(dataArray);
   };
   return (
-    <ScrollView>
+    <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
       <Container>
         <Text
           style={{
@@ -36,57 +37,61 @@ export default function ApplicantList({ route, navigation }) {
         >
           지원한 간병인 ({route.params.dataArray.length}명)
         </Text>
-        {route.params.dataArray.map((item, index) => {
-          return (
-            <Item style={styles.shadow} key={index}>
-              <FlexBoth style={{ marginBottom: 13 }}>
-                <View>
-                  <Profile>
-                    <ProfileImg>
-                      <Image
-                        style={{ width: 26, height: 26 }}
-                        resizeMode="contain"
-                        source={logo}
+        {route.params.dataArray.length > 0 ? (
+          route.params.dataArray.map((item, index) => {
+            return (
+              <Item style={styles.shadow} key={index}>
+                <FlexBoth style={{ marginBottom: 13 }}>
+                  <View>
+                    <Profile>
+                      <ProfileImg>
+                        <Image
+                          style={{ width: 26, height: 26 }}
+                          resizeMode="contain"
+                          source={logo}
+                        />
+                      </ProfileImg>
+                      <View>
+                        <ProfileName>{item.user.userName}</ProfileName>
+                        <ProfileDate>{item.user.sex}</ProfileDate>
+                      </View>
+                    </Profile>
+                  </View>
+                  <View>
+                    <PriceTxt>
+                      간병비
+                      <NumberFormat
+                        value={item.caregiverCost}
+                        displayType={"text"}
+                        thousandSeparator={true}
+                        suffix={"원"}
+                        renderText={(formattedValue) => (
+                          <Text>{"(" + formattedValue + ")"}</Text>
+                        )}
                       />
-                    </ProfileImg>
-                    <View>
-                      <ProfileName>{item.user.userName}</ProfileName>
-                      <ProfileDate>{item.user.sex}</ProfileDate>
-                    </View>
-                  </Profile>
-                </View>
-                <View>
-                  <PriceTxt>
-                    간병비
-                    <NumberFormat
-                      value={item.caregiverCost}
-                      displayType={"text"}
-                      thousandSeparator={true}
-                      suffix={"원"}
-                      renderText={(formattedValue) => (
-                        <Text>{"(" + formattedValue + ")"}</Text>
-                      )}
-                    />
-                  </PriceTxt>
-                </View>
-              </FlexBoth>
-              <SubmitBtn
-                small={true}
-                text="간병인 정보 확인"
-                style={{ height: 48 }}
-                onPress={() => {
-                  openModal(item);
-                }}
-              />
-              <ProfileModal
-                showModal={showModal}
-                setShowModal={setShowModal}
-                dataArray={dataArray}
-                navigation={navigation}
-              />
-            </Item>
-          );
-        })}
+                    </PriceTxt>
+                  </View>
+                </FlexBoth>
+                <SubmitBtn
+                  small={true}
+                  text="간병인 정보 확인"
+                  style={{ height: 48 }}
+                  onPress={() => {
+                    openModal(item);
+                  }}
+                />
+                <ProfileModal
+                  showModal={showModal}
+                  setShowModal={setShowModal}
+                  dataArray={dataArray}
+                  navigation={navigation}
+                />
+              </Item>
+            );
+          })
+        ) : (
+          <NoneLayout text="지원한 간병인이 없습니다." />
+        )}
       </Container>
     </ScrollView>
   );

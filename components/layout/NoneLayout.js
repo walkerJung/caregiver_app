@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components/native";
 import Icon from "react-native-vector-icons/Ionicons";
 
-export default function NoneLayout() {
+export default function NoneLayout(props) {
   const NoneContainer = styled.View`
     flex: 1;
     justify-content: center;
@@ -16,7 +16,7 @@ export default function NoneLayout() {
   return (
     <NoneContainer>
       <Icon name="shapes-outline" color={"#676767"} size={24} />
-      <NoneTxt>등록된 내용이 없습니다.</NoneTxt>
+      <NoneTxt>{props.text}</NoneTxt>
     </NoneContainer>
   );
 }

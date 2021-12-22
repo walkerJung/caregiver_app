@@ -73,7 +73,7 @@ export default function ApplyListCaregiver({ navigation }) {
               );
             })
           ) : (
-            <NoneLayout />
+            <NoneLayout text="등록된 내용이 없습니다." />
           )}
         </Container>
       </DefulatLayout>

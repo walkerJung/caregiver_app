@@ -57,7 +57,7 @@ export default function ProgressHistoryCaregiver({ navigation }) {
                   }
                 )
               ) : (
-                <NoneLayout />
+                <NoneLayout text="등록된 내용이 없습니다." />
               )}
             </Container>
           </ScrollView>
