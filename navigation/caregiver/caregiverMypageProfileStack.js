@@ -1,13 +1,13 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import EditCaregiver from "../screens/mypage/caregiver/edit";
-import EditNameCaregiver from "../screens/mypage/caregiver/nameEdit";
-import EditPhoneCaregiver from "../screens/mypage/caregiver/phoneEdit";
-import EditPasswordCaregiver from "../screens/mypage/caregiver/passwordEdit";
-import EditAddressCaregiver from "../screens/mypage/caregiver/addressEdit";
-import EditIdCardCaregiver from "../screens/mypage/caregiver/idCardEdit";
-import EditBankInfoCaregiver from "../screens/mypage/caregiver/bankInfoEdit";
-import EditDetailCaregiver from "../screens/mypage/caregiver/editDetail";
+import EditCaregiver from "../../screens/mypage/caregiver/edit";
+import EditNameCaregiver from "../../screens/mypage/caregiver/nameEdit";
+import EditPhoneCaregiver from "../../screens/mypage/caregiver/phoneEdit";
+import EditPasswordCaregiver from "../../screens/mypage/caregiver/passwordEdit";
+import EditAddressCaregiver from "../../screens/mypage/caregiver/addressEdit";
+import EditIdCardCaregiver from "../../screens/mypage/caregiver/idCardEdit";
+import EditBankInfoCaregiver from "../../screens/mypage/caregiver/bankInfoEdit";
+import EditDetailCaregiver from "../../screens/mypage/caregiver/editDetail";
 
 const Stack = createStackNavigator();
 

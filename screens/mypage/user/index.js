@@ -39,7 +39,7 @@ export default function MypageUser({ navigation }) {
               />
               <MypageList
                 title="공지사항"
-                onPress={() => navigation.navigate("PatientMypageNoticeStack")}
+                onPress={() => navigation.navigate("MainNoticeStack")}
               />
               <MypageList title="로그아웃" onPress={() => logUserOut()} />
             </>

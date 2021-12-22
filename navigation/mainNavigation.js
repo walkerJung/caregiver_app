@@ -10,15 +10,14 @@ import {
   faHome,
   faUser,
 } from "@fortawesome/pro-light-svg-icons";
-import AuthStack from "./authStack";
-import PatientMypageStack from "./patientMypageStack";
-import PatientMainStack from "./patientMainStack";
-import PatientCaregiveServiceStack from "./patientCaregiveServiceStack";
-import CaregiverMainStack from "./caregiverMainStack";
-import CaregiverApplyStack from "./caregiverApplyStack";
 import Intro from "../screens/intro";
-import HistoryStackCaregiver from "../navigation/HistoryStackCaregiver";
-import careglverMypageStack from "../navigation/careglverMypageStack";
+import AuthStack from "./authStack";
+import PatientMypageStack from "./patient/patientMypageStack";
+import PatientMainStack from "./patient/patientMainStack";
+import PatientCaregiveServiceStack from "./patient/patientCaregiveServiceStack";
+import CaregiverMainStack from "./caregiver/caregiverMainStack";
+import CaregiverCaregiveServiceStack from "./caregiver/caregiverCaregiveServiceStack";
+import careglverMypageStack from "./caregiver/careglverMypageStack";
 import { careTheme } from "../contents";
 
 const Stack = createStackNavigator();
@@ -106,7 +105,7 @@ export default function MainNavigation({ isLoggedIn, userInfo }) {
               />
               <Tab.Screen
                 name="신청 내역"
-                component={HistoryStackCaregiver}
+                component={CaregiverCaregiveServiceStack}
                 options={{
                   headerShown: false,
                   tabBarIcon: ({ color, size }) => (

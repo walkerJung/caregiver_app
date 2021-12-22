@@ -1,18 +1,17 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import EditUser from "../screens/mypage/user/edit";
-import EditPasswordUser from "../screens/mypage/user/passwordEdit";
-import EditNameUser from "../screens/mypage/user/nameEdit";
-import EditPhoneUser from "../screens/mypage/user/phoneEdit";
+import ProgressHistoryUser from "../../screens/careService/user/ProgressHistory";
+import RecruitHome from "../../screens/recruit";
+import ApplicantList from "../../screens/applicantList/List";
 
 const Stack = createStackNavigator();
 
-export default function PatientMypageProfileStack() {
+export default function PatientCaregiveServiceStack() {
   return (
     <Stack.Navigator
-      initialRouteName="EditUser"
+      initialRouteName="ProgressHistoryUser"
       screenOptions={{
-        headerShown: false,
+        headerShown: true,
         gestureEnabled: false,
         cardStyle: { backgroundColor: "#fff" },
         headerBackTitleVisible: false,
@@ -29,35 +28,27 @@ export default function PatientMypageProfileStack() {
       cardStyle={{ backgroundColor: "transparent" }}
     >
       <Stack.Screen
-        name="EditUser"
-        component={EditUser}
+        name="ProgressHistoryUser"
+        component={ProgressHistoryUser}
         options={{
-          title: "내 정보 수정",
           headerShown: true,
+          title: "간병 서비스",
         }}
       />
       <Stack.Screen
-        name="EditNameUser"
-        component={EditNameUser}
+        name="RecruitHome"
+        component={RecruitHome}
         options={{
-          title: "이름 변경",
           headerShown: true,
+          title: "공고 확인",
         }}
       />
       <Stack.Screen
-        name="EditPhoneUser"
-        component={EditPhoneUser}
+        name="ApplicantList"
+        component={ApplicantList}
         options={{
-          title: "연락처 변경",
           headerShown: true,
-        }}
-      />
-      <Stack.Screen
-        name="EditPasswordUser"
-        component={EditPasswordUser}
-        options={{
-          title: "비밀번호 변경",
-          headerShown: true,
+          title: "간병인 선택",
         }}
       />
     </Stack.Navigator>

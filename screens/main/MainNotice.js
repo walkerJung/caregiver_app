@@ -9,7 +9,7 @@ const MainNotice = (props) => {
           <MainNotiItem
             activeOpacity={0.8}
             onPress={() => {
-              props?.navigation.navigate("PatientMypageNoticeStack");
+              props?.navigation.navigate("MainNoticeStack");
             }}
             key={index}
           >

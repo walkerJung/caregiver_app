@@ -1,14 +1,15 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import AnnouncementList from "../screens/apply/caregiver/ApplyList";
-import AnnouncementView from "../screens/apply/caregiver/ApplyView";
 
 const Stack = createStackNavigator();
 
-export default function CaregiverApplyStack() {
+import ProgressHistoryCaregiver from "../../screens/careService/caregiver/ProgressHistory";
+import AnnouncementView from "../../screens/apply/caregiver/ApplyView";
+
+export default function CaregiverCaregiveServiceStack() {
   return (
     <Stack.Navigator
-      initialRouteName="AnnouncementList"
+      initialRouteName="ProgressHistoryCaregiver"
       screenOptions={{
         headerShown: true,
         gestureEnabled: false,
@@ -24,23 +25,16 @@ export default function CaregiverApplyStack() {
           shadowOpacity: 0, // for ios
         },
       }}
-      cardStyle={{ backgroundColor: "transparent" }}
     >
       <Stack.Screen
-        name="AnnouncementList"
-        component={AnnouncementList}
-        options={{
-          title: "간병서비스 리스트",
-          headerShown: true,
-        }}
+        name="ProgressHistoryCaregiver"
+        component={ProgressHistoryCaregiver}
+        options={{ title: "간병인 신청 내역" }}
       />
       <Stack.Screen
         name="AnnouncementView"
         component={AnnouncementView}
-        options={{
-          title: "간병서비스 상세보기",
-          headerShown: true,
-        }}
+        options={{ title: "간병서비스 상세보기" }}
       />
     </Stack.Navigator>
   );

@@ -1,7 +1,7 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import NoticeList from "../screens/board/NoticeList";
-import NoticeView from "../screens/board/NoticeView";
+import NoticeList from "../screens/notice/NoticeList";
+import NoticeView from "../screens/notice/NoticeView";
 
 const Stack = createStackNavigator();
 

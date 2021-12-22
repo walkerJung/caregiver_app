@@ -1,16 +1,17 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import NoticeList from "../screens/board/NoticeList";
-import NoticeView from "../screens/board/NoticeView";
+import ApplyForm from "../../screens/apply/user/ApplyForm";
+import ApplyFormDetail from "../../screens/apply/user/ApplyFormDetail";
+import ApplyComplete from "../../screens/apply/user/ApplyComplete";
 
 const Stack = createStackNavigator();
 
-export default function CaregiverMypageNoticeStack() {
+export default function PatientApplyStack() {
   return (
     <Stack.Navigator
-      initialRouteName="NoticeList"
+      initialRouteName="ApplyForm"
       screenOptions={{
-        headerShown: false,
+        headerShown: true,
         gestureEnabled: false,
         cardStyle: { backgroundColor: "#fff" },
         headerBackTitleVisible: false,
@@ -27,19 +28,26 @@ export default function CaregiverMypageNoticeStack() {
       cardStyle={{ backgroundColor: "transparent" }}
     >
       <Stack.Screen
-        name="NoticeList"
-        component={NoticeList}
+        name="ApplyForm"
+        component={ApplyForm}
         options={{
-          title: "공지사항",
+          title: "간병서비스 신청",
           headerShown: true,
         }}
       />
       <Stack.Screen
-        name="NoticeView"
-        component={NoticeView}
+        name="ApplyFormDetail"
+        component={ApplyFormDetail}
         options={{
-          title: "공지사항",
+          title: "간병서비스 신청",
           headerShown: true,
+        }}
+      />
+      <Stack.Screen
+        name="ApplyComplete"
+        component={ApplyComplete}
+        options={{
+          headerShown: false,
         }}
       />
     </Stack.Navigator>

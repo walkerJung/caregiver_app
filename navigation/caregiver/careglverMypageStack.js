@@ -1,8 +1,8 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import MypageCaregiver from "../screens/mypage/caregiver";
+import MypageCaregiver from "../../screens/mypage/caregiver";
 import CaregiverMypageProfileStack from "./caregiverMypageProfileStack";
-import PatientMypageNoticeStack from "./patientMypageNoticeStack";
+import MainNoticeStack from "../mainNoticeStack";
 
 const Stack = createStackNavigator();
 
@@ -43,8 +43,8 @@ export default function careglverMypageStack() {
         }}
       />
       <Stack.Screen
-        name="PatientMypageNoticeStack"
-        component={PatientMypageNoticeStack}
+        name="MainNoticeStack"
+        component={MainNoticeStack}
         options={{
           headerShown: false,
         }}

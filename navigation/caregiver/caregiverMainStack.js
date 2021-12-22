@@ -1,15 +1,15 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import PatientMainScreen from "../screens/main/Main";
-import UserApplyStack from "./userApplyStack";
-import PatientMypageNoticeStack from "./patientMypageNoticeStack";
+import CaregiverMainScreen from "../../screens/main/MainCaregiver";
+import CaregiverApplyStack from "./caregiverApplyStack";
+import MainNoticeStack from "../mainNoticeStack";
 
 const Stack = createStackNavigator();
 
 export default function PatientMainStack() {
   return (
     <Stack.Navigator
-      initialRouteName="PatientMainScreen"
+      initialRouteName="CaregiverMainScreen"
       screenOptions={{
         headerShown: true,
         gestureEnabled: false,
@@ -28,22 +28,22 @@ export default function PatientMainStack() {
       cardStyle={{ backgroundColor: "transparent" }}
     >
       <Stack.Screen
-        name="PatientMainScreen"
-        component={PatientMainScreen}
+        name="CaregiverMainScreen"
+        component={CaregiverMainScreen}
         options={{
           headerShown: false,
         }}
       />
       <Stack.Screen
-        name="UserApplyStack"
-        component={UserApplyStack}
+        name="CaregiverApplyStack"
+        component={CaregiverApplyStack}
         options={{
           headerShown: false,
         }}
       />
       <Stack.Screen
-        name="PatientMypageNoticeStack"
-        component={PatientMypageNoticeStack}
+        name="MainNoticeStack"
+        component={MainNoticeStack}
         options={{
           headerShown: false,
         }}

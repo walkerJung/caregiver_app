@@ -1,14 +1,15 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import NoticeList from "../screens/board/NoticeList";
-import NoticeView from "../screens/board/NoticeView";
+import MypageUser from "../../screens/mypage/user";
+import PatientMypageProfileStack from "./patientMypageProfileStack";
+import MainNoticeStack from "../mainNoticeStack";
 
 const Stack = createStackNavigator();
 
-export default function PatientMypageNoticeStack() {
+export default function PatientMypageStack() {
   return (
     <Stack.Navigator
-      initialRouteName="NoticeList"
+      initialRouteName="MypageUser"
       screenOptions={{
         headerShown: false,
         gestureEnabled: false,
@@ -27,19 +28,25 @@ export default function PatientMypageNoticeStack() {
       cardStyle={{ backgroundColor: "transparent" }}
     >
       <Stack.Screen
-        name="NoticeList"
-        component={NoticeList}
+        name="MypageUser"
+        component={MypageUser}
         options={{
-          title: "공지사항",
+          title: "마이페이지",
           headerShown: true,
         }}
       />
       <Stack.Screen
-        name="NoticeView"
-        component={NoticeView}
+        name="PatientMypageProfileStack"
+        component={PatientMypageProfileStack}
         options={{
-          title: "공지사항",
-          headerShown: true,
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="MainNoticeStack"
+        component={MainNoticeStack}
+        options={{
+          headerShown: false,
         }}
       />
     </Stack.Navigator>
