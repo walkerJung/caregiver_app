@@ -220,7 +220,7 @@ export const Complete = styled.View`
   justify-content: center;
   align-items: center;
   flex: 1;
-  padding: 0 5%;
+  padding: 0 15px;
   background-color: #f5f5f5;
 `;
 export const CompleteLogo = styled.Text`

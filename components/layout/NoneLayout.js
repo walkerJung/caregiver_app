@@ -7,7 +7,6 @@ export default function NoneLayout() {
     flex: 1;
     justify-content: center;
     align-items: center;
-    padding-top: 70%;
   `;
   const NoneTxt = styled.Text`
     color: #333;

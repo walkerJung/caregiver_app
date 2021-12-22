@@ -7,6 +7,7 @@ import { SubmitBtn } from "../form/CareFormStyle";
 import { useForm } from "react-hook-form";
 import { useMutation } from "@apollo/client";
 import { DELETE_ANNOUNCEMENT_MUTATION } from "../../screens/query";
+import ConfirmModal from "./ConfirmModal";
 
 const ModalBackground = styled.View`
   flex: 1;
@@ -14,7 +15,7 @@ const ModalBackground = styled.View`
   align-items: center;
   background-color: rgba(0, 0, 0, 0.8);
   justify-content: center;
-  padding: 0 5%;
+  padding: 0 15px;
 `;
 const Container = styled.View`
   width: 100%;
@@ -55,17 +56,17 @@ export default function AlertModal({
   navigation,
 }) {
   const {
-    register,
     handleSubmit,
-    setValue,
-    getValues,
     formState: { errors },
-    watch,
   } = useForm();
 
+  const [isVisible, setIsVisible] = useState(false);
+
   const onCompleted = (data) => {
-    Alert.alert("간병서비스가 취소 되었습니다.");
-    navigation.navigate("ProgressHistoryUser");
+    setShowModal(false);
+    setIsVisible(true);
+    // Alert.alert("간병서비스가 취소 되었습니다.");
+    // navigation.navigate("ProgressHistoryUser");
   };
 
   const [deleteAnnouncementMutation] = useMutation(
@@ -135,6 +136,14 @@ export default function AlertModal({
           </ModalBackground>
         </Modal>
       ) : null}
+      <ConfirmModal
+        title="알림"
+        isVisible={isVisible}
+        text="간병서비스가 취소 되었습니다."
+        setIsVisible={setIsVisible}
+        navigation={navigation}
+        screen={"ProgressHistoryUser"}
+      />
     </>
   );
 }

@@ -32,7 +32,7 @@ export default function ProgressHistoryUser({ navigation, route }) {
 
   return (
     <>
-      <ScrollView>
+      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
         <Container>
           {!loading && data?.listAnnouncement?.announcements.length > 0 ? (
             data?.listAnnouncement?.announcements?.map((item, index) => {

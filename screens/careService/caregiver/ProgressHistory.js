@@ -40,7 +40,7 @@ export default function ProgressHistoryCaregiver({ navigation }) {
     <>
       {!loading && (
         <>
-          <ScrollView>
+          <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
             <Container>
               {data.listAnnouncementApplication.announcementApplications
                 .length > 0 ? (
