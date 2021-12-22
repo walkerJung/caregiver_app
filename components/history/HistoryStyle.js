@@ -39,7 +39,7 @@ export const CardHeadTit = styled.Text`
 `;
 export const GoViewBtn = ({ onPress, text }) => {
   const GoViewBtnTxt = styled.Text`
-    font-size: 13px;
+    font-size: 14px;
     font-weight: bold;
     color: #767676;
     text-decoration: underline;

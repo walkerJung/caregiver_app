@@ -96,8 +96,8 @@ export default function RecruitHome({ route, navigation }) {
       statusText: "입금 대기중",
     },
     5: {
-      statusColor: { color: "#0077FF" },
-      statusText: "매칭 완료",
+      statusColor: { color: "#5e66ff" },
+      statusText: "입금 및 매칭 완료",
     },
     6: {
       statusColor: { color: "#20CF05" },
