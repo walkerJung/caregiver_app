@@ -117,14 +117,14 @@ export default function Login({ navigation }) {
           navigation.navigate("PatientJoin");
         }}
       />
-      {/* 환자 회원 */}
-      <LoginBtn
+      {/* 간병인 회원 */}
+      {/* <LoginBtn
         title="회원가입"
         line={true}
         onPress={() => {
           navigation.navigate("CaregiverJoin");
         }}
-      />
+      /> */}
 
       <FindBox>
         <FindBtn
