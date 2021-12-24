@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "CareKorea",
-    "slug": "CareKorea",
+    "name": "CareKorea_caregiver",
+    "slug": "CareKorea_caregiver",
     "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
