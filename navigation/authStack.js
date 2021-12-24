@@ -3,7 +3,8 @@ import { createStackNavigator } from "@react-navigation/stack";
 import Login from "../screens/login/login";
 import IdFind from "../screens/auth/idFind";
 import PasswordFind from "../screens/auth/passwordFind";
-import AuthJoinStack from "./authJoinStack";
+import CaregiverJoin from "../screens/join/caregiver/Register";
+import PatientJoin from "../screens/join/user/Register";
 
 const Stack = createStackNavigator();
 
@@ -52,10 +53,19 @@ export default function AuthStack() {
         }}
       />
       <Stack.Screen
-        name="MemberType"
-        component={AuthJoinStack}
+        name="PatientJoin"
+        component={PatientJoin}
         options={{
-          headerShown: false,
+          title: "환자회원 정보입력",
+          headerShown: true,
+        }}
+      />
+      <Stack.Screen
+        name="CaregiverJoin"
+        component={CaregiverJoin}
+        options={{
+          title: "간병인회원 정보입력",
+          headerShown: true,
         }}
       />
     </Stack.Navigator>
