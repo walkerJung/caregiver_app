@@ -167,7 +167,7 @@ export default function EditIdCardCaregiver({ navigation }) {
                       <Image
                         style={{ width: "100%", height: "100%" }}
                         source={{
-                          uri: `http://3.36.22.165:4000${data.viewProfile.caregiverInfo.idCard}`,
+                          uri: `http://api.care-korea.kr${data.viewProfile.caregiverInfo.idCard}`,
                         }}
                         resizeMode={"contain"}
                       />
