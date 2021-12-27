@@ -56,7 +56,7 @@ export default function Item({ item, copyToClipboard, navigation }) {
       complete: true,
     },
   };
-  console.log(ChoiceItemStyle);
+
   const userInfo = JSON.parse(useReactiveVar(memberVar));
 
   const nightsAndDays =
