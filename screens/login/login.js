@@ -109,11 +109,20 @@ export default function Login({ navigation }) {
 
       <LoginBtn title="로그인" line={false} onPress={handleSubmit(onValid)} />
 
+      {/* 환자 회원 */}
+      {/* <LoginBtn
+        title="회원가입"
+        line={true}
+        onPress={() => {
+          navigation.navigate("PatientJoin");
+        }}
+      /> */}
+      {/* 간병인 회원 */}
       <LoginBtn
         title="회원가입"
         line={true}
         onPress={() => {
-          navigation.navigate("MemberType");
+          navigation.navigate("CaregiverJoin");
         }}
       />
 
