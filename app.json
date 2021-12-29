@@ -2,7 +2,7 @@
   "expo": {
     "name": "CareKorea_caregiver",
     "slug": "CareKorea_caregiver",
-    "version": "1.0.2",
+    "version": "1.1.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -22,7 +22,7 @@
         "NSMicrophoneUsageDescription": "Allow $(PRODUCT_NAME) to access your microphone"
       },
       "bundleIdentifier": "com.wezoncoop.caregiver",
-      "buildNumber": "0.0.3"
+      "buildNumber": "0.0.5"
     },
     "android": {
       "adaptiveIcon": {
@@ -35,8 +35,8 @@
         "android.permission.WRITE_EXTERNAL_STORAGE",
         "android.permission.RECORD_AUDIO"
       ],
-      "package": "com.wezoncoop.caregiver",
-      "versionCode": 2
+      "package": "com.wezoncoop.carekorea_caregiver",
+      "versionCode": 0
     },
     "web": {
       "favicon": "./assets/favicon.png"
