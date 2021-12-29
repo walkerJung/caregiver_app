@@ -27,7 +27,7 @@ export const CREATE_ACCOUNT_MUTATION = gql`
     $userType: String!
     $userName: String!
     $password: String!
-    $sex: String!
+    $sex: String
     $phone: String!
     $residentNumber: String
     $smoke: String

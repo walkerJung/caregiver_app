@@ -182,21 +182,21 @@ export default function CaregiverRegister({ navigation }) {
     register("phone", {
       required: "* 연락처를 입력해주세요.",
     });
-    register("sex", {
-      required: "* 성별을 선택해주세요.",
-    });
+    // register("sex", {
+    //   required: "* 성별을 선택해주세요.",
+    // });
     register("address", {
       required: "* 주소를 선택해주세요.",
     });
     register("addressDetail", {
       required: "* 상세주소를 입력해주세요.",
     });
-    register("resident_1", {
-      required: "* 주민등록번호 앞자리를 입력해주세요.",
-    });
-    register("resident_2", {
-      required: "* 주민등록번호 뒷자리를 입력해주세요.",
-    });
+    // register("resident_1", {
+    //   required: "* 주민등록번호 앞자리를 입력해주세요.",
+    // });
+    // register("resident_2", {
+    //   required: "* 주민등록번호 뒷자리를 입력해주세요.",
+    // });
     register("mealCare", {
       required: "* 가능한 식사케어를 선택해주세요.",
     });
@@ -318,7 +318,7 @@ export default function CaregiverRegister({ navigation }) {
           {errors.phone && <ErrorsText>{errors.phone.message}</ErrorsText>}
         </FormBox>
 
-        <FormBox last>
+        {/* <FormBox last>
           <FormLabelBox>
             <FormLabel>성별</FormLabel>
           </FormLabelBox>
@@ -332,7 +332,7 @@ export default function CaregiverRegister({ navigation }) {
             fieldName="sex"
           />
           {errors.sex && <ErrorsText>{errors.sex.message}</ErrorsText>}
-        </FormBox>
+        </FormBox> */}
       </SectionLayout>
 
       <SectionLayout>
@@ -396,7 +396,7 @@ export default function CaregiverRegister({ navigation }) {
           )}
         </FormBox>
 
-        <FormBox>
+        {/* <FormBox>
           <FormLabelBox>
             <FormLabel>주민등록번호</FormLabel>
           </FormLabelBox>
@@ -430,7 +430,7 @@ export default function CaregiverRegister({ navigation }) {
           {errors.resident_2 && (
             <ErrorsText>{errors.resident_2.message}</ErrorsText>
           )}
-        </FormBox>
+        </FormBox> */}
       </SectionLayout>
 
       <SectionLayout last>

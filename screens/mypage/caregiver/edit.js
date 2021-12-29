@@ -110,20 +110,20 @@ export default function EditCaregiver({ navigation }) {
               icon
               multiline
             />
-            <ListGo
+            {/* <ListGo
               title="주민등록번호"
               value="******-*******"
               icon
               disabled
               error="주민등록번호는 수정이 필요한 경우, 케어코리아에 문의주세요."
-            />
+            /> */}
             <ListGo
               title="간병인 상세정보"
               value="간병인 상세정보 변경"
               onPress={() => navigation.navigate("EditDetailCaregiver")}
               icon
             />
-            <ListUpload
+            {/* <ListUpload
               title="신분증"
               icon
               text="파일첨부"
@@ -138,7 +138,7 @@ export default function EditCaregiver({ navigation }) {
               onPress={() => {
                 navigation.navigate("EditBankInfoCaregiver");
               }}
-            />
+            /> */}
           </SectionLayout>
         </DefaultLayout>
       )}
