@@ -60,7 +60,6 @@ export default function ApplyViewCaregiver({ route, navigation }) {
       return element.user.userId == userInfo.userId;
     }
   );
-
   const applicationCaregiverCount = data?.viewAnnouncement
     ?.announcementApplication
     ? data?.viewAnnouncement?.announcementApplication?.length
@@ -180,6 +179,25 @@ export default function ApplyViewCaregiver({ route, navigation }) {
                 <ListTxtColor>
                   <NumberFormat
                     value={Math.floor(data?.viewAnnouncement?.hopeCost * 0.9)}
+                    displayType={"text"}
+                    thousandSeparator={true}
+                    suffix={"원"}
+                    renderText={(formattedValue) => (
+                      <Text>{formattedValue}</Text>
+                    )}
+                  />
+                </ListTxtColor>
+              </List>
+              <List>
+                <ListTitBox>
+                  <ListTit>
+                    <Fontawesome name="coins" size={14} color="#979797" /> 본인
+                    간병비
+                  </ListTit>
+                </ListTitBox>
+                <ListTxtColor>
+                  <NumberFormat
+                    value={Supported.caregiverCost}
                     displayType={"text"}
                     thousandSeparator={true}
                     suffix={"원"}

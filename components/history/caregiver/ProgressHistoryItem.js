@@ -59,6 +59,12 @@ export default function Item({ item, copyToClipboard, navigation }) {
 
   const userInfo = JSON.parse(useReactiveVar(memberVar));
 
+  const Supported = item.announcement.announcementApplication.find(
+    (element) => {
+      return element.user.userId == userInfo.userId;
+    }
+  );
+
   const nightsAndDays =
     (new Date(item.announcement.endDate).getTime() -
       new Date(item.announcement.startDate).getTime()) /
@@ -106,12 +112,31 @@ export default function Item({ item, copyToClipboard, navigation }) {
         <List>
           <ListTitBox>
             <ListTit>
-              <Fontawesome name="coins" size={14} color="#979797" /> 간병비
+              <Fontawesome name="coins" size={14} color="#979797" />
+              희망 간병비
             </ListTit>
           </ListTitBox>
           <ListTxtColor>
             <NumberFormat
               value={Math.floor(item.announcement.hopeCost * 0.9)}
+              displayType={"text"}
+              thousandSeparator={true}
+              suffix={"원"}
+              renderText={(formattedValue) => <Price>{formattedValue}</Price>}
+            />
+          </ListTxtColor>
+        </List>
+
+        <List>
+          <ListTitBox>
+            <ListTit>
+              <Fontawesome name="coins" size={14} color="#979797" />
+              본인 간병비
+            </ListTit>
+          </ListTitBox>
+          <ListTxtColor>
+            <NumberFormat
+              value={Supported.caregiverCost}
               displayType={"text"}
               thousandSeparator={true}
               suffix={"원"}
