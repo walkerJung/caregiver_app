@@ -208,7 +208,7 @@ export default function ProfileModal({
               </ModalHeader>
               <ModalBody>
                 <FlexBoth>
-                  <Profile>
+                  <Profile style={{ paddingLeft: 20, paddingRight: 20 }}>
                     <ProfileImg style={{ width: 56, height: 56 }}>
                       <Image
                         style={{ width: 26, height: 26 }}
