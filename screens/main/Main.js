@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View, ScrollView, Alert, Image, Text } from "react-native";
+import { StyleSheet, View, Image, Platform } from "react-native";
 import DefaultLayout from "../../components/layout/DefaultLayout";
 import SectionLayout from "../../components/layout/SectionLayout";
 import {
@@ -40,8 +40,8 @@ export default function PatientMain({ navigation }) {
               resizeMode="contain"
             >
               <MainBannerTxt>
-                쉽고 간편하게 간병인을{"\n"}
-                신청해보세요.
+                간병인 서비스에{"\n"}
+                지원해주세요.
               </MainBannerTxt>
             </ImgBg>
             <BannerBtnBox style={styles.shadow}>
@@ -52,23 +52,7 @@ export default function PatientMain({ navigation }) {
             </BannerBtnBox>
             <MainBannerHd />
           </MainBanner>
-          <SectionLayout>
-            <View
-              style={{
-                ...styles.shadow,
-                backgroundColor: "#fff",
-                borderRadius: 8,
-              }}
-            >
-              <Btn
-                activeOpacity={0.8}
-                onPress={() => navigation.navigate("PdfView")}
-              >
-                <BtnTit>간병 서비스 신청방법</BtnTit>
-                <BtnTxt>앱 사용법을 알려드립니다!</BtnTxt>
-              </Btn>
-            </View>
-          </SectionLayout>
+
           <SectionLayout>
             <MainTitle>공지사항</MainTitle>
             <MainNotice data={data} navigation={navigation} />

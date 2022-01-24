@@ -3,6 +3,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import CaregiverMainScreen from "../../screens/main/MainCaregiver";
 import CaregiverApplyStack from "./caregiverApplyStack";
 import MainNoticeStack from "../mainNoticeStack";
+import PdfView from "../../screens/main/pdfView";
 
 const Stack = createStackNavigator();
 
@@ -46,6 +47,14 @@ export default function PatientMainStack() {
         component={MainNoticeStack}
         options={{
           headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="PdfView"
+        component={PdfView}
+        options={{
+          title: "간병 지원 방법",
+          headerShown: true,
         }}
       />
     </Stack.Navigator>
